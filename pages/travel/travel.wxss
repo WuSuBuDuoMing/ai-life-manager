@@ -1,0 +1,197 @@
+/* pages/travel/travel.wxss */
+.page-container { min-height: 100vh; background-color: var(--color-bg); padding: 0 32rpx; }
+
+/* 计划卡片 */
+.plan-card {
+  position: relative;
+  overflow: hidden;
+}
+.plan-card:active { opacity: 0.85; }
+.plan-completed { opacity: 0.6; }
+.plan-icon-wrap {
+  width: 80rpx; height: 80rpx; border-radius: 20rpx;
+  background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+  display: flex; align-items: center; justify-content: center;
+}
+.plan-icon { font-size: 40rpx; }
+
+/* 倒计时标签 */
+.plan-badge {
+  position: absolute; top: 0; right: 0;
+  background: var(--color-primary, #4CAF50);
+  color: #fff; padding: 8rpx 20rpx;
+  border-radius: 0 24rpx 0 16rpx;
+  display: flex; flex-direction: column; align-items: center;
+}
+.badge-urgent { background: var(--color-danger, #EF5350); }
+.badge-soon { background: var(--color-warning, #FFA726); }
+.badge-days { font-size: 28rpx; font-weight: 700; line-height: 1.2; }
+.badge-label { font-size: 18rpx; opacity: 0.9; }
+
+/* 迷你进度条 */
+.mini-progress {
+  width: 120rpx; height: 8rpx;
+  background: var(--color-bg-input, #F7F3F0);
+  border-radius: 4rpx; overflow: hidden;
+}
+.mini-progress-fill {
+  height: 100%; border-radius: 4rpx;
+  background: var(--color-primary, #4CAF50);
+  transition: width 0.3s ease;
+}
+
+/* 计划底部 */
+.plan-footer {
+  display: flex; justify-content: space-between;
+  margin-top: 16rpx; padding-top: 16rpx;
+  border-top: 1rpx solid var(--color-divider, #F5F0EB);
+}
+
+/* 详情底部弹窗 */
+.detail-sheet {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  background: var(--color-bg-card, #fff);
+  border-radius: 32rpx 32rpx 0 0;
+  max-height: 85vh; overflow-y: auto;
+  padding: 32rpx;
+  z-index: 999;
+  animation: slideUp 0.3s ease;
+}
+.detail-header {
+  display: flex; align-items: flex-start;
+  margin-bottom: 24rpx; padding-bottom: 24rpx;
+  border-bottom: 1rpx solid var(--color-divider, #F5F0EB);
+}
+.close-btn { padding: 16rpx; }
+
+/* 倒计时卡片 */
+.countdown-card {
+  display: flex; align-items: baseline; justify-content: center;
+  gap: 8rpx; padding: 24rpx;
+  background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+  border-radius: 20rpx; margin-bottom: 20rpx;
+}
+.dark .countdown-card {
+  background: linear-gradient(135deg, #1B3A1E, #2E3B2E);
+}
+.countdown-number {
+  font-size: 64rpx; font-weight: 700;
+  color: var(--color-primary, #4CAF50);
+  line-height: 1;
+}
+.countdown-label {
+  font-size: 28rpx; color: var(--color-text-secondary, #888);
+}
+
+/* Tab 切换 */
+.tabs {
+  background: var(--color-bg-input, #F7F3F0); border-radius: 16rpx;
+  padding: 8rpx;
+}
+.tab-item {
+  padding: 16rpx 0; border-radius: 12rpx;
+  color: var(--color-text-secondary, #888); font-size: 26rpx;
+}
+.tab-active {
+  background: var(--color-primary, #4CAF50); color: #fff; font-weight: 600;
+}
+
+/* 清单项 */
+.check-item {
+  display: flex; align-items: center; gap: 16rpx;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid var(--color-divider, #F5F0EB);
+}
+.check-item:last-child { border-bottom: none; }
+.check-circle {
+  width: 48rpx; height: 48rpx; border-radius: 50%;
+  border: 3rpx solid var(--color-border, #e0e0e0);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24rpx; color: #fff; flex-shrink: 0;
+  transition: all 0.2s;
+}
+.check-done {
+  background: var(--color-primary, #4CAF50);
+  border-color: var(--color-primary, #4CAF50);
+}
+.text-done {
+  text-decoration: line-through;
+  color: var(--color-text-hint, #bbb);
+}
+
+/* 每日行程卡片 */
+.day-card {
+  background: var(--color-bg-input, #F7F3F0);
+  border-radius: 16rpx; padding: 20rpx;
+  margin-bottom: 16rpx;
+}
+.day-header {
+  display: flex; align-items: center; gap: 12rpx;
+  margin-bottom: 12rpx;
+}
+.day-number {
+  padding: 4rpx 16rpx; border-radius: 12rpx;
+  background: var(--color-primary, #4CAF50);
+  color: #fff; font-size: 22rpx; font-weight: 700;
+}
+.day-activities {
+  padding-left: 8rpx;
+}
+.activity-item {
+  display: flex; align-items: center; gap: 12rpx;
+  padding: 6rpx 0;
+}
+.activity-dot {
+  width: 10rpx; height: 10rpx; border-radius: 50%;
+  background: var(--color-text-hint, #bbb);
+  flex-shrink: 0;
+}
+
+/* 详情底部 */
+.detail-footer {
+  margin-top: 24rpx; padding-top: 24rpx;
+  border-top: 1rpx solid var(--color-divider, #F5F0EB);
+}
+
+/* 添加项目输入行 */
+.add-item-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 16rpx 0;
+  margin-bottom: 8rpx;
+}
+
+.add-item-input {
+  flex: 1;
+  height: 72rpx;
+  padding: 0 20rpx;
+  background: var(--color-bg-input, #F7F3F0);
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  color: var(--color-text-primary, #2C2C2C);
+}
+
+.add-item-btn {
+  padding: 16rpx 24rpx;
+  background: var(--color-primary-light, #E8F5E9);
+  border-radius: 12rpx;
+  flex-shrink: 0;
+}
+
+.add-item-btn:active {
+  opacity: 0.7;
+}
+
+/* 删除按钮 */
+.item-delete {
+  padding: 8rpx 16rpx;
+  flex-shrink: 0;
+}
+
+.item-delete:active {
+  opacity: 0.5;
+}
+
+/* 加载状态 */
+.loading-state { padding: 16rpx 0; }

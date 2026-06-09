@@ -1,0 +1,181 @@
+/**
+ * dashboard-card 样式
+ * 设计：圆角卡片，左侧圆形图标区，右侧文字内容，右侧箭头
+ * 支持多种颜色主题，暗黑模式通过 CSS 变量适配
+ * 点击反馈：active 状态缩放效果
+ */
+
+/* 卡片容器 */
+.dashboard-card {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 24rpx;
+  background-color: #FFFFFF;
+  border-radius: 20rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* 暗黑模式适配 */
+page.dark .dashboard-card {
+  background-color: #2C2C2E;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.2);
+}
+
+/* 点击反馈效果 */
+.dashboard-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 1rpx 6rpx rgba(0, 0, 0, 0.08);
+}
+
+/* 左侧图标包裹区域 */
+.card-icon-wrap {
+  position: relative;
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* 图标文字 */
+.card-icon {
+  font-size: 44rpx;
+  line-height: 1;
+}
+
+/* 角标 */
+.card-badge {
+  position: absolute;
+  top: -4rpx;
+  right: -4rpx;
+  min-width: 36rpx;
+  height: 36rpx;
+  border-radius: 18rpx;
+  background-color: #FF4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8rpx;
+}
+
+.badge-text {
+  font-size: 20rpx;
+  color: #FFFFFF;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* 右侧内容区域 */
+.card-content {
+  flex: 1;
+  margin-left: 24rpx;
+  overflow: hidden;
+}
+
+/* 标题行（标题+数值） */
+.card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+/* 标题 */
+.card-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333333;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+page.dark .card-title {
+  color: #F5F5F5;
+}
+
+/* 数值 */
+.card-value {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #333333;
+  margin-left: 12rpx;
+  flex-shrink: 0;
+}
+
+page.dark .card-value {
+  color: #F5F5F5;
+}
+
+/* 副标题 */
+.card-subtitle {
+  font-size: 24rpx;
+  color: #999999;
+  margin-top: 6rpx;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+page.dark .card-subtitle {
+  color: #8E8E93;
+}
+
+/* 右侧箭头 */
+.card-arrow {
+  flex-shrink: 0;
+  margin-left: 12rpx;
+}
+
+.arrow-icon {
+  font-size: 40rpx;
+  color: #CCCCCC;
+  font-weight: 300;
+}
+
+page.dark .arrow-icon {
+  color: #636366;
+}
+
+/* ==================== 颜色主题 ==================== */
+
+/* primary - 绿色主题 */
+.dashboard-card.primary .card-icon-wrap {
+  background-color: rgba(76, 175, 80, 0.12);
+}
+
+.dashboard-card.primary .card-value {
+  color: #4CAF50;
+}
+
+/* warning - 橙色主题 */
+.dashboard-card.warning .card-icon-wrap {
+  background-color: rgba(255, 152, 0, 0.12);
+}
+
+.dashboard-card.warning .card-value {
+  color: #FF9800;
+}
+
+/* danger - 红色主题 */
+.dashboard-card.danger .card-icon-wrap {
+  background-color: rgba(244, 67, 54, 0.12);
+}
+
+.dashboard-card.danger .card-value {
+  color: #F44336;
+}
+
+/* info - 灰色主题 */
+.dashboard-card.info .card-icon-wrap {
+  background-color: rgba(158, 158, 158, 0.12);
+}
+
+.dashboard-card.info .card-value {
+  color: #9E9E9E;
+}

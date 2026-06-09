@@ -1,0 +1,132 @@
+/* 自定义底部导航栏 */
+
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120rpx;
+  background: var(--color-bg-card, #FFFFFF);
+  display: flex;
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 999;
+  box-shadow: 0 -2rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 暗色模式 */
+.tab-bar.dark {
+  background: var(--color-bg-card, #252540);
+  box-shadow: 0 -2rpx 16rpx rgba(0, 0, 0, 0.2);
+}
+
+.tab-bar.dark .tab-bar-border {
+  background: var(--color-border, #333355);
+}
+
+.tab-bar-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1rpx;
+  background: var(--color-border, #F0EBE6);
+}
+
+.tab-bar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.15s ease;
+  padding-top: 8rpx;
+}
+
+.tab-bar-item:active {
+  transform: scale(0.92);
+}
+
+.tab-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 16rpx;
+  margin-bottom: 4rpx;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.tab-icon-active {
+  background: var(--color-primary-light, #E8F5E9);
+  transform: scale(1.05);
+}
+
+.tab-icon {
+  font-size: 44rpx;
+  line-height: 1;
+}
+
+.tab-text {
+  font-size: 20rpx;
+  line-height: 1.2;
+  font-weight: 500;
+  transition: font-weight 0.15s ease;
+}
+
+.tab-bar-item.active .tab-text {
+  font-weight: 600;
+}
+
+/* 选中指示条 */
+.tab-indicator {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32rpx;
+  height: 6rpx;
+  border-radius: 3rpx;
+  background: var(--color-primary, #4CAF50);
+  animation: slideIn 0.2s ease-out;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-50%) scaleX(0); }
+  to { transform: translateX(-50%) scaleX(1); }
+}
+
+/* 数字徽标 */
+.tab-badge {
+  position: absolute;
+  top: 2rpx;
+  right: 50%;
+  margin-right: -36rpx;
+  min-width: 28rpx;
+  height: 28rpx;
+  padding: 0 8rpx;
+  border-radius: 14rpx;
+  background: #EF5350;
+  color: #FFFFFF;
+  font-size: 18rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  line-height: 1;
+}
+
+/* 红点徽标 */
+.tab-dot {
+  position: absolute;
+  top: 10rpx;
+  right: 50%;
+  margin-right: -26rpx;
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background: #EF5350;
+  box-shadow: 0 2rpx 6rpx rgba(239, 83, 80, 0.4);
+}

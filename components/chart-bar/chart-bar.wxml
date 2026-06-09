@@ -1,0 +1,11 @@
+<view class="chart" style="height:{{height}}rpx;">
+  <view class="chart-bars">
+    <view class="chart-col" wx:for="{{normalizedData}}" wx:key="label">
+      <text class="chart-val" wx:if="{{showValue}}">{{item.value}}</text>
+      <view class="chart-bar-track" style="height:{{height - 60}}rpx;">
+        <view class="chart-bar-fill" style="height:{{item.percent}}%;background-color:{{item.color || barColor}};border-radius:{{barRadius}}rpx;"></view>
+      </view>
+      <text class="chart-label" wx:if="{{showLabel}}">{{item.label}}</text>
+    </view>
+  </view>
+</view>

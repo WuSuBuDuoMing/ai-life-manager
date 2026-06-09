@@ -1,0 +1,139 @@
+<!-- pages/shopping/shopping.wxml -->
+<view class="page-container {{isDark ? 'dark' : ''}}">
+
+  <!-- 页面标题区 -->
+  <view class="container">
+    <view class="page-header">
+      <text class="page-title">🛒 购物清单</text>
+      <text class="page-subtitle">记下需要买的，不遗漏不浪费</text>
+    </view>
+
+    <!-- 统计卡片 -->
+    <view class="flex-row" style="gap:12rpx;margin-bottom:20rpx;">
+      <view class="flex-1"><stat-card title="待购买" value="{{totalCount - purchasedCount}}" icon="📦" color="#FF9800" size="small" /></view>
+      <view class="flex-1"><stat-card title="已购买" value="{{purchasedCount}}" icon="✅" color="#4CAF50" size="small" /></view>
+      <view class="flex-1"><stat-card title="预计花费" value="¥{{estimatedTotal.toFixed(0)}}" icon="💰" color="#42A5F5" size="small" /></view>
+    </view>
+
+    <!-- 搜索栏 -->
+    <search-bar placeholder="搜索商品..." value="{{searchKeyword}}" bindinput="onSearchInput" bindclear="onSearchClear" />
+
+    <!-- 分类标签横向滚动 -->
+    <scroll-view scroll-x class="category-scroll" wx:if="{{categories.length > 1}}" enhanced show-scrollbar="{{false}}">
+      <view class="category-list">
+        <view class="category-chip {{selectedCategory === item ? 'category-active' : ''}}"
+          wx:for="{{categories}}" wx:key="*this" data-category="{{item}}" bindtap="onCategoryFilter">
+          <text>{{item}}</text>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- Tab 切换栏 -->
+    <view class="tabs flex-row mb-md">
+      <view class="tab-item flex-1 text-center {{currentTab === index ? 'tab-active' : ''}}"
+        wx:for="{{tabs}}" wx:key="index" data-index="{{index}}" bindtap="onTabChange">
+        <text>{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view wx:if="{{loading}}" class="loading-state">
+      <view class="card shimmer" style="height:120rpx;margin-bottom:16rpx;"></view>
+      <view class="card shimmer" style="height:120rpx;margin-bottom:16rpx;"></view>
+      <view class="card shimmer" style="height:120rpx;"></view>
+    </view>
+
+    <!-- 购物项列表 -->
+    <block wx:elif="{{filteredItems.length > 0}}">
+      <view class="shopping-list">
+        <view class="card card-sm shopping-item {{item.purchased ? 'item-purchased' : ''}}"
+          wx:for="{{filteredItems}}" wx:key="id">
+          <view class="flex-row items-center">
+            <view class="checkbox {{item.purchased ? 'checked' : ''}}" bindtap="onTogglePurchased" data-id="{{item.id}}">
+              <text wx:if="{{item.purchased}}" class="checkmark">✓</text>
+            </view>
+            <view class="flex-1 ml-md">
+              <text class="text-base {{item.purchased ? 'item-strikethrough text-hint' : 'text-primary'}}">{{item.name}}</text>
+              <view class="flex-row items-center mt-xs">
+                <text class="tag tag-secondary" style="font-size:20rpx;">{{item.category}}</text>
+                <text class="text-xs text-secondary ml-sm">x{{item.quantity}}</text>
+              </view>
+            </view>
+            <view class="flex-col items-end">
+              <text class="text-md text-bold {{item.purchased ? 'text-hint' : 'text-primary'}}">¥{{item.price}}</text>
+              <view class="delete-btn mt-xs" catchtap="onDeleteItem" data-id="{{item.id}}">
+                <text class="text-xs text-danger">删除</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <empty-state wx:else icon="🛒" title="购物车是空的" subtitle="点击下方按钮添加商品" showButton="{{true}}" buttonText="添加商品" bindaction="toggleAddForm" />
+  </view>
+
+  <!-- 底部总计栏 -->
+  <view class="bottom-bar" wx:if="{{totalCount > 0}}">
+    <view class="flex-row items-center justify-between">
+      <view class="flex-col">
+        <text class="text-xs text-secondary">预计总计</text>
+        <text class="text-xl text-bold text-primary">¥{{estimatedTotal.toFixed(2)}}</text>
+      </view>
+      <view class="flex-row items-center" style="gap:24rpx;">
+        <view class="flex-col items-center">
+          <text class="text-xs text-secondary">待购买</text>
+          <text class="text-md text-bold text-warning">{{totalCount - purchasedCount}}</text>
+        </view>
+        <view class="flex-col items-center">
+          <text class="text-xs text-secondary">已购买</text>
+          <text class="text-md text-bold text-success">{{purchasedCount}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- FAB 添加按钮 -->
+  <view class="fab" bindtap="toggleAddForm">
+    <text class="fab-icon">+</text>
+  </view>
+
+  <view class="safe-bottom" style="height: 180rpx;"></view>
+
+  <!-- 添加商品弹窗 -->
+  <view class="overlay" wx:if="{{showAddForm}}" bindtap="toggleAddForm">
+    <view class="modal" catchtap="">
+      <text class="modal-title">添加商品</text>
+
+      <view class="form-group">
+        <text class="form-label">商品名称</text>
+        <input class="form-input" placeholder="请输入商品名称" value="{{newItem.name}}" data-field="name" bindinput="onNewItemInput" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">分类</text>
+        <picker range="{{categories}}" value="0" bindchange="onCategoryChange">
+          <view class="form-select">
+            <text>{{newItem.category}}</text>
+          </view>
+        </picker>
+      </view>
+
+      <view class="flex-row" style="gap: 16rpx;">
+        <view class="form-group flex-1">
+          <text class="form-label">价格</text>
+          <input class="form-input" type="digit" placeholder="0.00" value="{{newItem.price}}" data-field="price" bindinput="onNewItemInput" />
+        </view>
+        <view class="form-group flex-1">
+          <text class="form-label">数量</text>
+          <input class="form-input" type="number" placeholder="1" value="{{newItem.quantity}}" data-field="quantity" bindinput="onNewItemInput" />
+        </view>
+      </view>
+
+      <view class="modal-actions">
+        <button class="btn btn-ghost" bindtap="toggleAddForm">取消</button>
+        <button class="btn btn-primary" bindtap="confirmAddItem">添加</button>
+      </view>
+    </view>
+  </view>
+</view>

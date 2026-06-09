@@ -1,0 +1,105 @@
+<!-- pages/checklists/checklists.wxml -->
+<view class="page-container {{isDark ? 'dark' : ''}}">
+
+  <!-- 页面标题区 -->
+  <view class="container">
+    <view class="page-header">
+      <text class="page-title">📋 生活清单</text>
+      <text class="page-subtitle">30+ 场景模板，生活不遗漏</text>
+    </view>
+
+    <!-- 统计卡片 -->
+    <view class="flex-row" style="gap:12rpx;margin-bottom:20rpx;">
+      <view class="flex-1"><stat-card title="我的清单" value="{{totalCount}}" icon="📋" color="#42A5F5" size="small" /></view>
+      <view class="flex-1"><stat-card title="已完成" value="{{completedCount}}" icon="✅" color="#4CAF50" size="small" /></view>
+      <view class="flex-1"><stat-card title="可用模板" value="{{templates.length}}" icon="📁" color="#FF9800" size="small" /></view>
+    </view>
+
+    <!-- 搜索栏 -->
+    <search-bar placeholder="搜索清单..." value="{{searchKeyword}}" bindinput="onSearchInput" bindclear="onSearchClear" />
+
+    <!-- Tab切换 -->
+    <view class="tabs flex-row mb-md">
+      <view class="tab-item flex-1 text-center {{currentTab === index ? 'tab-active' : ''}}"
+        wx:for="{{tabs}}" wx:key="index" data-index="{{index}}" bindtap="onTabChange">
+        <text>{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view wx:if="{{loading}}" class="loading-state">
+      <view class="card shimmer" style="height:140rpx;margin-bottom:16rpx;"></view>
+      <view class="card shimmer" style="height:140rpx;"></view>
+    </view>
+
+    <!-- 我的清单 -->
+    <block wx:elif="{{currentTab === 0}}">
+      <block wx:if="{{checklists.length > 0}}">
+        <view class="checklist-item card" wx:for="{{checklists}}" wx:key="id"
+          data-id="{{item.id}}" bindtap="onChecklistTap">
+          <view class="flex-row items-center justify-between mb-sm">
+            <text class="text-base text-bold">{{item.name}}</text>
+            <view class="delete-action" catchtap="onDeleteChecklist" data-id="{{item.id}}">
+              <text class="text-xs text-danger">删除</text>
+            </view>
+          </view>
+          <view class="flex-row items-center mb-sm" style="gap:8rpx;">
+            <text class="tag tag-info" style="font-size:20rpx;" wx:if="{{item.category}}">{{item.category}}</text>
+            <text class="text-xs text-secondary">{{item.items ? item.items.length : 0}} 项</text>
+          </view>
+          <!-- 进度条 -->
+          <view class="progress-bar" style="height:10rpx;">
+            <view class="progress-bar-fill" style="width:{{item.items && item.items.length > 0 ? (item.items.filter(function(i){return i.checked}).length / item.items.length * 100) : 0}}%;background:#4CAF50;"></view>
+          </view>
+          <text class="text-xs text-hint mt-xs block">
+            {{item.items ? item.items.filter(function(i){return i.checked}).length : 0}} / {{item.items ? item.items.length : 0}} 已完成
+          </text>
+          <!-- 最近几项 -->
+          <view class="checklist-preview mt-sm" wx:if="{{item.items && item.items.length > 0}}">
+            <view class="preview-item" wx:for="{{item.items}}" wx:for-item="task" wx:key="text" wx:if="{{index < 3}}">
+              <view class="mini-check {{task.checked ? 'mini-checked' : ''}}"></view>
+              <text class="text-xs {{task.checked ? 'text-hint' : 'text-secondary'}} {{task.checked ? 'task-strikethrough' : ''}}">{{task.text || task}}</text>
+            </view>
+            <text class="text-xs text-hint" wx:if="{{item.items.length > 3}}">...还有 {{item.items.length - 3}} 项</text>
+          </view>
+        </view>
+      </block>
+      <empty-state wx:else icon="📋" title="还没有清单" subtitle="点击下方按钮创建，或使用模板" showButton="{{true}}" buttonText="创建清单" bindaction="onCreateChecklist" />
+    </block>
+
+    <!-- 模板库 -->
+    <block wx:elif="{{currentTab === 1}}">
+      <view class="template-grid" wx:if="{{templates.length > 0}}">
+        <view class="template-card card card-sm" wx:for="{{templates}}" wx:key="id"
+          data-item="{{item}}" bindtap="onUseTemplate">
+          <text class="template-icon">{{item.icon || '📋'}}</text>
+          <text class="text-sm text-bold mt-xs">{{item.name}}</text>
+          <text class="text-xs text-hint mt-xs">{{item.items ? item.items.length : 0}} 项</text>
+        </view>
+      </view>
+      <empty-state wx:else icon="📁" title="暂无模板" subtitle="模板库正在建设中" />
+    </block>
+  </view>
+
+  <!-- FAB 添加按钮 -->
+  <view class="fab" bindtap="onCreateChecklist" wx:if="{{currentTab === 0}}">
+    <text class="fab-icon">+</text>
+  </view>
+
+  <!-- 创建清单弹窗 -->
+  <view class="overlay" wx:if="{{showCreateForm}}" bindtap="toggleCreateForm">
+    <view class="modal" catchtap="">
+      <text class="modal-title">创建新清单</text>
+      <view class="form-group">
+        <text class="form-label">清单名称</text>
+        <input class="form-input" placeholder="如：暑假旅行清单" value="{{newName}}" bindinput="onNameInput" />
+      </view>
+      <view class="modal-actions">
+        <button class="btn btn-ghost" bindtap="toggleCreateForm">取消</button>
+        <button class="btn btn-primary" bindtap="confirmCreate">创建</button>
+      </view>
+    </view>
+  </view>
+
+  <view style="height:200rpx;"></view>
+</view>

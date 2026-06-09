@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "empty-state": "/components/empty-state/empty-state"
+  },
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "搜索"
+}

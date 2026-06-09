@@ -1,0 +1,76 @@
+/**
+ * progress-ring 样式
+ * 设计：纯CSS环形进度条，左右半圆实现
+ * 背景灰色，进度用自定义颜色
+ * 中间区域居中显示文字
+ * 支持暗黑模式
+ */
+
+/* 环形容器 */
+.ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 背景圆环 */
+.ring-bg {
+  position: absolute;
+  border-radius: 50%;
+  border-style: solid;
+  border-color: #F0F0F0;
+  box-sizing: border-box;
+}
+
+page.dark .ring-bg {
+  border-color: #3A3A3C;
+}
+
+/* 左右半圆容器 */
+.ring-left,
+.ring-right {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-style: solid;
+  border-color: transparent;
+  border-radius: 50%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* 左右半圆遮罩 */
+.ring-left-mask,
+.ring-right-mask {
+  border-style: solid;
+  border-radius: 50%;
+  box-sizing: border-box;
+  transition: transform 0.4s ease;
+}
+
+/* 中间文字区域 */
+.ring-center {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-bg-card, #fff);
+  z-index: 1;
+}
+
+page.dark .ring-center {
+  background: var(--color-bg-card, #2C2C2E);
+}
+
+/* 百分比文字 */
+.ring-text {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: var(--color-text-primary, #2C2C2C);
+}
+
+page.dark .ring-text {
+  color: var(--color-text-primary, #F5F5F5);
+}

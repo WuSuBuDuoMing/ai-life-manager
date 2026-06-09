@@ -1,0 +1,50 @@
+<!--
+  chore-card 组件
+  功能：家务卡片，展示家务名称、负责人、频率、房间、积分、完成按钮
+  左侧彩色状态条根据 status 变色
+-->
+<view class="chore-card {{chore.status === 'completed' ? 'completed' : ''}}" bindtap="onTap">
+  <!-- 左侧彩色状态条 -->
+  <view class="chore-status-bar status-bar-{{chore.status || 'pending'}}"></view>
+
+  <!-- 卡片内容区 -->
+  <view class="chore-content">
+    <!-- 第一行：家务名 + 积分徽标 -->
+    <view class="chore-header">
+      <text class="chore-title">{{chore.title}}</text>
+      <view class="chore-points" wx:if="{{chore.points > 0}}">
+        <text class="points-icon">⭐</text>
+        <text class="points-text">{{chore.points}}</text>
+      </view>
+    </view>
+
+    <!-- 第二行：负责人 + 频率 + 房间标签 -->
+    <view class="chore-info-row">
+      <!-- 负责人头像区域 -->
+      <view class="chore-assignee" wx:if="{{chore.assignee}}">
+        <text class="assignee-avatar">{{chore.assigneeAvatar || '👤'}}</text>
+        <text class="assignee-name">{{chore.assignee}}</text>
+      </view>
+
+      <!-- 频率标签 -->
+      <view class="chore-frequency" wx:if="{{chore.frequency}}">
+        <text class="frequency-text">{{frequencyText}}</text>
+      </view>
+
+      <!-- 房间标签 -->
+      <view class="chore-room" wx:if="{{chore.room}}">
+        <text class="room-text">🏠 {{chore.room}}</text>
+      </view>
+    </view>
+
+    <!-- 第三行：到期日 -->
+    <view class="chore-due" wx:if="{{chore.dueDate}}">
+      <text class="due-text">截止：{{chore.dueDate}}</text>
+    </view>
+  </view>
+
+  <!-- 右侧完成按钮 -->
+  <view class="chore-complete-btn {{chore.status === 'completed' ? 'done' : ''}}" catchtap="onComplete">
+    <text class="complete-icon">{{chore.status === 'completed' ? '✓' : '○'}}</text>
+  </view>
+</view>

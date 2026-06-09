@@ -1,0 +1,199 @@
+<!-- pages/bills/bills.wxml -->
+<view class="page-container {{isDark ? 'dark' : ''}}">
+
+  <!-- 页面标题区 -->
+  <view class="page-header">
+    <text class="page-title">💳 账单管理</text>
+    <text class="page-subtitle">掌控每一笔支出</text>
+  </view>
+
+  <!-- 月度概览 -->
+  <view class="summary-card card" wx:if="{{monthlyTotal}}">
+    <view class="flex-row items-center justify-between">
+      <view>
+        <text class="text-xs text-secondary">本月账单总额</text>
+        <text class="text-2xl text-bold block" style="color:var(--color-primary);">¥{{monthlyTotal.total}}</text>
+      </view>
+      <view class="summary-stats">
+        <view class="summary-stat">
+          <text class="text-xs text-secondary">已付</text>
+          <text class="text-sm text-bold text-success">¥{{monthlyTotal.paid}}</text>
+        </view>
+        <view class="summary-stat">
+          <text class="text-xs text-secondary">未付</text>
+          <text class="text-sm text-bold text-danger">¥{{monthlyTotal.unpaid}}</text>
+        </view>
+      </view>
+    </view>
+    <!-- 进度条 -->
+    <view class="progress-bar" style="margin-top:16rpx;">
+      <view class="progress-bar-fill" style="width:{{monthlyTotal.total > 0 ? (monthlyTotal.paid / monthlyTotal.total * 100) : 0}}%;background:var(--color-success);"></view>
+    </view>
+    <text class="text-xs text-hint" style="margin-top:8rpx;">已付 {{monthlyTotal.count}} 笔</text>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="flex-row" style="gap:12rpx;margin-bottom:20rpx;">
+    <view class="flex-1"><stat-card title="未付账单" value="{{unpaidBills.length}}" icon="📋" color="#EF5350" size="small" /></view>
+    <view class="flex-1"><stat-card title="未付总额" value="¥{{totalUnpaid}}" icon="💰" color="#FF9800" size="small" /></view>
+    <view class="flex-1"><stat-card title="7天内到期" value="{{upcomingBills.length}}" icon="⏰" color="#42A5F5" size="small" /></view>
+  </view>
+
+  <!-- Tab 切换 -->
+  <view class="tabs flex-row mb-md">
+    <view class="tab-item flex-1 text-center {{currentTab === index ? 'tab-active' : ''}}"
+      wx:for="{{tabs}}" wx:key="index" data-index="{{index}}" bindtap="onTabChange">
+      <text class="text-sm">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-state">
+    <view class="card shimmer" style="height:120rpx;margin-bottom:16rpx;"></view>
+    <view class="card shimmer" style="height:120rpx;margin-bottom:16rpx;"></view>
+    <view class="card shimmer" style="height:120rpx;"></view>
+  </view>
+
+  <!-- 全部账单 Tab -->
+  <block wx:elif="{{currentTab === 0}}">
+    <block wx:if="{{bills.length > 0}}">
+      <view class="bill-item card {{item.paid ? 'bill-paid' : ''}} {{item.overdue ? 'bill-overdue' : ''}}"
+        wx:for="{{bills}}" wx:key="id">
+        <view class="flex-row items-center">
+          <view class="bill-icon-wrap {{item.overdue ? 'icon-overdue' : ''}}">
+            <text class="bill-icon">{{item.icon}}</text>
+          </view>
+          <view class="flex-1 ml-md">
+            <view class="flex-row items-center">
+              <text class="text-base text-bold">{{item.name}}</text>
+              <text class="tag tag-danger" style="margin-left:12rpx;font-size:18rpx;" wx:if="{{item.overdue}}">逾期{{item.overdueDays}}天</text>
+              <text class="tag tag-primary" style="margin-left:12rpx;font-size:18rpx;" wx:if="{{item.paid}}">已付</text>
+            </view>
+            <view class="flex-row items-center mt-xs" style="gap:12rpx;">
+              <text class="text-xs text-secondary">📅 {{item.dueDate}}</text>
+              <text class="text-xs text-hint">{{item.category}}</text>
+              <text class="text-xs text-hint" wx:if="{{item.recurring}}">🔁 {{item.frequency}}</text>
+            </view>
+          </view>
+          <view class="bill-right">
+            <text class="text-lg text-bold" style="color:{{item.paid ? 'var(--color-success)' : 'var(--color-danger)'}};">¥{{item.amount}}</text>
+            <view class="bill-actions" wx:if="{{!item.paid}}">
+              <view class="pay-btn" data-id="{{item.id}}" catchtap="onMarkPaid">
+                <text class="text-xs">付款</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    <empty-state wx:else icon="🎉" title="暂无账单" subtitle="点击右下角添加账单" />
+  </block>
+
+  <!-- 待支付 Tab -->
+  <block wx:elif="{{currentTab === 1}}">
+    <block wx:if="{{unpaidBills.length > 0}}">
+      <view class="bill-item card {{item.overdue ? 'bill-overdue' : ''}}" wx:for="{{unpaidBills}}" wx:key="id">
+        <view class="flex-row items-center">
+          <view class="bill-icon-wrap {{item.overdue ? 'icon-overdue' : ''}}">
+            <text class="bill-icon">{{item.icon}}</text>
+          </view>
+          <view class="flex-1 ml-md">
+            <view class="flex-row items-center">
+              <text class="text-base text-bold">{{item.name}}</text>
+              <text class="tag tag-danger" style="margin-left:12rpx;font-size:18rpx;" wx:if="{{item.overdue}}">逾期{{item.overdueDays}}天</text>
+            </view>
+            <text class="text-xs text-secondary mt-xs">📅 {{item.dueDate}}</text>
+          </view>
+          <view class="bill-right">
+            <text class="text-lg text-bold text-danger">¥{{item.amount}}</text>
+            <view class="pay-btn" data-id="{{item.id}}" catchtap="onMarkPaid" style="margin-top:8rpx;">
+              <text class="text-xs">付款</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    <empty-state wx:else icon="✅" title="全部已付" subtitle="本月账单已全部付清" />
+  </block>
+
+  <!-- 即将到期 Tab -->
+  <block wx:elif="{{currentTab === 2}}">
+    <block wx:if="{{upcomingBills.length > 0}}">
+      <view class="bill-item card" wx:for="{{upcomingBills}}" wx:key="id">
+        <view class="flex-row items-center">
+          <view class="bill-icon-wrap">
+            <text class="bill-icon">{{item.icon}}</text>
+          </view>
+          <view class="flex-1 ml-md">
+            <text class="text-base text-bold">{{item.name}}</text>
+            <view class="flex-row items-center mt-xs" style="gap:12rpx;">
+              <text class="text-xs text-warning">⏰ {{item.dueDate}} 到期</text>
+              <text class="text-xs text-hint">{{item.category}}</text>
+            </view>
+          </view>
+          <view class="bill-right">
+            <text class="text-lg text-bold text-danger">¥{{item.amount}}</text>
+            <view class="pay-btn" data-id="{{item.id}}" catchtap="onMarkPaid" style="margin-top:8rpx;">
+              <text class="text-xs">付款</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    <empty-state wx:else icon="😌" title="暂无到期账单" subtitle="7天内没有需要支付的账单" />
+  </block>
+
+  <!-- FAB 添加按钮 -->
+  <view class="fab" bindtap="toggleAddForm">
+    <text class="fab-icon">+</text>
+  </view>
+
+  <!-- 添加账单弹窗 -->
+  <view class="overlay" wx:if="{{showAddForm}}" bindtap="toggleAddForm">
+    <view class="modal" catchtap="">
+      <text class="modal-title">添加账单</text>
+
+      <view class="form-group">
+        <text class="form-label">账单名称</text>
+        <input class="form-input" placeholder="如：房租、电费" value="{{newBill.name}}" data-field="name" bindinput="onNewBillInput" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">金额（元）</text>
+        <input class="form-input" type="digit" placeholder="0.00" value="{{newBill.amount}}" data-field="amount" bindinput="onNewBillInput" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">到期日期</text>
+        <picker mode="date" value="{{newBill.dueDate}}" bindchange="onDueDateChange">
+          <view class="form-select">{{newBill.dueDate || '请选择到期日期'}}</view>
+        </picker>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">分类</text>
+        <view class="flex-row" style="gap:12rpx;flex-wrap:wrap;">
+          <view class="category-chip {{newBill.category === item ? 'category-active' : ''}}"
+            wx:for="{{categories}}" wx:key="*this"
+            data-category="{{item}}" catchtap="onCategorySelect">
+            <text>{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">频率</text>
+        <picker mode="selector" range="{{frequencies}}" bindchange="onFrequencyChange">
+          <view class="form-select">{{newBill.frequency}}</view>
+        </picker>
+      </view>
+
+      <view class="modal-actions">
+        <button class="btn btn-ghost" bindtap="toggleAddForm">取消</button>
+        <button class="btn btn-primary" bindtap="confirmAddBill">添加</button>
+      </view>
+    </view>
+  </view>
+
+  <view style="height:200rpx;"></view>
+</view>

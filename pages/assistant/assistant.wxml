@@ -1,0 +1,93 @@
+<!-- pages/assistant/assistant.wxml -->
+<view class="page-container {{isDark ? 'dark' : ''}}">
+
+  <!-- 顶部标题栏 -->
+  <view class="assistant-header">
+    <view class="flex-row items-center justify-between">
+      <view class="flex-row items-center">
+        <text class="header-icon">🤖</text>
+        <view>
+          <text class="text-md text-bold">AI 生活助手</text>
+          <text class="text-xs text-hint block">基于关键词的智能建议</text>
+        </view>
+      </view>
+      <view class="clear-btn" bindtap="onClearHistory">
+        <text class="text-xs text-hint">清空</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 消息列表 -->
+  <scroll-view scroll-y class="chat-scroll" scroll-into-view="{{scrollToMessage}}"
+    enhanced show-scrollbar="{{false}}" scroll-with-animation>
+
+    <view class="chat-messages">
+      <!-- 快捷问题（仅在对话开始时显示） -->
+      <view class="quick-section" wx:if="{{messages.length <= 1}}">
+        <text class="text-xs text-secondary" style="margin-bottom:16rpx;display:block;">💡 试试问问我：</text>
+        <view class="quick-grid">
+          <view class="quick-item touch-scale" wx:for="{{quickQuestions}}" wx:key="text"
+            data-text="{{item.text}}" bindtap="onQuickQuestion">
+            <text class="quick-icon">{{item.icon}}</text>
+            <text class="text-xs" style="margin-top:8rpx;">{{item.text}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 消息列表 -->
+      <view class="message-wrapper {{item.role === 'user' ? 'msg-right' : 'msg-left'}}"
+        wx:for="{{messages}}" wx:key="id" id="msg_{{index}}">
+
+        <!-- AI 头像 -->
+        <view class="msg-avatar" wx:if="{{item.role === 'assistant'}}">
+          <text>🤖</text>
+        </view>
+
+        <!-- 消息气泡 -->
+        <view class="msg-bubble {{item.role === 'user' ? 'bubble-user' : 'bubble-assistant'}}">
+          <text class="msg-content" user-select>{{item.content}}</text>
+          <text class="msg-time">{{item.timestamp}}</text>
+        </view>
+
+        <!-- 建议按钮 -->
+        <view class="suggestions" wx:if="{{item.role === 'assistant' && item.suggestions.length > 0}}">
+          <view class="suggestion-chip" wx:for="{{item.suggestions}}" wx:key="*this"
+            wx:for-item="sug" data-text="{{sug}}" catchtap="onSuggestionTap">
+            <text class="text-xs">{{sug}}</text>
+          </view>
+        </view>
+
+        <!-- 相关模块标签 -->
+        <view class="module-tag" wx:if="{{item.relatedModule}}">
+          <text class="text-xs text-hint">📎 {{item.relatedModule}}</text>
+        </view>
+      </view>
+
+      <!-- 加载中 -->
+      <view class="message-wrapper msg-left" wx:if="{{loading}}">
+        <view class="msg-avatar"><text>🤖</text></view>
+        <view class="msg-bubble bubble-assistant">
+          <view class="typing-dots">
+            <view class="dot"></view>
+            <view class="dot"></view>
+            <view class="dot"></view>
+          </view>
+        </view>
+      </view>
+
+      <view style="height:40rpx;"></view>
+    </view>
+  </scroll-view>
+
+  <!-- 输入区域 -->
+  <view class="input-bar safe-bottom">
+    <view class="input-wrap">
+      <input class="chat-input" placeholder="问我任何生活问题..." value="{{inputValue}}"
+        bindinput="onInput" bindconfirm="onSend" confirm-type="send"
+        focus="{{inputFocused}}" adjust-position="{{true}}" />
+      <view class="send-btn {{inputValue ? 'send-active' : ''}}" bindtap="onSend">
+        <text class="send-icon">↑</text>
+      </view>
+    </view>
+  </view>
+</view>

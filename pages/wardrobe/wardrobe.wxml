@@ -1,0 +1,120 @@
+<!-- pages/wardrobe/wardrobe.wxml -->
+<view class="container {{isDark ? 'dark' : ''}}">
+
+  <view class="page-header">
+    <text class="page-title">👔 衣橱洗衣</text>
+    <text class="page-subtitle">衣物管理，穿搭不愁</text>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="flex-row" style="gap:12rpx;margin-bottom:20rpx;">
+    <view class="flex-1"><stat-card title="总衣物" value="{{totalCount}}" icon="👔" color="#42A5F5" size="small" /></view>
+    <view class="flex-1"><stat-card title="干净" value="{{cleanCount}}" icon="✨" color="#4CAF50" size="small" /></view>
+    <view class="flex-1"><stat-card title="待洗" value="{{dirtyCount}}" icon="🧺" color="#FF9800" size="small" /></view>
+  </view>
+
+  <!-- 搜索栏 -->
+  <search-bar placeholder="搜索衣物..." value="{{searchKeyword}}" bindinput="onSearchInput" bindclear="onSearchClear" />
+
+  <!-- 分类标签 -->
+  <scroll-view scroll-x class="category-scroll" enhanced show-scrollbar="{{false}}">
+    <view class="category-list">
+      <view class="category-chip {{selectedCategory === item ? 'category-active' : ''}}"
+        wx:for="{{categories}}" wx:key="*this" data-category="{{item}}" bindtap="onCategoryFilter">
+        <text>{{item}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- Tab切换 -->
+  <view class="tabs flex-row mb-md">
+    <view class="tab-item flex-1 text-center {{currentTab === index ? 'tab-active' : ''}}"
+      wx:for="{{tabs}}" wx:key="index" data-index="{{index}}" data-tab="{{index}}" bindtap="onTabChange">
+      <text>{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-state">
+    <view class="card shimmer" style="height:120rpx;margin-bottom:16rpx;"></view>
+    <view class="card shimmer" style="height:120rpx;"></view>
+  </view>
+
+  <!-- 全部衣物/脏衣篮 -->
+  <block wx:elif="{{currentTab < 2}}">
+    <block wx:if="{{filteredClothes.length > 0}}">
+      <view class="clothing-item card card-sm" wx:for="{{filteredClothes}}" wx:key="id"
+        style="border-left:6rpx solid {{item.launderStatus === 'dirty' ? '#FF9800' : '#4CAF50'}};">
+        <view class="flex-row items-center">
+          <view class="clothing-color" style="background:{{item.color || '#ccc'}};"></view>
+          <view class="flex-1 ml-md">
+            <text class="text-base text-bold">{{item.name}}</text>
+            <view class="flex-row items-center mt-xs" style="gap:8rpx;">
+              <text class="tag tag-info" style="font-size:20rpx;">{{item.category}}</text>
+              <text class="tag tag-secondary" style="font-size:20rpx;" wx:if="{{item.season}}">{{item.season}}</text>
+              <text class="text-xs text-hint" wx:if="{{item.wearCount}}">穿过{{item.wearCount}}次</text>
+            </view>
+          </view>
+          <view class="flex-col items-end" style="gap:8rpx;">
+            <view class="laundry-btn {{item.launderStatus === 'dirty' ? 'laundry-dirty' : 'laundry-clean'}}"
+              catchtap="onToggleLaundry" data-id="{{item.id}}">
+              <text class="text-xs">{{item.launderStatus === 'dirty' ? '🧺 待洗' : '✨ 干净'}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    <empty-state wx:else icon="👔" title="{{currentTab === 1 ? '脏衣篮是空的' : '衣橱空空如也'}}"
+      subtitle="{{searchKeyword ? '没有找到匹配的衣物' : '添加衣物开始管理'}}" />
+  </block>
+
+  <!-- 季节收纳 -->
+  <block wx:elif="{{currentTab === 2}}">
+    <view class="section-title" style="padding:16rpx 0;">
+      <text class="text-md text-bold">🌞 当季衣物</text>
+    </view>
+    <block wx:if="{{filteredClothes.length > 0}}">
+      <view class="clothing-item card card-sm" wx:for="{{filteredClothes}}" wx:key="id">
+        <view class="flex-row items-center">
+          <view class="clothing-color" style="background:{{item.color || '#ccc'}};"></view>
+          <view class="flex-1 ml-md">
+            <text class="text-base text-bold">{{item.name}}</text>
+            <text class="text-xs text-secondary block mt-xs">{{item.category}} · {{item.season}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+    <empty-state wx:else icon="🌞" title="暂无季节衣物" subtitle="添加衣物后自动分类" />
+  </block>
+
+  <!-- 穿搭建议 -->
+  <block wx:elif="{{currentTab === 3}}">
+    <!-- 一周穿搭 -->
+    <view class="section-title" style="padding:16rpx 0;" wx:if="{{weeklyOutfit.length > 0}}">
+      <text class="text-md text-bold">👗 一周穿搭建议</text>
+    </view>
+    <view class="outfit-list" wx:if="{{weeklyOutfit.length > 0}}">
+      <view class="card outfit-card" wx:for="{{weeklyOutfit}}" wx:key="day"
+        data-outfit="{{item}}" bindtap="onOutfitTap">
+        <view class="flex-row items-center">
+          <view class="outfit-day-badge">
+            <text class="text-sm text-bold" style="color:#fff;">{{item.day}}</text>
+          </view>
+          <view class="flex-1 ml-md">
+            <text class="text-sm text-bold">上装: {{item.top || '-'}}</text>
+            <text class="text-xs text-secondary block mt-xs">下装: {{item.bottom || '-'}} · 鞋: {{item.shoes || '-'}}</text>
+          </view>
+          <text class="text-hint">›</text>
+        </view>
+      </view>
+    </view>
+    <empty-state wx:else icon="👗" title="暂无穿搭建议" subtitle="添加更多衣物后获取建议" />
+  </block>
+
+  <!-- FAB 添加按钮 -->
+  <view class="fab" bindtap="onAddClothes" wx:if="{{currentTab < 2}}">
+    <text class="fab-icon">+</text>
+  </view>
+
+  <view style="height:200rpx;"></view>
+</view>

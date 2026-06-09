@@ -1,0 +1,50 @@
+/* pages/wardrobe/wardrobe.wxss */
+
+/* 分类标签 */
+.category-scroll { white-space: nowrap; margin-bottom: 16rpx; }
+.category-list { display: inline-flex; gap: 12rpx; padding: 8rpx 0; }
+.category-chip {
+  display: inline-flex; padding: 12rpx 24rpx; border-radius: 24rpx;
+  font-size: 24rpx; background: var(--color-bg-card, #fff);
+  color: var(--color-text-secondary, #888); border: 1rpx solid var(--color-border, #e0e0e0);
+  flex-shrink: 0;
+}
+.category-active {
+  background: var(--color-primary, #4CAF50); color: #fff;
+  border-color: var(--color-primary, #4CAF50);
+}
+
+/* Tab切换 */
+.tabs {
+  background: var(--color-bg-card, #fff); border-radius: 16rpx;
+  padding: 8rpx; margin-bottom: 16rpx;
+}
+.tab-item {
+  padding: 16rpx 0; border-radius: 12rpx;
+  color: var(--color-text-secondary, #888); font-size: 24rpx;
+}
+.tab-active {
+  background: var(--color-primary, #4CAF50); color: #fff; font-weight: 600;
+}
+
+/* 衣物项 */
+.clothing-item { margin-bottom: 12rpx; }
+.clothing-color { width: 24rpx; height: 24rpx; border-radius: 50%; border: 2rpx solid rgba(0,0,0,0.1); }
+
+/* 脏衣篮按钮 */
+.laundry-btn { padding: 8rpx 16rpx; border-radius: 12rpx; }
+.laundry-dirty { background: #FFF3E0; color: #FF9800; }
+.laundry-clean { background: #E8F5E9; color: #4CAF50; }
+.laundry-btn:active { opacity: 0.7; }
+
+/* 穿搭卡片 */
+.outfit-card { margin-bottom: 12rpx; }
+.outfit-card:active { opacity: 0.8; }
+.outfit-day-badge {
+  width: 72rpx; height: 72rpx; border-radius: 50%;
+  background: var(--color-secondary, #FF9800);
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* 加载状态 */
+.loading-state { padding: 16rpx 0; }

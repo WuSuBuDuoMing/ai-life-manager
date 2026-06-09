@@ -1,0 +1,102 @@
+<!-- pages/search/search.wxml -->
+<view class="page-container {{isDark ? 'dark' : ''}}">
+
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input-wrap">
+      <text class="search-icon">🔍</text>
+      <input class="search-input" placeholder="搜索任务、食材、菜谱、账单..." value="{{keyword}}"
+        bindinput="onSearchInput" bindconfirm="onSearchConfirm" confirm-type="search"
+        focus="{{true}}" />
+      <view class="clear-btn" wx:if="{{keyword}}" bindtap="onClearKeyword">
+        <text class="text-xs">✕</text>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="search-content" enhanced show-scrollbar="{{false}}">
+
+    <!-- 搜索前：历史 + 热搜 -->
+    <block wx:if="{{!searched}}">
+      <!-- 搜索历史 -->
+      <view wx:if="{{searchHistory.length > 0}}" class="section">
+        <view class="flex-row items-center justify-between mb-sm">
+          <text class="text-sm text-bold">搜索历史</text>
+          <text class="text-xs text-hint" bindtap="onClearHistory">清空</text>
+        </view>
+        <view class="tag-list">
+          <view class="history-tag" wx:for="{{searchHistory}}" wx:key="*this"
+            data-keyword="{{item}}" bindtap="onHistoryTap">
+            <text class="text-xs">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 热门搜索 -->
+      <view class="section">
+        <text class="text-sm text-bold mb-sm" style="display:block;">🔥 热门搜索</text>
+        <view class="tag-list">
+          <view class="hot-tag" wx:for="{{hotSearches}}" wx:key="*this"
+            data-keyword="{{item}}" bindtap="onHotTap">
+            <text class="text-xs">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 搜索提示 -->
+      <view class="tips-section">
+        <text class="text-xs text-hint text-center" style="display:block;margin-top:48rpx;">
+          输入关键词搜索任务、习惯、食材、菜谱、旅行计划、宠物记录、账单等
+        </text>
+      </view>
+    </block>
+
+    <!-- 加载中 -->
+    <view wx:if="{{loading}}" class="loading-wrap">
+      <view class="card shimmer" style="height:120rpx;margin-bottom:16rpx;"></view>
+      <view class="card shimmer" style="height:120rpx;margin-bottom:16rpx;"></view>
+      <view class="card shimmer" style="height:120rpx;"></view>
+    </view>
+
+    <!-- 搜索结果 -->
+    <block wx:elif="{{searched && !loading}}">
+      <!-- 结果统计 -->
+      <view class="result-summary" wx:if="{{totalResults > 0}}">
+        <text class="text-xs text-secondary">找到 {{totalResults}} 条相关结果</text>
+      </view>
+
+      <!-- 分组结果 -->
+      <block wx:if="{{groupedResults.length > 0}}">
+        <view class="result-group" wx:for="{{groupedResults}}" wx:key="module">
+          <view class="group-header">
+            <text class="group-icon">{{item.icon}}</text>
+            <text class="text-sm text-bold">{{item.module}}</text>
+            <text class="text-xs text-hint ml-xs">({{item.items.length}})</text>
+            <view class="flex-1"></view>
+            <text class="text-xs text-primary" wx:if="{{item.page}}" data-page="{{item.page}}" bindtap="onResultTap">查看全部 ›</text>
+          </view>
+          <view class="result-item card card-sm" wx:for="{{item.items}}" wx:key="id"
+            data-page="{{item.page || ''}}" bindtap="onResultTap">
+            <view class="flex-row items-center">
+              <view class="result-dot" style="background:{{item.color || '#999'}};"></view>
+              <view class="flex-1">
+                <view class="text-sm text-bold">
+                  <block wx:for="{{item.titleParts}}" wx:key="text" wx:for-item="part">
+                    <text wx:if="{{part.highlight}}" class="text-highlight">{{part.text}}</text>
+                    <text wx:else>{{part.text}}</text>
+                  </block>
+                </view>
+                <text class="text-xs text-secondary mt-xs" wx:if="{{item.subtitle}}">{{item.subtitle}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+
+      <!-- 无结果 -->
+      <empty-state wx:else icon="🔍" title="没有找到相关内容" subtitle="换个关键词试试" />
+    </block>
+
+    <view style="height:100rpx;"></view>
+  </scroll-view>
+</view>

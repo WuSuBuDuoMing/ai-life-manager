@@ -1,0 +1,120 @@
+/**
+ * nav-bar 样式
+ * 设计：固定顶部导航栏，适配状态栏高度
+ * 左侧返回按钮+中间标题+右侧首页按钮
+ * 通过 padding-bottom 分隔状态栏和标题栏
+ */
+
+/* 导航栏容器 - 固定顶部 */
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+}
+
+/* 状态栏占位 */
+.status-bar {
+  width: 100%;
+}
+
+/* 标题栏 */
+.title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16rpx;
+}
+
+/* 左侧区域 */
+.nav-left {
+  width: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* 返回按钮 */
+.back-btn {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.back-btn:active {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.back-icon {
+  font-size: 48rpx;
+  font-weight: 300;
+  line-height: 1;
+}
+
+/* 中间标题区域 */
+.nav-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.nav-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #333333;
+  max-width: 400rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+page.dark .nav-title {
+  color: #F5F5F5;
+}
+
+/* 右侧区域 */
+.nav-right {
+  width: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* 首页按钮 */
+.home-btn {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.home-btn:active {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.home-icon {
+  font-size: 40rpx;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* 占位元素 */
+.nav-placeholder {
+  width: 64rpx;
+  height: 64rpx;
+}
+
+/* 导航栏占位（防止内容被遮挡） */
+.nav-bar-placeholder {
+  width: 100%;
+}

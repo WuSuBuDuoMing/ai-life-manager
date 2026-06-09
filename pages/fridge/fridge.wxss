@@ -1,0 +1,57 @@
+/* pages/fridge/fridge.wxss */
+
+/* 分类标签 */
+.category-scroll { white-space: nowrap; margin-bottom: 16rpx; }
+.category-list { display: inline-flex; gap: 12rpx; padding: 8rpx 0; }
+.category-chip {
+  display: inline-flex; padding: 12rpx 24rpx; border-radius: 24rpx;
+  font-size: 24rpx; background: var(--color-bg-card, #fff);
+  color: var(--color-text-secondary, #888); border: 1rpx solid var(--color-border, #e0e0e0);
+  flex-shrink: 0;
+}
+.category-active {
+  background: var(--color-primary, #4CAF50); color: #fff;
+  border-color: var(--color-primary, #4CAF50);
+}
+
+/* Tab切换 */
+.tabs {
+  background: var(--color-bg-card, #fff); border-radius: 16rpx;
+  padding: 8rpx; margin-bottom: 16rpx;
+}
+.tab-item {
+  padding: 16rpx 0; border-radius: 12rpx;
+  color: var(--color-text-secondary, #888); font-size: 26rpx;
+}
+.tab-active {
+  background: var(--color-primary, #4CAF50); color: #fff; font-weight: 600;
+}
+
+/* 食材项 */
+.food-item { margin-bottom: 12rpx; }
+.food-icon-wrap {
+  width: 64rpx; height: 64rpx; border-radius: 16rpx;
+  display: flex; align-items: center; justify-content: center;
+}
+.food-icon { font-size: 28rpx; }
+
+/* 操作按钮 */
+.action-btn { padding: 8rpx 16rpx; border-radius: 12rpx; background: var(--color-bg-input, #F7F3F0); }
+.action-btn:active { opacity: 0.7; }
+
+/* 菜谱卡片 */
+.recipe-card { margin-bottom: 12rpx; }
+.recipe-card:active { opacity: 0.8; }
+.recipe-icon { font-size: 48rpx; }
+
+/* 一周菜单 */
+.menu-card { margin-bottom: 12rpx; }
+.menu-card:active { opacity: 0.8; }
+.menu-day-badge {
+  width: 72rpx; height: 72rpx; border-radius: 50%;
+  background: var(--color-primary, #4CAF50);
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* 加载状态 */
+.loading-state { padding: 16rpx 0; }

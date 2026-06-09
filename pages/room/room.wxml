@@ -1,0 +1,141 @@
+<!-- pages/room/room.wxml -->
+<view class="container {{isDark ? 'dark' : ''}}">
+
+  <view class="page-header">
+    <text class="page-title">🏠 房间整理</text>
+    <text class="page-subtitle">整理空间，整理心情</text>
+  </view>
+
+  <!-- 整体进度 -->
+  <view class="card progress-card mb-md">
+    <view class="flex-row items-center justify-between">
+      <view>
+        <text class="text-lg text-bold">整体整理进度</text>
+        <text class="text-sm text-secondary block mt-xs">已完成 {{completedCount}} / {{totalCount}} 项任务</text>
+      </view>
+      <progress-ring percent="{{overallProgress}}" size="{{120}}" strokeWidth="{{10}}" />
+    </view>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="flex-row" style="gap:12rpx;margin-bottom:20rpx;">
+    <view class="flex-1"><stat-card title="待整理" value="{{pendingCount}}" icon="📋" color="#FF9800" size="small" /></view>
+    <view class="flex-1"><stat-card title="已完成" value="{{completedCount}}" icon="✅" color="#4CAF50" size="small" /></view>
+  </view>
+
+  <!-- 本周挑战 -->
+  <view class="card challenge-card mb-md" wx:if="{{weeklyChallenge.title}}" bindtap="onChallengeTap">
+    <view class="flex-row items-center">
+      <text class="challenge-icon">🏆</text>
+      <view class="flex-1 ml-md">
+        <text class="text-base text-bold">{{weeklyChallenge.title}}</text>
+        <text class="text-xs text-secondary block mt-xs">{{weeklyChallenge.description}}</text>
+        <view class="flex-row items-center mt-sm">
+          <view class="progress-bar" style="flex:1;height:12rpx;">
+            <view class="progress-bar-fill" style="width:{{weeklyChallenge.totalCount > 0 ? (weeklyChallenge.completedCount / weeklyChallenge.totalCount * 100) : 0}}%;background:#4CAF50;"></view>
+          </view>
+          <text class="text-xs text-secondary ml-sm">{{weeklyChallenge.completedCount}}/{{weeklyChallenge.totalCount}}</text>
+        </view>
+      </view>
+      <text class="text-hint">›</text>
+    </view>
+  </view>
+
+  <!-- 区域卡片 -->
+  <view class="section-title" style="padding:16rpx 0;">
+    <text class="text-md text-bold">📍 房间区域</text>
+    <text class="text-xs text-secondary" style="margin-left:12rpx;" wx:if="{{selectedZone}}">点击取消筛选</text>
+  </view>
+  <view class="zone-grid" wx:if="{{zones.length > 0}}">
+    <view class="zone-item card card-sm {{selectedZone === item.id ? 'zone-selected' : ''}}"
+      wx:for="{{zones}}" wx:key="id" data-zone="{{item.id}}" bindtap="onZoneTap">
+      <text class="zone-icon">{{item.icon}}</text>
+      <text class="text-sm text-bold mt-xs">{{item.name}}</text>
+      <text class="text-xs text-secondary">{{item.completedCount}}/{{item.taskCount}}</text>
+      <view class="zone-progress-bar">
+        <view class="zone-progress-fill" style="width:{{item.progress || 0}}%;"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 任务列表 -->
+  <view class="section-title" style="padding:24rpx 0 16rpx;">
+    <text class="text-md text-bold">{{selectedZone ? '当前区域任务' : '全部任务'}}</text>
+    <text class="text-xs text-secondary" style="margin-left:12rpx;">{{filteredTasks.length}} 项</text>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-state">
+    <view class="card shimmer" style="height:100rpx;margin-bottom:12rpx;"></view>
+    <view class="card shimmer" style="height:100rpx;margin-bottom:12rpx;"></view>
+  </view>
+
+  <block wx:elif="{{filteredTasks.length > 0}}">
+    <view class="task-item card card-sm" wx:for="{{filteredTasks}}" wx:key="id"
+      style="border-left:6rpx solid {{item.status === 'completed' ? '#4CAF50' : item.priority === 'high' ? '#EF5350' : '#FF9800'}};">
+      <view class="flex-row items-center">
+        <view class="task-check {{item.status === 'completed' ? 'task-done' : ''}}"
+          catchtap="onCompleteTask" data-id="{{item.id}}">
+          <text wx:if="{{item.status === 'completed'}}">✓</text>
+        </view>
+        <view class="flex-1 ml-md">
+          <text class="text-base {{item.status === 'completed' ? 'text-hint' : 'text-primary'}} {{item.status === 'completed' ? 'task-strikethrough' : ''}}">{{item.title}}</text>
+          <view class="flex-row items-center mt-xs" style="gap:8rpx;">
+            <text class="tag tag-info" style="font-size:18rpx;">{{item.zone}}</text>
+            <text class="text-xs text-hint" wx:if="{{item.dueDate}}">📅 {{item.dueDate}}</text>
+          </view>
+        </view>
+        <view class="delete-action" catchtap="onDeleteTask" data-id="{{item.id}}" wx:if="{{item.status !== 'completed'}}">
+          <text class="text-xs text-danger">删除</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <empty-state wx:else icon="🏠" title="{{selectedZone ? '该区域暂无任务' : '暂无整理任务'}}"
+    subtitle="点击下方按钮添加任务" showButton="{{true}}" buttonText="添加任务" bindaction="toggleAddForm" />
+
+  <!-- FAB 添加按钮 -->
+  <view class="fab" bindtap="toggleAddForm">
+    <text class="fab-icon">+</text>
+  </view>
+
+  <!-- 添加任务弹窗 -->
+  <view class="overlay" wx:if="{{showAddForm}}" bindtap="toggleAddForm">
+    <view class="modal" catchtap="">
+      <text class="modal-title">添加整理任务</text>
+
+      <view class="form-group">
+        <text class="form-label">任务标题</text>
+        <input class="form-input" placeholder="如：整理书架、清洁桌面" value="{{newTask.title}}" data-field="title" bindinput="onTaskInput" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">所属区域</text>
+        <view class="flex-row flex-wrap" style="gap:12rpx;">
+          <view class="category-chip {{newTask.zone === item.id ? 'category-active' : ''}}"
+            wx:for="{{zoneOptions}}" wx:key="id" data-zone="{{item.id}}" bindtap="onZoneSelect">
+            <text>{{item.icon}} {{item.name}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">优先级</text>
+        <view class="flex-row" style="gap:12rpx;">
+          <view class="priority-chip {{newTask.priority === item.id ? 'priority-active' : ''}}"
+            style="border-color:{{item.color}};{{newTask.priority === item.id ? 'background:' + item.color + ';color:#fff;' : ''}}"
+            wx:for="{{priorityOptions}}" wx:key="id" data-priority="{{item.id}}" bindtap="onPrioritySelect">
+            <text>{{item.name}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="modal-actions">
+        <button class="btn btn-ghost" bindtap="toggleAddForm">取消</button>
+        <button class="btn btn-primary" bindtap="confirmAddTask">添加</button>
+      </view>
+    </view>
+  </view>
+
+  <view style="height:200rpx;"></view>
+</view>

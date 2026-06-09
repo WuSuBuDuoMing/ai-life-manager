@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "dashboard-card": "/components/dashboard-card/dashboard-card",
+    "task-card": "/components/task-card/task-card",
+    "progress-ring": "/components/progress-ring/progress-ring",
+    "empty-state": "/components/empty-state/empty-state"
+  },
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true
+}

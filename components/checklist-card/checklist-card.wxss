@@ -1,0 +1,148 @@
+/**
+ * checklist-card 样式
+ * 设计：圆角卡片，清单名+分类标签，进度条+计数，子项预览
+ * 进度条绿色填充，子项支持已完成删除线样式
+ */
+
+/* 卡片容器 */
+.checklist-card {
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease;
+}
+
+page.dark .checklist-card {
+  background-color: #2C2C2E;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
+}
+
+.checklist-card:active {
+  transform: scale(0.98);
+}
+
+/* ==================== 头部 ==================== */
+.checklist-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.checklist-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333333;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+page.dark .checklist-title {
+  color: #F5F5F5;
+}
+
+/* 分类标签 */
+.checklist-category {
+  padding: 4rpx 16rpx;
+  background-color: rgba(76, 175, 80, 0.1);
+  border-radius: 20rpx;
+  flex-shrink: 0;
+  margin-left: 12rpx;
+}
+
+.category-text {
+  font-size: 22rpx;
+  color: #4CAF50;
+  font-weight: 500;
+}
+
+/* ==================== 进度条区域 ==================== */
+.progress-section {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.progress-bar-bg {
+  flex: 1;
+  height: 12rpx;
+  background-color: #F0F0F0;
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+page.dark .progress-bar-bg {
+  background-color: #3A3A3C;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #66BB6A);
+  border-radius: 6rpx;
+  transition: width 0.4s ease;
+  min-width: 0;
+}
+
+.progress-text {
+  font-size: 24rpx;
+  color: #999999;
+  font-weight: 500;
+  flex-shrink: 0;
+  min-width: 80rpx;
+  text-align: right;
+}
+
+/* ==================== 子项预览列表 ==================== */
+.checklist-items {
+  border-top: 1rpx solid #F0F0F0;
+  padding-top: 16rpx;
+}
+
+page.dark .checklist-items {
+  border-top-color: #3A3A3C;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  padding: 6rpx 0;
+  gap: 10rpx;
+}
+
+.item-check {
+  font-size: 24rpx;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.item-name {
+  font-size: 26rpx;
+  color: #333333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+page.dark .item-name {
+  color: #E5E5EA;
+}
+
+.item-name.done {
+  color: #BBBBBB;
+  text-decoration: line-through;
+}
+
+/* 更多提示 */
+.checklist-more {
+  padding: 6rpx 0;
+}
+
+.more-text {
+  font-size: 24rpx;
+  color: #999999;
+}

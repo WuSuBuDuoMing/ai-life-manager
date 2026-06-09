@@ -1,0 +1,71 @@
+/* pages/bills/bills.wxss */
+.page-container { min-height: 100vh; background-color: var(--color-bg); padding: 0 32rpx; }
+
+/* 月度概览卡片 */
+.summary-card {
+  background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+  margin-bottom: 20rpx;
+}
+.dark .summary-card {
+  background: linear-gradient(135deg, #1B3A1E 0%, #2E3B2E 100%);
+}
+.summary-stats {
+  display: flex; gap: 32rpx;
+}
+.summary-stat {
+  display: flex; flex-direction: column; align-items: flex-end;
+}
+
+/* Tab 切换 */
+.tabs {
+  background: var(--color-bg-input, #F7F3F0); border-radius: 16rpx;
+  padding: 8rpx;
+}
+.tab-item {
+  padding: 16rpx 0; border-radius: 12rpx;
+  color: var(--color-text-secondary, #888); font-size: 26rpx;
+}
+.tab-active {
+  background: var(--color-primary, #4CAF50); color: #fff; font-weight: 600;
+}
+
+/* 账单项 */
+.bill-item { margin-bottom: 12rpx; transition: all 0.2s; }
+.bill-item:active { opacity: 0.85; }
+.bill-paid { opacity: 0.6; }
+.bill-overdue {
+  border-left: 6rpx solid var(--color-danger, #EF5350);
+}
+.bill-icon-wrap {
+  width: 72rpx; height: 72rpx; border-radius: 20rpx;
+  background: var(--color-bg-input, #F7F3F0);
+  display: flex; align-items: center; justify-content: center;
+}
+.icon-overdue { background: var(--color-danger-light, #FFEBEE); }
+.bill-icon { font-size: 32rpx; }
+.bill-right {
+  display: flex; flex-direction: column; align-items: flex-end;
+}
+
+/* 付款按钮 */
+.pay-btn {
+  padding: 8rpx 20rpx; border-radius: 16rpx;
+  background: var(--color-primary, #4CAF50);
+  color: #fff; font-size: 22rpx;
+}
+.pay-btn:active { opacity: 0.7; }
+
+/* 分类标签 */
+.category-chip {
+  display: inline-flex; padding: 12rpx 24rpx; border-radius: 24rpx;
+  font-size: 24rpx; background: var(--color-bg-card, #fff);
+  color: var(--color-text-secondary, #888);
+  border: 1rpx solid var(--color-border, #e0e0e0);
+}
+.category-active {
+  background: var(--color-primary, #4CAF50); color: #fff;
+  border-color: var(--color-primary, #4CAF50);
+}
+
+/* 加载状态 */
+.loading-state { padding: 16rpx 0; }

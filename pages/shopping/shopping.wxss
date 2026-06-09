@@ -1,0 +1,66 @@
+/* pages/shopping/shopping.wxss */
+.page-container { min-height: 100vh; background-color: var(--color-bg); padding-bottom: 120rpx; }
+
+/* 分类标签 */
+.category-scroll { white-space: nowrap; margin-bottom: 16rpx; }
+.category-list { display: inline-flex; gap: 12rpx; padding: 8rpx 0; }
+.category-chip {
+  display: inline-flex; padding: 12rpx 24rpx; border-radius: 24rpx;
+  font-size: 24rpx; background: var(--color-bg-card, #fff);
+  color: var(--color-text-secondary, #888); border: 1rpx solid var(--color-border, #e0e0e0);
+  flex-shrink: 0;
+}
+.category-chip:active { opacity: 0.7; }
+.category-active {
+  background: var(--color-primary, #4CAF50); color: #fff;
+  border-color: var(--color-primary, #4CAF50);
+}
+
+/* Tab切换 */
+.tabs {
+  background: var(--color-bg-card, #fff); border-radius: 16rpx;
+  padding: 8rpx; margin-bottom: 16rpx;
+}
+.tab-item {
+  padding: 16rpx 0; border-radius: 12rpx;
+  color: var(--color-text-secondary, #888); font-size: 26rpx;
+  transition: all 0.2s;
+}
+.tab-active {
+  background: var(--color-primary, #4CAF50); color: #fff; font-weight: 600;
+}
+
+/* 购物项 */
+.shopping-item { margin-bottom: 12rpx; }
+.shopping-item:active { opacity: 0.8; }
+.item-purchased { opacity: 0.6; }
+.item-strikethrough { text-decoration: line-through; }
+
+/* 复选框 */
+.checkbox {
+  width: 48rpx; height: 48rpx; border-radius: 50%;
+  border: 3rpx solid var(--color-border, #e0e0e0);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.checkbox.checked {
+  background: var(--color-primary, #4CAF50);
+  border-color: var(--color-primary, #4CAF50);
+}
+.checkmark { color: #fff; font-size: 24rpx; font-weight: 700; }
+
+/* 删除按钮 */
+.delete-btn { padding: 4rpx 12rpx; }
+.delete-btn:active { opacity: 0.5; }
+
+/* 底部总计栏 */
+.bottom-bar {
+  position: fixed; left: 0; right: 0; bottom: 110rpx;
+  padding: 20rpx 40rpx; padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background: var(--color-bg-card, #fff);
+  border-top: 1rpx solid var(--color-border, #e0e0e0);
+  z-index: 50;
+}
+
+/* 加载状态 */
+.loading-state { padding: 16rpx 0; }

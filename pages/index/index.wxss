@@ -1,0 +1,256 @@
+/* pages/index/index.wxss */
+
+.page-container {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+/* 自定义导航栏 */
+.custom-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background-color: var(--color-bg);
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32rpx;
+}
+
+.nav-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.nav-date {
+  font-size: 24rpx;
+}
+
+.nav-placeholder {
+  width: 100%;
+}
+
+/* 滚动内容区 */
+.scroll-content {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 32rpx;
+  box-sizing: border-box;
+}
+
+/* 问候区域 */
+.greeting-section {
+  padding: 40rpx 32rpx;
+  margin-bottom: 24rpx;
+  border-radius: 24rpx;
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-bg) 100%);
+}
+
+.greeting-text {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 区块标题 */
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 20rpx;
+  margin-top: 8rpx;
+}
+
+/* 仪表盘网格 */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20rpx;
+}
+
+/* 建议卡片 */
+.tip-card {
+  background: linear-gradient(135deg, var(--color-warning-light) 0%, var(--color-bg-card) 100%);
+}
+
+.tip-icon {
+  font-size: 40rpx;
+  margin-right: 12rpx;
+}
+
+/* 快捷入口网格 */
+.quick-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20rpx;
+  margin-bottom: 24rpx;
+}
+
+.quick-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg-card);
+  border-radius: 20rpx;
+  padding: 28rpx 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.03);
+}
+
+.quick-item:active {
+  transform: scale(0.95);
+}
+
+.quick-icon {
+  font-size: 48rpx;
+  margin-bottom: 8rpx;
+}
+
+/* 加载骨架 */
+.shimmer {
+  height: 200rpx;
+  background: linear-gradient(90deg, var(--color-bg-input) 25%, var(--color-bg-card) 50%, var(--color-bg-input) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* 问候区域增强 */
+.greeting-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.greeting-emoji {
+  font-size: 56rpx;
+}
+
+/* 提醒横幅 */
+.reminder-banner {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 28rpx;
+  background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+  border-radius: 20rpx;
+  margin: 16rpx 0;
+}
+
+.reminder-banner:active {
+  opacity: 0.8;
+}
+
+.reminder-icon {
+  font-size: 36rpx;
+  margin-right: 16rpx;
+}
+
+.reminder-text {
+  font-size: 26rpx;
+  color: #E65100;
+  font-weight: 500;
+}
+
+.reminder-arrow {
+  font-size: 32rpx;
+  color: #E65100;
+  margin-left: 12rpx;
+}
+
+/* 快捷入口增强 */
+.quick-icon-wrap {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-input);
+  border-radius: 20rpx;
+  margin-bottom: 12rpx;
+}
+
+/* 提醒列表 */
+.reminder-list {
+  margin-bottom: 16rpx;
+}
+
+.reminder-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.reminder-item:active {
+  opacity: 0.7;
+}
+
+.reminder-item-icon {
+  font-size: 32rpx;
+  margin-right: 16rpx;
+  width: 48rpx;
+  text-align: center;
+}
+
+/* 加载状态 */
+.loading-state {
+  padding: 20rpx 0;
+}
+
+/* 习惯横向滚动 */
+.habit-scroll {
+  display: inline-flex;
+  gap: 16rpx;
+  padding: 8rpx 0;
+  white-space: nowrap;
+}
+.habit-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 16rpx 24rpx;
+  background: var(--color-primary-light, #E8F5E9);
+  border-radius: 32rpx;
+  color: var(--color-primary, #4CAF50);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.habit-chip-icon { font-size: 28rpx; }
+
+/* 宠物提醒 */
+.pet-reminder {
+  margin-bottom: 12rpx;
+}
+.pet-reminder:active { opacity: 0.7; }
+
+/* 旅行倒计时 */
+.trip-card {
+  margin-bottom: 16rpx;
+  background: linear-gradient(135deg, #E3F2FD, #fff);
+}
+.trip-card:active { opacity: 0.8; }
+.trip-icon-wrap {
+  width: 72rpx; height: 72rpx; border-radius: 50%;
+  background: #E3F2FD; display: flex; align-items: center; justify-content: center;
+}
+.trip-countdown {
+  display: flex; flex-direction: column; align-items: center;
+}
+
+/* 导航栏搜索按钮 */
+.nav-right {
+  padding: 12rpx;
+}
+.nav-search-icon {
+  font-size: 36rpx;
+}

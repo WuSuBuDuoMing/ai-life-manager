@@ -1,0 +1,111 @@
+<view class="container {{isDark ? 'dark' : ''}}">
+
+  <!-- 用户信息区域 -->
+  <view class="user-header">
+    <view class="user-bg"></view>
+    <view class="user-info flex-row items-center">
+      <view class="user-avatar-wrap" bindtap="onAvatarTap">
+        <view class="user-avatar-placeholder" wx:if="{{!userInfo.avatar}}">👩</view>
+        <image class="user-avatar" wx:else src="{{userInfo.avatar}}" mode="aspectFill"></image>
+      </view>
+      <view class="flex-1 ml-lg">
+        <text class="user-name text-bold">{{userInfo.nickname}}</text>
+        <text class="user-desc text-sm" style="display:block;margin-top:8rpx;color:rgba(255,255,255,0.85);">{{lifeScore.levelIcon}} {{lifeScore.levelName}} · {{lifeScore.totalScore}}分</text>
+      </view>
+      <view class="reminder-badge" wx:if="{{reminderCount > 0}}" bindtap="showReminders">
+        <text class="badge-icon">🔔</text>
+        <view class="badge-dot"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 生活积分卡片 -->
+  <view class="card score-card mb-md" wx:if="{{lifeScore.totalScore > 0}}">
+    <view class="flex-row items-center justify-between mb-sm">
+      <text class="text-md text-bold">🏆 生活积分</text>
+      <text class="text-2xl text-bold" style="color:#4CAF50;">{{lifeScore.totalScore}}</text>
+    </view>
+    <text class="text-xs text-secondary block mb-md">{{lifeScore.comment}}</text>
+    <view class="score-breakdown">
+      <view class="score-item" wx:for="{{lifeScore.breakdown}}" wx:key="label" wx:for-item="item" wx:for-index="key">
+        <view class="flex-row items-center justify-between mb-xs">
+          <text class="text-xs text-secondary">{{item.label}}</text>
+          <text class="text-xs text-bold">{{item.score}}/{{item.max}}</text>
+        </view>
+        <view class="progress-bar" style="height:8rpx;">
+          <view class="progress-bar-fill" style="width:{{item.max > 0 ? (item.score / item.max * 100) : 0}}%;background:#4CAF50;"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 生活数据概览 -->
+  <view class="section-title" style="padding:24rpx 8rpx 16rpx;">
+    <text class="text-md text-bold">生活数据</text>
+    <text class="text-xs text-secondary" style="margin-left:12rpx;">{{reminderSummary}}</text>
+  </view>
+  <view class="stats-grid">
+    <view class="stat-item card card-sm">
+      <text class="stat-emoji">🧹</text>
+      <text class="stat-val text-primary text-bold">{{stats.chores.done}}/{{stats.chores.total}}</text>
+      <text class="stat-lbl text-hint text-xs">家务完成</text>
+    </view>
+    <view class="stat-item card card-sm">
+      <text class="stat-emoji">✅</text>
+      <text class="stat-val text-success text-bold">{{stats.habits.todayDone}}/{{stats.habits.total}}</text>
+      <text class="stat-lbl text-hint text-xs">今日打卡</text>
+    </view>
+    <view class="stat-item card card-sm">
+      <text class="stat-emoji">💰</text>
+      <text class="stat-val text-secondary text-bold">{{stats.budget.monthExpense}}</text>
+      <text class="stat-lbl text-hint text-xs">本月支出</text>
+    </view>
+    <view class="stat-item card card-sm">
+      <text class="stat-emoji">💳</text>
+      <text class="stat-val text-danger text-bold">{{stats.bills.unpaid}}</text>
+      <text class="stat-lbl text-hint text-xs">未付账单</text>
+    </view>
+    <view class="stat-item card card-sm">
+      <text class="stat-emoji">🧊</text>
+      <text class="stat-val text-warning text-bold">{{stats.fridge.expiring}}</text>
+      <text class="stat-lbl text-hint text-xs">临期食材</text>
+    </view>
+    <view class="stat-item card card-sm">
+      <text class="stat-emoji">✈️</text>
+      <text class="stat-val text-info text-bold">{{stats.travel.upcoming}}</text>
+      <text class="stat-lbl text-hint text-xs">筹备旅行</text>
+    </view>
+    <view class="stat-item card card-sm">
+      <text class="stat-emoji">📱</text>
+      <text class="stat-val text-info text-bold">{{stats.subscriptions.monthlyCost}}</text>
+      <text class="stat-lbl text-hint text-xs">月订阅费</text>
+    </view>
+    <view class="stat-item card card-sm">
+      <text class="stat-emoji">🏠</text>
+      <text class="stat-val text-success text-bold">{{stats.room.rate}}%</text>
+      <text class="stat-lbl text-hint text-xs">整理进度</text>
+    </view>
+  </view>
+
+  <!-- 菜单分组列表 -->
+  <view wx:for="{{menuGroups}}" wx:key="title" class="menu-group mb-md">
+    <text class="menu-group-title text-secondary text-sm text-bold" style="display:block;padding: 0 8rpx 16rpx;">{{item.title}}</text>
+    <view class="menu-group-card card">
+      <view wx:for="{{item.items}}" wx:for-item="menuItem" wx:key="title"
+        class="menu-item flex-row items-center" data-menu="{{menuItem}}" bindtap="onMenuTap">
+        <text class="menu-icon">{{menuItem.icon}}</text>
+        <text class="menu-title flex-1">{{menuItem.title}}</text>
+        <text class="menu-badge badge" wx:if="{{menuItem.title === '提醒通知' && reminderCount > 0}}">{{reminderCount}}</text>
+        <text class="menu-arrow text-hint">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version-info text-center">
+    <text class="text-hint text-xs">AI 生活管家 v{{version}} · Made with ❤️</text>
+  </view>
+
+  <!-- 底部安全区 -->
+  <view style="height:160rpx;"></view>
+</view>

@@ -1,0 +1,21 @@
+<view class="search-wrap">
+  <view class="search-input-wrap {{isDark ? 'dark-input' : ''}}" wx:if="{{!bgColor}}">
+    <text class="search-icon">🔍</text>
+    <input class="search-input" placeholder="{{placeholder}}" value="{{value}}" focus="{{focus}}"
+      confirm-type="search" bindinput="onInput" bindfocus="onFocus" bindblur="onBlur" bindconfirm="onSearch" />
+    <view class="search-clear" wx:if="{{value}}" bindtap="onClear">
+      <text>✕</text>
+    </view>
+  </view>
+  <view class="search-input-wrap" style="background-color:{{bgColor}};" wx:else>
+    <text class="search-icon">🔍</text>
+    <input class="search-input" placeholder="{{placeholder}}" value="{{value}}" focus="{{focus}}"
+      confirm-type="search" bindinput="onInput" bindfocus="onFocus" bindblur="onBlur" bindconfirm="onSearch" />
+    <view class="search-clear" wx:if="{{value}}" bindtap="onClear">
+      <text>✕</text>
+    </view>
+  </view>
+  <view class="search-cancel" wx:if="{{showCancel && isFocused}}" bindtap="onCancel">
+    <text>取消</text>
+  </view>
+</view>

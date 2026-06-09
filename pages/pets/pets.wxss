@@ -1,0 +1,243 @@
+/* pages/pets/pets.wxss */
+
+.page-container {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  padding: 0 32rpx;
+}
+
+/* 宠物档案卡片 */
+.pet-profile-card {
+  background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+  margin-bottom: 20rpx;
+  padding: 28rpx;
+}
+
+.dark .pet-profile-card {
+  background: linear-gradient(135deg, #2E3B2E 0%, #1B2E1B 100%);
+}
+
+.pet-avatar-wrap {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.1);
+}
+
+.pet-avatar-icon {
+  font-size: 52rpx;
+}
+
+.edit-pet-btn {
+  margin-left: 16rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  background: rgba(76, 175, 80, 0.15);
+}
+
+/* Tab切换 */
+.tabs {
+  background: var(--color-bg-card, #fff);
+  border-radius: 16rpx;
+  padding: 8rpx;
+  margin-bottom: 20rpx;
+}
+
+.tab-item {
+  padding: 16rpx 0;
+  border-radius: 12rpx;
+  color: var(--color-text-secondary, #888);
+  font-size: 24rpx;
+}
+
+.tab-active {
+  background: var(--color-primary, #4CAF50);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 提醒项 */
+.reminder-item {
+  margin-bottom: 12rpx;
+}
+
+.reminder-icon-wrap {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reminder-icon {
+  font-size: 28rpx;
+}
+
+.done-btn {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  border: 3rpx solid var(--color-primary, #4CAF50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.done-btn:active {
+  background: var(--color-primary, #4CAF50);
+}
+
+.done-btn:active .done-icon {
+  color: #fff;
+}
+
+.done-icon {
+  font-size: 28rpx;
+  color: var(--color-primary, #4CAF50);
+  font-weight: 700;
+}
+
+.reminder-switch {
+  transform: scale(0.8);
+}
+
+/* 日记卡片 */
+.diary-item {
+  margin-bottom: 12rpx;
+}
+
+.diary-mood {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: var(--color-bg-input, #F7F3F0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mood-icon {
+  font-size: 28rpx;
+}
+
+/* 添加日记/疫苗按钮 */
+.add-diary-btn {
+  margin-top: 20rpx;
+  padding: 24rpx;
+  background: var(--color-bg-card, #fff);
+  border-radius: 16rpx;
+  text-align: center;
+  border: 2rpx dashed var(--color-primary, #4CAF50);
+}
+
+.add-diary-btn:active {
+  opacity: 0.7;
+}
+
+/* 心情选择器 */
+.mood-selector {
+  display: flex;
+  justify-content: space-around;
+  padding: 16rpx 0;
+}
+
+.mood-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx;
+  border-radius: 16rpx;
+  gap: 8rpx;
+  transition: all 0.2s;
+}
+
+.mood-active {
+  background: var(--color-primary-light, #E8F5E9);
+}
+
+.dark .mood-active {
+  background: var(--color-primary-light, #1B3A1E);
+}
+
+.mood-item-icon {
+  font-size: 40rpx;
+}
+
+.mood-item-label {
+  font-size: 20rpx;
+  color: var(--color-text-secondary, #888);
+}
+
+/* 疫苗记录 */
+.vaccine-item {
+  margin-bottom: 12rpx;
+}
+
+.vaccine-item.completed {
+  opacity: 0.75;
+}
+
+.vaccine-icon-wrap {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+}
+
+.vaccine-icon-wrap.pending {
+  background: #FFF3E0;
+}
+
+.vaccine-icon-wrap.done {
+  background: #E8F5E9;
+}
+
+.dark .vaccine-icon-wrap.pending {
+  background: #3E2E1A;
+}
+
+.dark .vaccine-icon-wrap.done {
+  background: #1B3A1E;
+}
+
+.vaccine-done-btn {
+  padding: 12rpx 20rpx;
+  border-radius: 12rpx;
+  border: 2rpx solid var(--color-primary, #4CAF50);
+  background: var(--color-primary-light, #E8F5E9);
+}
+
+.vaccine-done-btn:active {
+  opacity: 0.7;
+}
+
+.vaccine-delete {
+  padding: 8rpx 16rpx;
+}
+
+/* 弹窗表单 */
+.form-textarea {
+  width: 100%;
+  min-height: 200rpx;
+  padding: 20rpx;
+  background: var(--color-bg-input, #F7F3F0);
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+  color: var(--color-text-primary, #2C2C2C);
+}
+
+/* 加载状态 */
+.loading-state {
+  padding: 16rpx 0;
+}

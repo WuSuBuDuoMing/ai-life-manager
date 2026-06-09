@@ -1,0 +1,128 @@
+﻿/**
+ * expense-card 样式
+ * 设计：左侧圆形分类图标+中间分类名和金额+右侧删除按钮
+ * 收入(income)金额绿色，支出(expense)金额红色
+ */
+
+/* 卡片容器 */
+.expense-card {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 20rpx;
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
+  margin-bottom: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease;
+}
+
+page.dark .expense-card {
+  background-color: #2C2C2E;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
+}
+
+.expense-card:active {
+  transform: scale(0.98);
+}
+
+/* 左侧图标 */
+.expense-icon-wrap {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background-color: #F5F0EB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.expense-icon {
+  font-size: 40rpx;
+  line-height: 1;
+}
+
+/* 内容区域 */
+.expense-content {
+  flex: 1;
+  margin-left: 20rpx;
+  overflow: hidden;
+}
+
+.expense-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6rpx;
+}
+
+.expense-category {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+page.dark .expense-category {
+  color: #F5F5F5;
+}
+
+/* 金额 - 收入绿色 */
+.expense-amount.income {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #4CAF50;
+  flex-shrink: 0;
+  margin-left: 12rpx;
+}
+
+/* 金额 - 支出红色 */
+.expense-amount.expense {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #F44336;
+  flex-shrink: 0;
+  margin-left: 12rpx;
+}
+
+/* 信息行 */
+.expense-info {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.expense-note {
+  font-size: 24rpx;
+  color: #999999;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.expense-date {
+  font-size: 22rpx;
+  color: #BBBBBB;
+  flex-shrink: 0;
+}
+
+/* 删除按钮 */
+.expense-delete {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.expense-delete:active {
+  opacity: 0.5;
+}
+
+.delete-icon {
+  font-size: 28rpx;
+  color: #CCCCCC;
+}

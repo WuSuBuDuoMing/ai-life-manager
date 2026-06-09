@@ -1,0 +1,177 @@
+<!-- pages/subscriptions/subscriptions.wxml -->
+<view class="page-container {{isDark ? 'dark' : ''}}">
+
+  <!-- 页面标题区 -->
+  <view class="container">
+    <view class="page-header">
+      <text class="page-title">📱 订阅管理</text>
+      <text class="page-subtitle">追踪订阅，智能省钱</text>
+    </view>
+
+    <!-- 统计卡片 -->
+    <view class="flex-row" style="gap:12rpx;margin-bottom:20rpx;">
+      <view class="flex-1"><stat-card title="月支出" value="¥{{monthlyTotal}}" icon="💸" color="#EF5350" size="small" /></view>
+      <view class="flex-1"><stat-card title="年支出" value="¥{{yearlyTotal}}" icon="📊" color="#42A5F5" size="small" /></view>
+      <view class="flex-1"><stat-card title="订阅数" value="{{subscriptions.length}}" icon="📱" color="#4CAF50" size="small" /></view>
+    </view>
+
+    <!-- 即将续费提醒 -->
+    <view class="card renewal-banner mb-md" wx:if="{{upcomingRenewals.length > 0}}">
+      <view class="flex-row items-center">
+        <text class="renewal-icon">⚠️</text>
+        <view class="flex-1 ml-md">
+          <text class="text-base text-bold" style="color:#E65100;">{{upcomingRenewals.length}} 个订阅即将续费</text>
+          <view class="mt-xs">
+            <text class="text-xs" style="color:#E65100;" wx:for="{{upcomingRenewals}}" wx:key="id">
+              {{item.name}} ¥{{item.price}}{{index < upcomingRenewals.length - 1 ? '、' : ''}}
+            </text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 视图切换 + 排序 -->
+    <view class="flex-row items-center justify-between mb-md">
+      <view class="flex-row" style="gap:12rpx;">
+        <view class="sort-chip {{sortBy === 'nextBilling' ? 'sort-active' : ''}}" data-sort="nextBilling" bindtap="onSortChange">续费日期</view>
+        <view class="sort-chip {{sortBy === 'price' ? 'sort-active' : ''}}" data-sort="price" bindtap="onSortChange">价格</view>
+        <view class="sort-chip {{sortBy === 'name' ? 'sort-active' : ''}}" data-sort="name" bindtap="onSortChange">名称</view>
+      </view>
+      <view class="view-toggle" bindtap="toggleViewMode">
+        <text class="text-sm text-primary">{{viewMode === 'list' ? '📊 统计' : '📋 列表'}}</text>
+      </view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view wx:if="{{loading}}" class="loading-state">
+      <view class="card shimmer" style="height:120rpx;margin-bottom:16rpx;"></view>
+      <view class="card shimmer" style="height:120rpx;"></view>
+    </view>
+
+    <!-- 列表视图 -->
+    <block wx:elif="{{viewMode === 'list'}}">
+      <block wx:if="{{subscriptions.length > 0}}">
+        <view class="sub-item card card-sm" wx:for="{{subscriptions}}" wx:key="id"
+          style="border-left:6rpx solid {{item.autoRenew ? '#4CAF50' : '#FF9800'}};">
+          <view class="flex-row items-center">
+            <view class="sub-icon-wrap">
+              <text class="sub-icon">{{item.icon || '📱'}}</text>
+            </view>
+            <view class="flex-1 ml-md">
+              <text class="text-base text-bold">{{item.name}}</text>
+              <view class="flex-row items-center mt-xs" style="gap:8rpx;">
+                <text class="tag tag-info" style="font-size:20rpx;">{{item.category}}</text>
+                <text class="text-xs text-secondary">{{item.billingCycle === 'monthly' ? '月付' : '年付'}}</text>
+                <text class="text-xs text-hint" wx:if="{{item.autoRenew}}">🔄 自动续费</text>
+              </view>
+              <text class="text-xs text-hint mt-xs block" wx:if="{{item.nextBillingDate}}">📅 续费: {{item.nextBillingDate}}</text>
+            </view>
+            <view class="flex-col items-end">
+              <text class="text-lg text-bold text-primary">¥{{item.price}}</text>
+              <view class="delete-action" catchtap="onDeleteSubscription" data-id="{{item.id}}">
+                <text class="text-xs text-danger">删除</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+      <empty-state wx:else icon="📱" title="暂无订阅" subtitle="添加你的订阅服务开始管理" showButton="{{true}}" buttonText="添加订阅" bindaction="toggleAddForm" />
+    </block>
+
+    <!-- 统计视图 -->
+    <block wx:elif="{{viewMode === 'stats'}}">
+      <!-- 分类统计图 -->
+      <view class="card mb-md" wx:if="{{categoryBreakdown.length > 0}}">
+        <text class="text-md text-bold mb-md" style="display:block;">📊 分类统计</text>
+        <chart-bar data="{{categoryBreakdown}}" height="{{250}}" showValue="{{true}}" showLabel="{{true}}" barColor="#4CAF50" />
+      </view>
+
+      <!-- 分类明细 -->
+      <view class="card" wx:if="{{categoryBreakdown.length > 0}}">
+        <text class="text-md text-bold mb-md" style="display:block;">📋 分类明细</text>
+        <view class="category-detail" wx:for="{{categoryBreakdown}}" wx:key="label">
+          <view class="flex-row items-center justify-between" style="padding:16rpx 0;border-bottom:1rpx solid var(--color-divider,#F5F0EB);">
+            <text class="text-sm text-primary">{{item.label}}</text>
+            <text class="text-sm text-bold text-danger">¥{{item.value}}/月</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- AI省钱建议 -->
+      <view class="card tip-card mt-md" bindtap="getAISavingTips">
+        <view class="flex-row items-center">
+          <text class="tip-icon">💡</text>
+          <view class="flex-1 ml-md">
+            <text class="text-base text-bold">AI 省钱建议</text>
+            <text class="text-xs text-secondary block mt-xs">点击获取个性化省钱方案</text>
+          </view>
+          <text class="text-hint">›</text>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- FAB 添加按钮 -->
+  <view class="fab" bindtap="toggleAddForm">
+    <text class="fab-icon">+</text>
+  </view>
+
+  <!-- 添加订阅弹窗 -->
+  <view class="overlay" wx:if="{{showAddForm}}" bindtap="toggleAddForm">
+    <view class="modal" catchtap="">
+      <text class="modal-title">添加订阅</text>
+
+      <view class="form-group">
+        <text class="form-label">订阅名称</text>
+        <input class="form-input" placeholder="如：Netflix、Spotify" value="{{newSub.name}}" data-field="name" bindinput="onNewSubInput" />
+      </view>
+
+      <view class="flex-row" style="gap:16rpx;">
+        <view class="form-group flex-1">
+          <text class="form-label">价格</text>
+          <input class="form-input" type="digit" placeholder="0.00" value="{{newSub.price}}" data-field="price" bindinput="onNewSubInput" />
+        </view>
+        <view class="form-group flex-1">
+          <text class="form-label">计费周期</text>
+          <view class="flex-row" style="gap:12rpx;">
+            <view class="category-chip {{newSub.billingCycle === item.id ? 'category-active' : ''}}"
+              wx:for="{{cycleOptions}}" wx:key="id" data-cycle="{{item.id}}" bindtap="onCycleSelect">
+              <text>{{item.name}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">分类</text>
+        <view class="flex-row flex-wrap" style="gap:12rpx;">
+          <view class="category-chip {{newSub.category === item ? 'category-active' : ''}}"
+            wx:for="{{categoryOptions}}" wx:key="*this" data-category="{{item}}" bindtap="onCategorySelect">
+            <text>{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">下次续费日期</text>
+        <input class="form-input" type="date" value="{{newSub.nextBillingDate}}" data-field="nextBillingDate" bindinput="onNewSubInput" />
+      </view>
+
+      <view class="form-group">
+        <view class="flex-row items-center justify-between">
+          <text class="form-label" style="margin-bottom:0;">自动续费</text>
+          <view class="toggle-switch {{newSub.autoRenew ? 'toggle-on' : ''}}" bindtap="onAutoRenewToggle">
+            <view class="toggle-dot"></view>
+          </view>
+        </view>
+      </view>
+
+      <view class="modal-actions">
+        <button class="btn btn-ghost" bindtap="toggleAddForm">取消</button>
+        <button class="btn btn-primary" bindtap="confirmAddSub">添加</button>
+      </view>
+    </view>
+  </view>
+
+  <view style="height:200rpx;"></view>
+</view>

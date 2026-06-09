@@ -1,0 +1,43 @@
+<!--
+  task-card 组件
+  功能：任务卡片，展示复选框、标题、到期日、负责人、状态标签
+  支持完成状态切换（标题删除线+灰色），点击和完成事件
+-->
+<view class="task-card {{task.status === 'completed' ? 'completed' : ''}}" bindtap="onTap">
+  <!-- 左侧复选框 -->
+  <view class="task-checkbox {{task.status === 'completed' ? 'checked' : ''}}" catchtap="onComplete">
+    <text class="checkbox-icon" wx:if="{{task.status === 'completed'}}">✓</text>
+  </view>
+
+  <!-- 中间内容区 -->
+  <view class="task-content">
+    <!-- 标题行 -->
+    <view class="task-title-row">
+      <text class="task-title">{{task.title}}</text>
+    </view>
+
+    <!-- 信息行：到期日 + 负责人 + 状态 -->
+    <view class="task-info-row">
+      <!-- 到期日期 -->
+      <view class="task-due" wx:if="{{task.dueDate}}">
+        <text class="due-icon">📅</text>
+        <text class="due-text">{{task.dueDate}}</text>
+      </view>
+
+      <!-- 负责人标签 -->
+      <view class="task-assignee" wx:if="{{showAssignee && task.assignee}}">
+        <text class="assignee-text">{{task.assignee}}</text>
+      </view>
+
+      <!-- 优先级标签 -->
+      <view class="task-priority priority-{{task.priority || 'normal'}}" wx:if="{{task.priority}}">
+        <text class="priority-text">{{priorityText}}</text>
+      </view>
+
+      <!-- 状态标签 -->
+      <view class="task-status status-{{task.status}}" wx:if="{{task.status}}">
+        <text class="status-text">{{statusText}}</text>
+      </view>
+    </view>
+  </view>
+</view>

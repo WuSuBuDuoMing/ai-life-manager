@@ -1,0 +1,212 @@
+<!-- pages/budget/budget.wxml -->
+<view class="container {{isDark ? 'dark' : ''}}">
+
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">💰 生活账本</text>
+    <text class="page-subtitle">记录每一笔，理财从日常开始</text>
+  </view>
+
+  <!-- 月度总览卡片 -->
+  <view class="overview-row flex-row" style="gap:16rpx;margin-bottom:20rpx;">
+    <view class="flex-1">
+      <stat-card title="本月支出" value="¥{{monthlyTotal}}" icon="💸" color="#EF5350" size="small" />
+    </view>
+    <view class="flex-1">
+      <stat-card title="本年累计" value="¥{{yearlyTotal}}" icon="📊" color="#4CAF50" size="small" />
+    </view>
+  </view>
+
+  <!-- Tab切换 -->
+  <view class="tab-bar flex-row">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="index"
+      class="tab-item flex-1 text-center {{currentTab === index ? 'tab-active' : ''}}"
+      data-tab="{{index}}"
+      bindtap="onTabChange"
+    >
+      <text class="text-sm">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- Loading -->
+  <view wx:if="{{loading}}" class="loading-wrapper flex-col items-center justify-center">
+    <view class="loading-spinner"></view>
+    <text class="text-secondary text-sm mt-md">加载中...</text>
+  </view>
+
+  <!-- 账单Tab -->
+  <view wx:elif="{{currentTab === 0}}" class="tab-content">
+    <view class="sort-bar flex-row items-center justify-between mb-md">
+      <text class="text-secondary text-sm">共 {{records.length}} 笔记录</text>
+      <view class="flex-row items-center">
+        <text class="sort-option {{sortOrder === 'newest' ? 'sort-active' : ''}}" data-sort="newest" bindtap="onSortChange">最新</text>
+        <text class="sort-option {{sortOrder === 'amount' ? 'sort-active' : ''}}" data-sort="amount" bindtap="onSortChange">金额</text>
+      </view>
+    </view>
+
+    <block wx:if="{{records.length > 0}}">
+      <view wx:for="{{records}}" wx:key="id" class="card record-card" data-id="{{item.id}}" bindtap="onRecordTap">
+        <view class="record-row flex-row items-center">
+          <view class="record-icon-wrap">
+            <text class="record-icon">{{item.categoryIcon}}</text>
+          </view>
+          <view class="record-info flex-1 ml-md">
+            <text class="record-category text-primary text-bold">{{item.category}}</text>
+            <text class="record-note text-hint text-sm">{{item.note || '无备注'}}</text>
+          </view>
+          <view class="record-right text-right">
+            <text class="record-amount text-bold {{item.type === 'expense' ? 'text-danger' : 'text-success'}}">
+              {{item.type === 'expense' ? '-' : '+'}}¥{{item.amount}}
+            </text>
+            <text class="record-date text-hint text-xs">{{item.date}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <empty-state wx:elif="{{!loading}}" icon="📝" title="暂无账单记录" description="点击右下角 + 添加第一笔记录"></empty-state>
+  </view>
+
+  <!-- 统计Tab -->
+  <view wx:elif="{{currentTab === 1}}" class="tab-content">
+    <view class="card">
+      <text class="text-lg text-bold">📊 分类统计</text>
+      <view wx:if="{{categoryBreakdown.length > 0}}" class="category-list mt-md">
+        <view wx:for="{{categoryBreakdown}}" wx:key="category" class="category-item mb-md">
+          <view class="flex-row items-center justify-between">
+            <view class="flex-row items-center">
+              <text class="category-icon">{{item.icon}}</text>
+              <text class="text-primary ml-sm">{{item.category}}</text>
+            </view>
+            <text class="text-danger text-bold">¥{{item.amount}}</text>
+          </view>
+          <view class="progress-bar mt-sm">
+            <view class="progress-bar-fill" style="width: {{item.percentage}}%; background-color: var(--color-primary);"></view>
+          </view>
+          <text class="text-hint text-xs mt-xs">{{item.percentage}}% · {{item.count}}笔</text>
+        </view>
+      </view>
+      <empty-state wx:else icon="📊" title="暂无统计数据" description="添加账单后查看分类统计"></empty-state>
+    </view>
+
+    <view class="card">
+      <text class="text-lg text-bold">📈 周趋势</text>
+      <view class="mt-md">
+        <chart-bar data="{{weeklyTrend}}" height="{{250}}" showValue="{{true}}" showLabel="{{true}}" barColor="#4CAF50" />
+      </view>
+    </view>
+
+    <view wx:if="{{anomalies.length > 0}}" class="card">
+      <text class="text-lg text-bold">⚠️ 异常支出提醒</text>
+      <view wx:for="{{anomalies}}" wx:key="index" class="anomaly-item mt-sm p-sm" style="background: var(--color-warning-light); border-radius: 12rpx;">
+        <text class="text-sm" style="color: var(--color-warning);">{{item}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{weeklySummary}}" class="card">
+      <text class="text-lg text-bold">💡 本周小结</text>
+      <text class="text-secondary mt-sm" style="line-height: 1.8;">{{weeklySummary}}</text>
+    </view>
+  </view>
+
+  <!-- 预算Tab -->
+  <view wx:elif="{{currentTab === 2}}" class="tab-content">
+    <view class="card budget-overview-card text-center">
+      <view class="budget-ring-area">
+        <text class="text-hint text-sm">已使用</text>
+        <text class="text-danger text-3xl text-bold">¥{{budgetInfo.spent}}</text>
+        <text class="text-hint text-xs">/ ¥{{budgetInfo.monthly}}</text>
+      </view>
+      <view class="budget-info-row flex-row justify-around mt-lg">
+        <view class="text-center">
+          <text class="text-hint text-xs">剩余预算</text>
+          <text class="text-primary text-lg text-bold block mt-xs">¥{{budgetInfo.remaining}}</text>
+        </view>
+        <view class="text-center">
+          <text class="text-hint text-xs">已使用</text>
+          <text class="text-danger text-lg text-bold block mt-xs">{{budgetInfo.usage}}%</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <text class="text-lg text-bold">预算进度</text>
+      <view class="mt-md">
+        <view class="progress-bar" style="height: 16rpx;">
+          <view class="progress-bar-fill" style="width: {{budgetInfo.usage}}%; background-color: {{budgetInfo.usage > 80 ? 'var(--color-danger)' : 'var(--color-primary)'}};"></view>
+        </view>
+        <view class="flex-row justify-between mt-sm">
+          <text class="text-hint text-xs">¥0</text>
+          <text class="text-hint text-xs">¥{{budgetInfo.monthly}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <text class="text-lg text-bold">分类预算占比</text>
+      <view wx:if="{{categoryBreakdown.length > 0}}" class="mt-md">
+        <view wx:for="{{categoryBreakdown}}" wx:key="category" class="flex-row items-center justify-between mb-md">
+          <view class="flex-row items-center">
+            <text class="category-icon">{{item.icon}}</text>
+            <text class="text-primary ml-sm text-sm">{{item.category}}</text>
+          </view>
+          <view class="flex-row items-center">
+            <text class="text-danger text-sm text-bold mr-sm">¥{{item.amount}}</text>
+            <text class="text-hint text-xs">{{item.percentage}}%</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- FAB -->
+  <view class="fab" bindtap="onAddRecord">
+    <text class="fab-icon">+</text>
+  </view>
+
+  <!-- 添加记录弹窗 -->
+  <view wx:if="{{showAddForm}}" class="modal-mask" bindtap="toggleAddForm">
+    <view class="modal-content card-lg" catchtap="">
+      <view class="flex-row items-center justify-between mb-md">
+        <text class="text-lg text-bold">添加记录</text>
+        <text class="modal-close" bindtap="toggleAddForm">✕</text>
+      </view>
+
+      <view class="type-switch flex-row mb-md">
+        <view class="type-btn {{newRecord.type === 'expense' ? 'type-btn-active' : ''}}" data-type="expense" bindtap="onTypeSwitch">
+          <text>支出</text>
+        </view>
+        <view class="type-btn {{newRecord.type === 'income' ? 'type-btn-active-income' : ''}}" data-type="income" bindtap="onTypeSwitch">
+          <text>收入</text>
+        </view>
+      </view>
+
+      <view class="mb-md">
+        <text class="text-secondary text-sm">金额</text>
+        <view class="flex-row items-center mt-sm" style="border-bottom: 2rpx solid var(--color-border); padding-bottom: 12rpx;">
+          <text class="text-bold text-lg mr-sm">¥</text>
+          <input class="amount-input flex-1" type="digit" placeholder="0.00" value="{{newRecord.amount}}" data-field="amount" bindinput="onRecordInput" />
+        </view>
+      </view>
+
+      <view class="mb-md">
+        <text class="text-secondary text-sm">分类</text>
+        <view class="flex-row flex-wrap mt-sm">
+          <view wx:for="{{categories}}" wx:key="index" class="category-option {{newRecord.category === item ? 'category-option-active' : ''}}" data-category="{{item}}" bindtap="onCategorySelect">
+            <text class="mr-xs">{{categoryIcons[item]}}</text>
+            <text class="text-sm">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="mb-lg">
+        <text class="text-secondary text-sm">备注</text>
+        <input class="form-input mt-sm" placeholder="添加备注..." value="{{newRecord.note}}" data-field="note" bindinput="onRecordInput" />
+      </view>
+
+      <view class="btn btn-primary btn-block btn-round" bindtap="confirmAddRecord">确认添加</view>
+    </view>
+  </view>
+</view>

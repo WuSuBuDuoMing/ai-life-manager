@@ -1,0 +1,45 @@
+﻿/**
+ * wardrobe-card 样式
+ * 左侧颜色圆点+衣物信息+右侧洗涤状态按钮
+ * launderStatus=dirty 时橙色背景高亮
+ */
+.wardrobe-card {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
+  margin-bottom: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+page.dark .wardrobe-card { background-color: #2C2C2E; box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2); }
+.wardrobe-card:active { transform: scale(0.98); }
+.wardrobe-card.is-dirty { background-color: #FFF8F0; }
+page.dark .wardrobe-card.is-dirty { background-color: #3A2E1E; }
+.color-dot {
+  width: 48rpx; height: 48rpx; border-radius: 50%; flex-shrink: 0;
+  margin-right: 20rpx; border: 3rpx solid rgba(0, 0, 0, 0.06);
+}
+.wardrobe-content { flex: 1; overflow: hidden; }
+.wardrobe-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6rpx; }
+.wardrobe-name {
+  font-size: 30rpx; font-weight: 500; color: #333333; flex: 1;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+page.dark .wardrobe-name { color: #F5F5F5; }
+.wear-count { font-size: 22rpx; color: #999999; flex-shrink: 0; margin-left: 12rpx; }
+.wardrobe-info-row { display: flex; align-items: center; gap: 10rpx; }
+.wardrobe-category { padding: 2rpx 12rpx; background-color: rgba(76, 175, 80, 0.1); border-radius: 12rpx; }
+.category-text { font-size: 22rpx; color: #4CAF50; font-weight: 500; }
+.wardrobe-season { padding: 2rpx 12rpx; background-color: rgba(158, 158, 158, 0.1); border-radius: 12rpx; }
+.season-text { font-size: 22rpx; color: #999999; }
+.laundry-btn {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 80rpx; flex-shrink: 0; padding: 10rpx; border-radius: 12rpx; background-color: #F5F5F5;
+}
+.laundry-btn:active { opacity: 0.7; }
+.laundry-btn.dirty { background-color: rgba(255, 152, 0, 0.15); }
+.laundry-icon { font-size: 32rpx; line-height: 1; margin-bottom: 4rpx; }
+.laundry-text { font-size: 18rpx; color: #999999; }
+.laundry-btn.dirty .laundry-text { color: #FF9800; font-weight: 600; }

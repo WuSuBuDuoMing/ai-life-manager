@@ -1,0 +1,163 @@
+/**
+ * shopping-item 样式
+ * 设计：水平布局，左侧复选框+中间商品信息+右侧删除按钮
+ * checked 状态：灰色背景、删除线、淡化效果
+ */
+
+/* 条目容器 */
+.shopping-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 16rpx;
+  border-bottom: 1rpx solid #F0F0F0;
+  transition: opacity 0.3s ease, background-color 0.2s ease;
+}
+
+page.dark .shopping-item {
+  border-bottom-color: #3A3A3C;
+}
+
+.shopping-item:active {
+  background-color: #F8F8F8;
+}
+
+page.dark .shopping-item:active {
+  background-color: #3A3A3C;
+}
+
+/* 已勾选状态 */
+.shopping-item.checked {
+  opacity: 0.5;
+}
+
+.shopping-item.checked .item-name {
+  color: #BBBBBB;
+  text-decoration: line-through;
+}
+
+/* ==================== 复选框 ==================== */
+.item-checkbox {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 12rpx;
+  border: 3rpx solid #CCCCCC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 20rpx;
+  transition: all 0.2s ease;
+}
+
+.item-checkbox.on {
+  background-color: #4CAF50;
+  border-color: #4CAF50;
+}
+
+.check-icon {
+  font-size: 24rpx;
+  color: #FFFFFF;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* ==================== 内容区域 ==================== */
+.item-content {
+  flex: 1;
+  overflow: hidden;
+}
+
+.item-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin-bottom: 6rpx;
+}
+
+.item-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+page.dark .item-name {
+  color: #F5F5F5;
+}
+
+.item-brand {
+  font-size: 22rpx;
+  color: #999999;
+  padding: 2rpx 10rpx;
+  background-color: #F5F5F5;
+  border-radius: 8rpx;
+  flex-shrink: 0;
+}
+
+page.dark .item-brand {
+  background-color: #3A3A3C;
+  color: #AEAEB2;
+}
+
+/* 信息行 */
+.item-info-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.item-category {
+  padding: 2rpx 12rpx;
+  background-color: rgba(76, 175, 80, 0.1);
+  border-radius: 16rpx;
+}
+
+.category-text {
+  font-size: 22rpx;
+  color: #4CAF50;
+  font-weight: 500;
+}
+
+.item-price {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #FF9800;
+}
+
+.item-quantity {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.item-total {
+  font-size: 24rpx;
+  color: #FF9800;
+  font-weight: 500;
+}
+
+/* ==================== 删除按钮 ==================== */
+.item-delete-btn {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 12rpx;
+}
+
+.item-delete-btn:active {
+  opacity: 0.5;
+}
+
+.delete-icon {
+  font-size: 28rpx;
+  color: #CCCCCC;
+  line-height: 1;
+}
+
+.shopping-item.checked .delete-icon {
+  color: #E0E0E0;
+}

@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "stat-card": "/components/stat-card/stat-card",
+    "empty-state": "/components/empty-state/empty-state"
+  },
+  "enablePullDownRefresh": true,
+  "navigationBarTitleText": "宠物生活"
+}

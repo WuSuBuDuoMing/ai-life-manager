@@ -1,0 +1,20 @@
+<!--
+  empty-state 组件
+  功能：空状态占位组件，展示大emoji图标、标题、副标题、可选按钮
+  适用于列表为空、无数据等场景
+-->
+<view class="empty-state">
+  <!-- 大emoji图标 -->
+  <text class="empty-icon" wx:if="{{icon}}">{{icon}}</text>
+
+  <!-- 标题 -->
+  <text class="empty-title" wx:if="{{title}}">{{title}}</text>
+
+  <!-- 副标题 -->
+  <text class="empty-subtitle" wx:if="{{subtitle}}">{{subtitle}}</text>
+
+  <!-- 可选操作按钮 -->
+  <view class="empty-btn" wx:if="{{showButton && buttonText}}" bindtap="onAction">
+    <text class="empty-btn-text">{{buttonText}}</text>
+  </view>
+</view>

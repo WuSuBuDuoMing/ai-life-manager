@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "progress-ring": "/components/progress-ring/progress-ring",
+    "stat-card": "/components/stat-card/stat-card",
+    "empty-state": "/components/empty-state/empty-state"
+  },
+  "navigationBarTitleText": "房间整理",
+  "enablePullDownRefresh": true
+}

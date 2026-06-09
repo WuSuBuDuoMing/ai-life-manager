@@ -1,0 +1,23 @@
+<!--
+  progress-ring 组件
+  功能：环形进度条，纯CSS实现（不使用canvas）
+  通过左右半圆clip和rotate实现环形进度效果
+  中间显示百分比文字或自定义文本
+-->
+<view class="ring" style="width:{{size}}rpx;height:{{size}}rpx;">
+  <!-- 背景圆环 -->
+  <view class="ring-bg" style="width:{{size}}rpx;height:{{size}}rpx;border-width:{{strokeWidth}}rpx;"></view>
+  <!-- 左半圆进度 -->
+  <view class="ring-left" style="width:{{size}}rpx;height:{{size}}rpx;border-width:{{strokeWidth}}rpx;{{leftClip ? 'clip:rect(0,' + size/2 + 'rpx,' + size + 'rpx,0)' : ''}}">
+    <view class="ring-left-mask" style="width:{{size}}rpx;height:{{size}}rpx;border-width:{{strokeWidth}}rpx;border-color:transparent transparent {{color}} {{color}};transform:rotate({{leftDeg}}deg);"></view>
+  </view>
+  <!-- 右半圆进度 -->
+  <view class="ring-right" style="width:{{size}}rpx;height:{{size}}rpx;border-width:{{strokeWidth}}rpx;">
+    <view class="ring-right-mask" style="width:{{size}}rpx;height:{{size}}rpx;border-width:{{strokeWidth}}rpx;border-color:transparent {{color}} {{color}} transparent;transform:rotate({{rightDeg}}deg);"></view>
+  </view>
+  <!-- 中间文字区域 -->
+  <view class="ring-center" style="width:{{size - strokeWidth*2 - 8}}rpx;height:{{size - strokeWidth*2 - 8}}rpx;">
+    <text class="ring-text" wx:if="{{showText}}">{{text || percent + '%'}}</text>
+    <slot></slot>
+  </view>
+</view>

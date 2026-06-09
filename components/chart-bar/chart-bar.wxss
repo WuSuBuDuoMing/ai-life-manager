@@ -1,0 +1,7 @@
+.chart { width: 100%; }
+.chart-bars { display: flex; align-items: flex-end; justify-content: space-around; height: 100%; padding: 0 8rpx; }
+.chart-col { display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; }
+.chart-val { font-size: 20rpx; color: var(--color-text-secondary, #888); margin-bottom: 8rpx; }
+.chart-bar-track { width: 40rpx; background: var(--color-bg-input, #F7F3F0); border-radius: 8rpx; display: flex; align-items: flex-end; overflow: hidden; }
+.chart-bar-fill { width: 100%; transition: height 0.5s ease; min-height: 4rpx; }
+.chart-label { font-size: 18rpx; color: var(--color-text-secondary, #888); margin-top: 8rpx; text-align: center; max-width: 80rpx; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

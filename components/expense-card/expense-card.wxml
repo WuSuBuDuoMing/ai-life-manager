@@ -1,0 +1,28 @@
+﻿<!--
+  expense-card 组件
+  功能：收支记录卡片，展示分类图标、分类名、金额、日期、备注
+  type=income 金额绿色，type=expense 金额红色
+-->
+<view class="expense-card" bindtap="onEdit">
+  <!-- 左侧分类图标 -->
+  <view class="expense-icon-wrap">
+    <text class="expense-icon">{{record.icon || '💰'}}</text>
+  </view>
+  <!-- 中间内容 -->
+  <view class="expense-content">
+    <view class="expense-row">
+      <text class="expense-category">{{record.category}}</text>
+      <text class="expense-amount {{record.type === 'income' ? 'income' : 'expense'}}">
+        {{record.type === 'income' ? '+' : '-'}}¥{{record.amount}}
+      </text>
+    </view>
+    <view class="expense-info">
+      <text class="expense-note" wx:if="{{record.note}}">{{record.note}}</text>
+      <text class="expense-date" wx:if="{{showDate}}">{{record.date}}</text>
+    </view>
+  </view>
+  <!-- 右侧删除按钮 -->
+  <view class="expense-delete" catchtap="onDelete">
+    <text class="delete-icon">✕</text>
+  </view>
+</view>

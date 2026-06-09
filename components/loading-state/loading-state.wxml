@@ -1,0 +1,24 @@
+<!--
+  loading-state 组件
+  功能：加载状态组件，支持骨架屏(skeleton)和旋转(spinner)两种模式
+  loading=true 时显示加载动画，loading=false 时显示slot内容
+-->
+<view class="loading-state" wx:if="{{loading}}">
+  <!-- 骨架屏模式 -->
+  <block wx:if="{{type === 'skeleton'}}">
+    <view class="skeleton-line skeleton-line-long"></view>
+    <view class="skeleton-line skeleton-line-medium"></view>
+    <view class="skeleton-line skeleton-line-short"></view>
+    <view class="skeleton-line skeleton-line-long"></view>
+    <view class="skeleton-line skeleton-line-medium"></view>
+  </block>
+
+  <!-- 旋转加载模式 -->
+  <block wx:if="{{type === 'spinner'}}">
+    <view class="spinner"></view>
+    <text class="loading-text">{{text}}</text>
+  </block>
+</view>
+
+<!-- 加载完成后显示slot -->
+<slot wx:if="{{!loading}}"></slot>

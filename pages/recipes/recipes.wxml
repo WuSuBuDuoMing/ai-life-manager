@@ -1,0 +1,145 @@
+<!-- pages/recipes/recipes.wxml -->
+<view class="page-container {{isDark ? 'dark' : ''}}">
+
+  <!-- 页面标题区 -->
+  <view class="page-header">
+    <text class="page-title">🍳 菜谱速查</text>
+    <text class="page-subtitle">不知道吃什么？看看这里</text>
+  </view>
+
+  <!-- 搜索栏 -->
+  <search-bar placeholder="搜索菜谱、食材..." value="{{searchKeyword}}" bindinput="onSearchInput" bindclear="onSearchClear" />
+
+  <!-- 分类标签 + 视图切换 -->
+  <view class="flex-row items-center" style="margin-bottom:16rpx;">
+    <scroll-view scroll-x class="category-scroll flex-1" enhanced show-scrollbar="{{false}}">
+      <view class="category-list">
+        <view class="category-chip {{selectedCategory === item ? 'category-active' : ''}}"
+          wx:for="{{categories}}" wx:key="*this" data-category="{{item}}" bindtap="onCategoryFilter">
+          <text>{{item}}</text>
+        </view>
+      </view>
+    </scroll-view>
+    <view class="view-toggle" bindtap="toggleViewMode">
+      <text class="text-xs">{{viewMode === 'normal' ? '📋 详细' : '⚡ 快速'}}</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-state">
+    <view class="recipe-grid">
+      <view class="card shimmer" style="height:200rpx;"></view>
+      <view class="card shimmer" style="height:200rpx;"></view>
+      <view class="card shimmer" style="height:200rpx;"></view>
+      <view class="card shimmer" style="height:200rpx;"></view>
+    </view>
+  </view>
+
+  <!-- 菜谱网格 -->
+  <block wx:elif="{{filteredRecipes.length > 0}}">
+    <view class="recipe-grid">
+      <view class="recipe-card card {{viewMode === 'quick' ? 'recipe-compact' : ''}}"
+        wx:for="{{filteredRecipes}}" wx:key="id"
+        data-id="{{item.id}}" bindtap="onRecipeTap">
+        <view class="recipe-card-header">
+          <text class="recipe-card-icon">{{item.icon}}</text>
+          <view class="favorite-btn" catchtap="onToggleFavorite" data-id="{{item.id}}">
+            <text>{{item.favorited ? '❤️' : '🤍'}}</text>
+          </view>
+        </view>
+        <text class="recipe-card-name text-bold">{{item.name}}</text>
+        <view class="recipe-card-meta">
+          <text class="difficulty-tag difficulty-{{item.difficulty}}">
+            {{item.difficulty === 'easy' ? '简单' : item.difficulty === 'medium' ? '中等' : '困难'}}
+          </text>
+          <text class="text-xs text-secondary">{{item.time}}</text>
+        </view>
+        <view class="recipe-card-tags" wx:if="{{viewMode === 'normal' && item.tags}}">
+          <text class="tag-mini" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <empty-state wx:else icon="🔍" title="没有找到菜谱" subtitle="{{searchKeyword ? '换个关键词试试' : '暂无菜谱数据'}}" />
+
+  <!-- 详情弹窗 -->
+  <view class="overlay" wx:if="{{showDetail}}" bindtap="onCloseDetail">
+    <view class="detail-modal" catchtap="">
+      <view class="detail-header">
+        <text class="detail-icon">{{selectedRecipe.icon}}</text>
+        <view class="flex-1 ml-md">
+          <text class="text-lg text-bold">{{selectedRecipe.name}}</text>
+          <view class="flex-row items-center mt-xs" style="gap:12rpx;">
+            <text class="difficulty-tag difficulty-{{selectedRecipe.difficulty}}">
+              {{selectedRecipe.difficulty === 'easy' ? '简单' : selectedRecipe.difficulty === 'medium' ? '中等' : '困难'}}
+            </text>
+            <text class="text-xs text-secondary">⏱ {{selectedRecipe.time}}</text>
+            <text class="text-xs text-secondary">👤 {{selectedRecipe.servings}}人份</text>
+          </view>
+        </view>
+        <view class="close-btn" bindtap="onCloseDetail">
+          <text class="text-lg">✕</text>
+        </view>
+      </view>
+
+      <!-- 食材列表 -->
+      <view class="detail-section">
+        <text class="text-md text-bold mb-sm" style="display:block;">🥬 食材</text>
+        <view class="ingredient-list">
+          <view class="ingredient-item" wx:for="{{selectedRecipe.ingredients}}" wx:key="*this">
+            <text class="ingredient-dot">·</text>
+            <text class="text-sm">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 步骤 -->
+      <view class="detail-section">
+        <text class="text-md text-bold mb-sm" style="display:block;">📝 步骤</text>
+        <view class="step-list">
+          <view class="step-item" wx:for="{{selectedRecipe.steps}}" wx:key="*this">
+            <view class="step-number">{{index + 1}}</view>
+            <text class="text-sm flex-1">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 小贴士 -->
+      <view class="detail-section tips-section" wx:if="{{selectedRecipe.tips}}">
+        <text class="text-md text-bold mb-sm" style="display:block;">💡 小贴士</text>
+        <text class="text-sm text-secondary">{{selectedRecipe.tips}}</text>
+      </view>
+
+      <!-- 烹饪计时器 -->
+      <view class="detail-section timer-section">
+        <text class="text-md text-bold mb-sm" style="display:block;">⏱️ 烹饪计时器</text>
+        <view class="timer-display" wx:if="{{timerRunning}}">
+          <text class="timer-time">{{timerDisplay}}</text>
+        </view>
+        <view class="timer-presets" wx:if="{{!timerRunning}}">
+          <view class="timer-preset-btn" data-minutes="1" catchtap="onTimerPreset"><text>1 分钟</text></view>
+          <view class="timer-preset-btn" data-minutes="3" catchtap="onTimerPreset"><text>3 分钟</text></view>
+          <view class="timer-preset-btn" data-minutes="5" catchtap="onTimerPreset"><text>5 分钟</text></view>
+          <view class="timer-preset-btn" data-minutes="10" catchtap="onTimerPreset"><text>10 分钟</text></view>
+          <view class="timer-preset-btn" data-minutes="15" catchtap="onTimerPreset"><text>15 分钟</text></view>
+          <view class="timer-preset-btn" data-minutes="30" catchtap="onTimerPreset"><text>30 分钟</text></view>
+        </view>
+        <view class="timer-actions" wx:if="{{timerRunning}}">
+          <button class="btn btn-danger btn-sm" bindtap="onTimerStop">停止</button>
+          <button class="btn btn-ghost btn-sm" bindtap="onTimerReset">重置</button>
+        </view>
+      </view>
+
+      <!-- 收藏按钮 -->
+      <view class="detail-footer">
+        <button class="btn {{selectedRecipe.favorited ? 'btn-ghost' : 'btn-primary'}}" style="width:100%;"
+          data-id="{{selectedRecipe.id}}" bindtap="onToggleFavorite">
+          {{selectedRecipe.favorited ? '取消收藏' : '收藏菜谱'}}
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <view style="height:100rpx;"></view>
+</view>

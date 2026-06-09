@@ -1,0 +1,29 @@
+<!--
+  dashboard-card 组件
+  功能：仪表盘卡片，展示图标、标题、数值、副标题，支持点击事件
+  适用场景：首页各模块入口卡片
+-->
+<view class="dashboard-card {{color}}" bindtap="onTap">
+  <!-- 左侧图标区域 -->
+  <view class="card-icon-wrap" style="background-color: var(--icon-bg, rgba(76, 175, 80, 0.12));">
+    <text class="card-icon">{{icon}}</text>
+    <!-- 角标数字 -->
+    <view class="card-badge" wx:if="{{count > 0}}">
+      <text class="badge-text">{{count}}</text>
+    </view>
+  </view>
+
+  <!-- 右侧内容区域 -->
+  <view class="card-content">
+    <view class="card-header">
+      <text class="card-title">{{title}}</text>
+      <text class="card-value" wx:if="{{value}}">{{value}}</text>
+    </view>
+    <text class="card-subtitle" wx:if="{{subtitle}}">{{subtitle}}</text>
+  </view>
+
+  <!-- 右侧箭头 -->
+  <view class="card-arrow" wx:if="{{showArrow}}">
+    <text class="arrow-icon">›</text>
+  </view>
+</view>

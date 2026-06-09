@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "search-bar": "/components/search-bar/search-bar",
+    "empty-state": "/components/empty-state/empty-state"
+  },
+  "enablePullDownRefresh": true,
+  "navigationBarTitleText": "菜谱速查"
+}

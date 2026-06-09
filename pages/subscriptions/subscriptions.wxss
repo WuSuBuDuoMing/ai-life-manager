@@ -1,0 +1,63 @@
+/* pages/subscriptions/subscriptions.wxss */
+.page-container { min-height: 100vh; background-color: var(--color-bg); }
+
+/* 续费提醒横幅 */
+.renewal-banner { background: linear-gradient(135deg, #FFF3E0, #FFE0B2); }
+.renewal-icon { font-size: 40rpx; }
+
+/* 排序标签 */
+.sort-chip {
+  padding: 10rpx 20rpx; border-radius: 20rpx;
+  font-size: 24rpx; background: var(--color-bg-input, #F7F3F0);
+  color: var(--color-text-secondary, #888);
+}
+.sort-active {
+  background: var(--color-primary, #4CAF50); color: #fff;
+}
+
+/* 视图切换 */
+.view-toggle { padding: 8rpx 16rpx; }
+
+/* 订阅项 */
+.sub-item { margin-bottom: 12rpx; }
+.sub-icon-wrap {
+  width: 64rpx; height: 64rpx; border-radius: 16rpx;
+  background: var(--color-bg-input, #F7F3F0);
+  display: flex; align-items: center; justify-content: center;
+}
+.sub-icon { font-size: 32rpx; }
+.delete-action { padding: 8rpx 12rpx; }
+.delete-action:active { opacity: 0.5; }
+
+/* 分类标签 */
+.category-chip {
+  display: inline-flex; padding: 12rpx 24rpx; border-radius: 24rpx;
+  font-size: 24rpx; background: var(--color-bg-card, #fff);
+  color: var(--color-text-secondary, #888); border: 1rpx solid var(--color-border, #e0e0e0);
+}
+.category-active {
+  background: var(--color-primary, #4CAF50); color: #fff;
+  border-color: var(--color-primary, #4CAF50);
+}
+
+/* 建议卡片 */
+.tip-card { background: linear-gradient(135deg, #E3F2FD, #fff); }
+.tip-card:active { opacity: 0.8; }
+.tip-icon { font-size: 40rpx; }
+
+/* 开关 */
+.toggle-switch {
+  width: 88rpx; height: 48rpx; border-radius: 24rpx;
+  background: var(--color-border, #e0e0e0);
+  position: relative; transition: background 0.2s;
+}
+.toggle-on { background: var(--color-primary, #4CAF50); }
+.toggle-dot {
+  width: 40rpx; height: 40rpx; border-radius: 50%;
+  background: #fff; position: absolute; top: 4rpx; left: 4rpx;
+  transition: left 0.2s; box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.2);
+}
+.toggle-on .toggle-dot { left: 44rpx; }
+
+/* 加载状态 */
+.loading-state { padding: 16rpx 0; }

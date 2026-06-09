@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "stat-card": "/components/stat-card/stat-card",
+    "chart-bar": "/components/chart-bar/chart-bar",
+    "empty-state": "/components/empty-state/empty-state"
+  },
+  "enablePullDownRefresh": true,
+  "navigationBarTitleText": "订阅管理"
+}

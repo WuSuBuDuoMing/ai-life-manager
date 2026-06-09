@@ -1,0 +1,20 @@
+﻿<!--
+  room-zone-card 组件
+  功能：房间区域卡片，大图标+名称+进度条+完成数/任务数
+  通过 properties 接收 zone 对象，通过 triggerEvent 发送 tap 事件
+-->
+<view class="room-zone-card" bindtap="onTap">
+  <view class="zone-icon-wrap">
+    <text class="zone-icon">{{zone.icon || '🏠'}}</text>
+  </view>
+  <view class="zone-content">
+    <text class="zone-name">{{zone.name}}</text>
+    <view class="zone-progress-row">
+      <view class="zone-progress-bg">
+        <view class="zone-progress-fill" style="width: {{progressPercent}}%;"></view>
+      </view>
+      <text class="zone-progress-text">{{zone.completedCount}}/{{zone.taskCount}}</text>
+    </view>
+    <text class="zone-percent">{{progressPercent}}% 完成</text>
+  </view>
+</view>

@@ -1,0 +1,15 @@
+<view class="stat-card stat-{{size}}" bindtap="onTap">
+  <view class="stat-header">
+    <text class="stat-icon" style="background-color:{{iconBgColor}};color:{{color}};">{{icon}}</text>
+    <text class="stat-title">{{title}}</text>
+  </view>
+  <view class="stat-body">
+    <text class="stat-value" style="color:{{color}};">{{value}}</text>
+    <text class="stat-unit" wx:if="{{unit}}">{{unit}}</text>
+  </view>
+  <view class="stat-trend" wx:if="{{trend !== 0}}">
+    <text class="trend-arrow {{trend > 0 ? 'trend-up' : 'trend-down'}}">{{trend > 0 ? '↑' : '↓'}}</text>
+    <text class="trend-text {{trend > 0 ? 'trend-up' : 'trend-down'}}">{{trend > 0 ? '+' : ''}}{{trend}}%</text>
+    <text class="trend-label">{{trendLabel}}</text>
+  </view>
+</view>

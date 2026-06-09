@@ -1,0 +1,105 @@
+/**
+ * room-zone-card 样式
+ * 大图标+名称+进度条+完成数/任务数
+ * 设计：大圆角卡片，大图标区域，进度条动画，hover缩放效果
+ */
+
+/* 卡片容器 */
+.room-zone-card {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 24rpx;
+  background-color: #FFFFFF;
+  border-radius: 20rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+page.dark .room-zone-card {
+  background-color: #2C2C2E;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.2);
+}
+
+.room-zone-card:active {
+  transform: scale(0.97);
+  box-shadow: 0 1rpx 6rpx rgba(0, 0, 0, 0.08);
+}
+
+/* 左侧大图标区域 */
+.zone-icon-wrap {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 24rpx;
+  background: linear-gradient(135deg, #F5F0EB, #EDE7E0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.zone-icon {
+  font-size: 52rpx;
+  line-height: 1;
+}
+
+/* 内容区域 */
+.zone-content {
+  flex: 1;
+  margin-left: 24rpx;
+  overflow: hidden;
+}
+
+.zone-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 12rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+page.dark .zone-name {
+  color: #F5F5F5;
+}
+
+/* 进度条行 */
+.zone-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 6rpx;
+}
+
+.zone-progress-bg {
+  flex: 1;
+  height: 14rpx;
+  background-color: #F0F0F0;
+  border-radius: 7rpx;
+  overflow: hidden;
+}
+
+page.dark .zone-progress-bg {
+  background-color: #3A3A3C;
+}
+
+.zone-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #66BB6A);
+  border-radius: 7rpx;
+  transition: width 0.4s ease;
+}
+
+.zone-progress-text {
+  font-size: 24rpx;
+  color: #999999;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+/* 完成百分比 */
+.zone-percent {
+  font-size: 22rpx;
+  color: #AAAAAA;
+}

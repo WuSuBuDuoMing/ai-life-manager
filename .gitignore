@@ -1,0 +1,40 @@
+# WeChat DevTools
+miniprogram_npm/
+node_modules/
+
+# IDE & Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# WeChat DevTools generated
+.private/
+private.wxss
+typings/
+
+# Build outputs
+dist/
+build/
+*.map
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db

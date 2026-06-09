@@ -1,0 +1,45 @@
+/* pages/checklists/checklists.wxss */
+.page-container { min-height: 100vh; background-color: var(--color-bg); }
+
+/* Tab切换 */
+.tabs {
+  background: var(--color-bg-card, #fff); border-radius: 16rpx;
+  padding: 8rpx; margin-bottom: 16rpx;
+}
+.tab-item {
+  padding: 16rpx 0; border-radius: 12rpx;
+  color: var(--color-text-secondary, #888); font-size: 26rpx;
+}
+.tab-active {
+  background: var(--color-primary, #4CAF50); color: #fff; font-weight: 600;
+}
+
+/* 清单项 */
+.checklist-item { margin-bottom: 16rpx; }
+.checklist-item:active { opacity: 0.8; }
+.delete-action { padding: 8rpx 12rpx; }
+.delete-action:active { opacity: 0.5; }
+
+/* 清单预览 */
+.checklist-preview { padding-top: 8rpx; }
+.preview-item { display: flex; align-items: center; gap: 8rpx; margin-bottom: 6rpx; }
+.mini-check {
+  width: 16rpx; height: 16rpx; border-radius: 4rpx;
+  border: 2rpx solid var(--color-border, #e0e0e0); flex-shrink: 0;
+}
+.mini-checked { background: var(--color-primary, #4CAF50); border-color: var(--color-primary, #4CAF50); }
+.task-strikethrough { text-decoration: line-through; }
+
+/* 模板网格 */
+.template-grid {
+  display: flex; flex-wrap: wrap; gap: 16rpx;
+}
+.template-card {
+  width: calc(50% - 8rpx); display: flex; flex-direction: column;
+  align-items: center; padding: 28rpx 16rpx !important; box-sizing: border-box;
+}
+.template-card:active { opacity: 0.7; }
+.template-icon { font-size: 48rpx; }
+
+/* 加载状态 */
+.loading-state { padding: 16rpx 0; }

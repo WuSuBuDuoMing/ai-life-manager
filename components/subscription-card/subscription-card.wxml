@@ -1,0 +1,43 @@
+<!--
+  subscription-card 组件
+  功能：订阅服务卡片，展示图标、名称、价格/周期、续费日期、分类、自动续费标记
+  即将续费(7天内)显示橙色边框警告
+-->
+<view class="subscription-card {{isRenewingSoon ? 'renewing-soon' : ''}}" bindtap="onTap">
+  <!-- 左侧图标 -->
+  <view class="sub-icon-wrap">
+    <text class="sub-icon">{{subscription.icon || '📦'}}</text>
+  </view>
+
+  <!-- 中间内容 -->
+  <view class="sub-content">
+    <!-- 第一行：名称 + 自动续费标记 -->
+    <view class="sub-header">
+      <text class="sub-name">{{subscription.name}}</text>
+      <view class="sub-auto-renew" wx:if="{{subscription.autoRenew}}">
+        <text class="auto-renew-text">自动续费</text>
+      </view>
+    </view>
+
+    <!-- 第二行：价格/周期 + 分类 -->
+    <view class="sub-info-row">
+      <text class="sub-price">¥{{subscription.price}}</text>
+      <text class="sub-cycle">/{{cycleText}}</text>
+      <view class="sub-category" wx:if="{{subscription.category}}">
+        <text class="category-text">{{subscription.category}}</text>
+      </view>
+    </view>
+
+    <!-- 第三行：下次续费日期 -->
+    <view class="sub-renew-row">
+      <text class="renew-label">下次续费：</text>
+      <text class="renew-date {{isRenewingSoon ? 'soon' : ''}}">{{subscription.nextBillingDate}}</text>
+      <text class="renew-warning" wx:if="{{isRenewingSoon}}">{{daysUntilRenew}}天后</text>
+    </view>
+  </view>
+
+  <!-- 右侧编辑按钮 -->
+  <view class="sub-edit-btn" catchtap="onEdit">
+    <text class="edit-icon">✎</text>
+  </view>
+</view>

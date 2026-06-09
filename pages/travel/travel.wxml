@@ -1,0 +1,220 @@
+<!-- pages/travel/travel.wxml -->
+<view class="page-container {{isDark ? 'dark' : ''}}">
+
+  <!-- 页面标题区 -->
+  <view class="page-header">
+    <text class="page-title">✈️ 旅行计划</text>
+    <text class="page-subtitle">规划你的每一次出发</text>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="flex-row" style="gap:12rpx;margin-bottom:20rpx;">
+    <view class="flex-1"><stat-card title="计划数" value="{{totalPlans}}" icon="📋" color="#42A5F5" size="small" /></view>
+    <view class="flex-1"><stat-card title="筹备中" value="{{upcomingCount}}" icon="⏳" color="#FF9800" size="small" /></view>
+    <view class="flex-1"><stat-card title="最近出发" value="{{nearestDays > 0 ? nearestDays + '天' : '无'}}" icon="⏰" color="#4CAF50" size="small" /></view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-state">
+    <view class="card shimmer" style="height:200rpx;margin-bottom:16rpx;"></view>
+    <view class="card shimmer" style="height:200rpx;margin-bottom:16rpx;"></view>
+    <view class="card shimmer" style="height:200rpx;"></view>
+  </view>
+
+  <!-- 计划列表 -->
+  <block wx:elif="{{plans.length > 0}}">
+    <view class="plan-card card {{item.status === 'completed' ? 'plan-completed' : ''}}"
+      wx:for="{{plans}}" wx:key="id" data-id="{{item.id}}" bindtap="onPlanTap">
+
+      <!-- 倒计时标签 -->
+      <view class="plan-badge {{item.daysUntil <= 3 ? 'badge-urgent' : item.daysUntil <= 7 ? 'badge-soon' : ''}}"
+        wx:if="{{item.status === 'planning' && item.daysUntil > 0}}">
+        <text class="badge-days">{{item.daysUntil}}</text>
+        <text class="badge-label">天后</text>
+      </view>
+
+      <view class="flex-row items-center">
+        <view class="plan-icon-wrap">
+          <text class="plan-icon">✈️</text>
+        </view>
+        <view class="flex-1 ml-md">
+          <text class="text-base text-bold">{{item.title}}</text>
+          <view class="flex-row items-center mt-xs" style="gap:12rpx;">
+            <text class="text-xs text-secondary">📍 {{item.destination}}</text>
+            <text class="text-xs text-hint">{{item.startDate}}</text>
+          </view>
+          <view class="flex-row items-center mt-xs" style="gap:16rpx;">
+            <view class="mini-progress">
+              <view class="mini-progress-fill" style="width:{{item.todoProgress}}%;"></view>
+            </view>
+            <text class="text-xs text-hint">待办 {{item.todoProgress}}%</text>
+          </view>
+        </view>
+        <text class="text-hint" style="font-size:32rpx;">›</text>
+      </view>
+
+      <!-- 预算信息 -->
+      <view class="plan-footer" wx:if="{{item.budget > 0}}">
+        <text class="text-xs text-hint">预算 ¥{{item.budget}}</text>
+        <text class="text-xs text-hint">{{item.todos.length}} 项待办 · {{item.packingList.length}} 件行李</text>
+      </view>
+    </view>
+  </block>
+
+  <empty-state wx:else icon="🌍" title="还没有旅行计划" subtitle="点击右下角创建你的第一个旅行计划" />
+
+  <!-- FAB 添加按钮 -->
+  <view class="fab" bindtap="toggleAddForm">
+    <text class="fab-icon">+</text>
+  </view>
+
+  <!-- 添加计划弹窗 -->
+  <view class="overlay" wx:if="{{showAddForm}}" bindtap="toggleAddForm">
+    <view class="modal" catchtap="">
+      <text class="modal-title">新建旅行计划</text>
+
+      <view class="form-group">
+        <text class="form-label">旅行标题</text>
+        <input class="form-input" placeholder="如：暑假日本行" value="{{newPlan.title}}" data-field="title" bindinput="onNewPlanInput" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">目的地</text>
+        <input class="form-input" placeholder="如：东京、千岛湖" value="{{newPlan.destination}}" data-field="destination" bindinput="onNewPlanInput" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">出发日期</text>
+        <picker mode="date" value="{{newPlan.startDate}}" bindchange="onStartDateChange">
+          <view class="form-select">{{newPlan.startDate || '请选择出发日期'}}</view>
+        </picker>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">返回日期</text>
+        <picker mode="date" value="{{newPlan.endDate}}" bindchange="onEndDateChange">
+          <view class="form-select">{{newPlan.endDate || '请选择返回日期'}}</view>
+        </picker>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">预算（元）</text>
+        <input class="form-input" type="number" placeholder="可选" value="{{newPlan.budget}}" data-field="budget" bindinput="onNewPlanInput" />
+      </view>
+
+      <view class="modal-actions">
+        <button class="btn btn-ghost" bindtap="toggleAddForm">取消</button>
+        <button class="btn btn-primary" bindtap="confirmAddPlan">创建</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 详情弹窗 -->
+  <view class="overlay" wx:if="{{showDetail}}" bindtap="onCloseDetail">
+    <view class="detail-sheet" catchtap="">
+      <view class="bottom-sheet-handle"></view>
+
+      <!-- 详情头部 -->
+      <view class="detail-header">
+        <view class="flex-1">
+          <text class="text-lg text-bold">{{selectedPlan.title}}</text>
+          <view class="flex-row items-center mt-xs" style="gap:16rpx;">
+            <text class="text-sm text-secondary">📍 {{selectedPlan.destination}}</text>
+            <text class="text-sm text-hint">📅 {{selectedPlan.startDate}} ~ {{selectedPlan.endDate}}</text>
+          </view>
+          <view class="flex-row items-center mt-xs" style="gap:16rpx;" wx:if="{{selectedPlan.budget > 0}}">
+            <text class="text-xs text-hint">💰 预算 ¥{{selectedPlan.budget}}</text>
+            <text class="text-xs text-hint" wx:if="{{selectedPlan.notes}}">📝 {{selectedPlan.notes}}</text>
+          </view>
+        </view>
+        <view class="close-btn" bindtap="onCloseDetail">
+          <text class="text-lg">✕</text>
+        </view>
+      </view>
+
+      <!-- 倒计时 -->
+      <view class="countdown-card" wx:if="{{selectedPlan.daysUntil > 0}}">
+        <text class="countdown-number">{{selectedPlan.daysUntil}}</text>
+        <text class="countdown-label">天后出发</text>
+      </view>
+
+      <!-- Tab 切换 -->
+      <view class="tabs flex-row mb-md">
+        <view class="tab-item flex-1 text-center {{detailTab === index ? 'tab-active' : ''}}"
+          wx:for="{{detailTabs}}" wx:key="index" data-index="{{index}}" bindtap="onDetailTabChange">
+          <text class="text-sm">{{item}}</text>
+        </view>
+      </view>
+
+      <!-- 待办清单 -->
+      <block wx:if="{{detailTab === 0}}">
+        <!-- 添加待办 -->
+        <view class="add-item-row">
+          <input class="add-item-input" placeholder="添加待办事项..." value="{{newTodoText}}" bindinput="onNewTodoInput" confirm-type="done" bindconfirm="onAddTodo" />
+          <view class="add-item-btn" bindtap="onAddTodo"><text class="text-primary text-bold">添加</text></view>
+        </view>
+        <view wx:if="{{selectedPlan.todos.length > 0}}">
+          <view class="check-item" wx:for="{{selectedPlan.todos}}" wx:key="id">
+            <view class="check-circle {{item.done ? 'check-done' : ''}}"
+              data-id="{{item.id}}" catchtap="onToggleTodo">
+              <text wx:if="{{item.done}}">✓</text>
+            </view>
+            <text class="text-sm flex-1 {{item.done ? 'text-done' : ''}}" data-id="{{item.id}}" catchtap="onToggleTodo">{{item.text}}</text>
+            <view class="item-delete" data-id="{{item.id}}" catchtap="onDeleteTodo">
+              <text class="text-xs text-hint">✕</text>
+            </view>
+          </view>
+        </view>
+        <empty-state wx:else icon="📝" title="暂无待办" subtitle="在上方输入框添加待办事项" />
+      </block>
+
+      <!-- 行李清单 -->
+      <block wx:if="{{detailTab === 1}}">
+        <!-- 添加行李 -->
+        <view class="add-item-row">
+          <input class="add-item-input" placeholder="添加行李物品..." value="{{newPackingText}}" bindinput="onNewPackingInput" confirm-type="done" bindconfirm="onAddPacking" />
+          <view class="add-item-btn" bindtap="onAddPacking"><text class="text-primary text-bold">添加</text></view>
+        </view>
+        <view wx:if="{{selectedPlan.packingList.length > 0}}">
+          <view class="check-item" wx:for="{{selectedPlan.packingList}}" wx:key="id">
+            <view class="check-circle {{item.done ? 'check-done' : ''}}"
+              data-id="{{item.id}}" catchtap="onTogglePacking">
+              <text wx:if="{{item.done}}">✓</text>
+            </view>
+            <text class="text-sm flex-1 {{item.done ? 'text-done' : ''}}" data-id="{{item.id}}" catchtap="onTogglePacking">{{item.text}}</text>
+            <view class="item-delete" data-id="{{item.id}}" catchtap="onDeletePacking">
+              <text class="text-xs text-hint">✕</text>
+            </view>
+          </view>
+        </view>
+        <empty-state wx:else icon="🧳" title="暂无行李" subtitle="在上方输入框添加行李物品" />
+      </block>
+
+      <!-- 每日行程 -->
+      <block wx:if="{{detailTab === 2}}">
+        <view wx:if="{{selectedPlan.dailyPlans.length > 0}}">
+          <view class="day-card" wx:for="{{selectedPlan.dailyPlans}}" wx:key="day">
+            <view class="day-header">
+              <view class="day-number">Day {{item.day}}</view>
+              <text class="text-sm text-bold">{{item.title}}</text>
+            </view>
+            <view class="day-activities">
+              <view class="activity-item" wx:for="{{item.activities}}" wx:key="*this" wx:for-item="act">
+                <view class="activity-dot"></view>
+                <text class="text-xs text-secondary">{{act}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <empty-state wx:else icon="📅" title="暂无行程" subtitle="还没有安排每日行程" />
+      </block>
+
+      <!-- 底部操作 -->
+      <view class="detail-footer">
+        <button class="btn btn-danger btn-block" bindtap="onDeletePlan">删除计划</button>
+      </view>
+    </view>
+  </view>
+
+  <view style="height:200rpx;"></view>
+</view>

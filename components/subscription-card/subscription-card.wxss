@@ -1,0 +1,183 @@
+/**
+ * subscription-card 样式
+ * 设计：圆角卡片，左侧图标+中间订阅信息+右侧编辑按钮
+ * 即将续费(7天内)显示橙色左边框警告
+ * 自动续费标记为小标签
+ */
+
+/* 卡片容器 */
+.subscription-card {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  border-left: 6rpx solid transparent;
+  transition: all 0.2s ease;
+}
+
+page.dark .subscription-card {
+  background-color: #2C2C2E;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
+}
+
+.subscription-card:active {
+  transform: scale(0.98);
+}
+
+/* 即将续费 - 橙色左边框 */
+.subscription-card.renewing-soon {
+  border-left-color: #FF9800;
+  background-color: #FFFAF5;
+}
+
+page.dark .subscription-card.renewing-soon {
+  background-color: #3A2E1E;
+}
+
+/* ==================== 左侧图标 ==================== */
+.sub-icon-wrap {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 20rpx;
+  background: linear-gradient(135deg, #F5F0EB, #EDE7E0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sub-icon {
+  font-size: 44rpx;
+  line-height: 1;
+}
+
+/* ==================== 内容区域 ==================== */
+.sub-content {
+  flex: 1;
+  margin-left: 20rpx;
+  overflow: hidden;
+}
+
+/* 第一行 */
+.sub-header {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin-bottom: 6rpx;
+}
+
+.sub-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+page.dark .sub-name {
+  color: #F5F5F5;
+}
+
+/* 自动续费标签 */
+.sub-auto-renew {
+  padding: 2rpx 12rpx;
+  background-color: rgba(76, 175, 80, 0.1);
+  border-radius: 12rpx;
+  flex-shrink: 0;
+}
+
+.auto-renew-text {
+  font-size: 20rpx;
+  color: #4CAF50;
+  font-weight: 500;
+}
+
+/* 第二行 */
+.sub-info-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6rpx;
+  margin-bottom: 6rpx;
+}
+
+.sub-price {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #333333;
+}
+
+page.dark .sub-price {
+  color: #F5F5F5;
+}
+
+.sub-cycle {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.sub-category {
+  padding: 2rpx 12rpx;
+  background-color: rgba(158, 158, 158, 0.1);
+  border-radius: 12rpx;
+  margin-left: 12rpx;
+}
+
+.category-text {
+  font-size: 22rpx;
+  color: #999999;
+}
+
+/* 第三行 - 续费日期 */
+.sub-renew-row {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.renew-label {
+  font-size: 22rpx;
+  color: #AAAAAA;
+}
+
+.renew-date {
+  font-size: 22rpx;
+  color: #666666;
+}
+
+.renew-date.soon {
+  color: #FF9800;
+  font-weight: 600;
+}
+
+.renew-warning {
+  font-size: 22rpx;
+  color: #FF9800;
+  font-weight: 500;
+}
+
+/* ==================== 编辑按钮 ==================== */
+.sub-edit-btn {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sub-edit-btn:active {
+  opacity: 0.5;
+}
+
+.edit-icon {
+  font-size: 32rpx;
+  color: #CCCCCC;
+}
+
+page.dark .edit-icon {
+  color: #636366;
+}

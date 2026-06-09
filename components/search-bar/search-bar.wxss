@@ -1,0 +1,47 @@
+/* 搜索栏组件样式 */
+
+.search-wrap {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 0;
+}
+
+.search-input-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  height: 72rpx;
+  border-radius: 36rpx;
+  padding: 0 24rpx;
+  background-color: var(--color-bg-input, #F7F3F0);
+}
+
+/* 暗色模式输入框 */
+.dark-input {
+  background-color: var(--color-bg-input, #2D2D4A);
+}
+
+.search-icon {
+  font-size: 28rpx;
+  margin-right: 12rpx;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: var(--color-text-primary, #2C2C2C);
+}
+
+.search-clear {
+  padding: 8rpx;
+  margin-left: 8rpx;
+  font-size: 24rpx;
+  color: var(--color-text-hint, #bbb);
+}
+
+.search-cancel {
+  margin-left: 20rpx;
+  font-size: 28rpx;
+  color: var(--color-primary, #4CAF50);
+  white-space: nowrap;
+}

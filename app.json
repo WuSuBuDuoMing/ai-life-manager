@@ -1,0 +1,45 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/chores/chores",
+    "pages/checklists/checklists",
+    "pages/shopping/shopping",
+    "pages/subscriptions/subscriptions",
+    "pages/budget/budget",
+    "pages/fridge/fridge",
+    "pages/wardrobe/wardrobe",
+    "pages/room/room",
+    "pages/habits/habits",
+    "pages/recipes/recipes",
+    "pages/pets/pets",
+    "pages/travel/travel",
+    "pages/bills/bills",
+    "pages/assistant/assistant",
+    "pages/search/search",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F5F0EB",
+    "navigationBarTitleText": "AI 生活管家",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F5F0EB",
+    "enablePullDownRefresh": false
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#999999",
+    "selectedColor": "#4CAF50",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页" },
+      { "pagePath": "pages/chores/chores", "text": "家务" },
+      { "pagePath": "pages/shopping/shopping", "text": "购物" },
+      { "pagePath": "pages/profile/profile", "text": "我的" }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

@@ -1,0 +1,70 @@
+/* pages/habits/habits.wxss */
+.page-container { min-height: 100vh; background-color: var(--color-bg); padding: 0 32rpx; }
+
+/* 分类标签 */
+.category-scroll { white-space: nowrap; margin-bottom: 16rpx; }
+.category-list { display: inline-flex; gap: 12rpx; padding: 8rpx 0; }
+.category-chip {
+  display: inline-flex; padding: 12rpx 24rpx; border-radius: 24rpx;
+  font-size: 24rpx; background: var(--color-bg-card, #fff);
+  color: var(--color-text-secondary, #888); border: 1rpx solid var(--color-border, #e0e0e0);
+  flex-shrink: 0;
+}
+.category-active {
+  background: var(--color-primary, #4CAF50); color: #fff;
+  border-color: var(--color-primary, #4CAF50);
+}
+
+/* 习惯项 */
+.habit-item { margin-bottom: 16rpx; }
+.habit-icon-wrap {
+  width: 72rpx; height: 72rpx; border-radius: 20rpx;
+  background: var(--color-bg-input, #F7F3F0);
+  display: flex; align-items: center; justify-content: center;
+}
+.habit-icon { font-size: 36rpx; }
+
+/* 打卡按钮 */
+.habit-actions { display: flex; flex-direction: column; align-items: center; gap: 8rpx; }
+.check-btn {
+  width: 72rpx; height: 72rpx; border-radius: 50%;
+  border: 4rpx solid var(--color-border, #e0e0e0);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s ease;
+  background: var(--color-bg-card, #fff);
+}
+.check-btn:active { transform: scale(0.9); }
+.check-done {
+  background: var(--color-primary, #4CAF50);
+  border-color: var(--color-primary, #4CAF50);
+  animation: checkPop 0.3s ease;
+}
+.check-icon {
+  font-size: 36rpx; color: #fff; font-weight: 700;
+}
+.delete-btn { padding: 4rpx 12rpx; }
+
+@keyframes checkPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* 图标选择网格 */
+.icon-grid {
+  display: flex; flex-wrap: wrap; gap: 16rpx;
+}
+.icon-item {
+  width: 72rpx; height: 72rpx; border-radius: 16rpx;
+  background: var(--color-bg-input, #F7F3F0);
+  display: flex; align-items: center; justify-content: center;
+  border: 2rpx solid transparent;
+}
+.icon-active {
+  border-color: var(--color-primary, #4CAF50);
+  background: #E8F5E9;
+}
+.icon-text { font-size: 32rpx; }
+
+/* 加载状态 */
+.loading-state { padding: 16rpx 0; }

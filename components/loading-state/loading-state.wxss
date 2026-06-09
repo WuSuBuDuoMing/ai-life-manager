@@ -1,0 +1,87 @@
+/**
+ * loading-state 样式
+ * 设计：骨架屏闪烁动画 + 旋转加载动画
+ * 骨架屏用渐变背景实现shimmer效果
+ * spinner 用 border + rotate 实现旋转动画
+ */
+
+/* 加载容器 */
+.loading-state {
+  padding: 20rpx 0;
+}
+
+/* ==================== 骨架屏模式 ==================== */
+.skeleton-line {
+  height: 28rpx;
+  border-radius: 8rpx;
+  background: linear-gradient(90deg, #F0F0F0 25%, #E8E8E8 50%, #F0F0F0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  margin-bottom: 20rpx;
+}
+
+page.dark .skeleton-line {
+  background: linear-gradient(90deg, #3A3A3C 25%, #48484A 50%, #3A3A3C 75%);
+  background-size: 200% 100%;
+}
+
+/* 不同宽度的骨架行 */
+.skeleton-line-long {
+  width: 100%;
+}
+
+.skeleton-line-medium {
+  width: 75%;
+}
+
+.skeleton-line-short {
+  width: 50%;
+}
+
+/* 骨架屏闪烁动画 */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ==================== 旋转加载模式 ==================== */
+.spinner {
+  width: 56rpx;
+  height: 56rpx;
+  border: 5rpx solid #E0E0E0;
+  border-top-color: #4CAF50;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 20rpx;
+}
+
+page.dark .spinner {
+  border-color: #3A3A3C;
+  border-top-color: #4CAF50;
+}
+
+/* 旋转动画 */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 加载文字 */
+.loading-text {
+  display: block;
+  text-align: center;
+  font-size: 26rpx;
+  color: #999999;
+}
+
+page.dark .loading-text {
+  color: #8E8E93;
+}

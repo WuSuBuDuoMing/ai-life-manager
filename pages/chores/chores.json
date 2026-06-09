@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "chore-card": "/components/chore-card/chore-card",
+    "search-bar": "/components/search-bar/search-bar",
+    "stat-card": "/components/stat-card/stat-card",
+    "empty-state": "/components/empty-state/empty-state"
+  },
+  "enablePullDownRefresh": true,
+  "navigationBarTitleText": "家务分工"
+}

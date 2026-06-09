@@ -1,0 +1,179 @@
+<!-- pages/fridge/fridge.wxml -->
+<view class="container {{isDark ? 'dark' : ''}}">
+
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">🧊 冰箱食材</text>
+    <text class="page-subtitle">管理食材，减少浪费</text>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="flex-row" style="gap:12rpx;margin-bottom:20rpx;">
+    <view class="flex-1"><stat-card title="总计" value="{{totalCount}}" icon="📦" color="#42A5F5" size="small" /></view>
+    <view class="flex-1"><stat-card title="临期" value="{{expiringCount}}" icon="🟠" color="#FF9800" size="small" /></view>
+    <view class="flex-1"><stat-card title="过期" value="{{expiredCount}}" icon="🔴" color="#EF5350" size="small" /></view>
+  </view>
+
+  <!-- 搜索栏 -->
+  <search-bar placeholder="搜索食材..." value="{{searchKeyword}}" bindinput="onSearchInput" bindclear="onSearchClear" />
+
+  <!-- 分类标签 -->
+  <scroll-view scroll-x class="category-scroll" enhanced show-scrollbar="{{false}}">
+    <view class="category-list">
+      <view class="category-chip {{selectedCategory === item ? 'category-active' : ''}}"
+        wx:for="{{categories}}" wx:key="*this" data-category="{{item}}" bindtap="onCategoryFilter">
+        <text>{{item}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- Tab切换 -->
+  <view class="tabs flex-row mb-md">
+    <view class="tab-item flex-1 text-center {{currentTab === index ? 'tab-active' : ''}}"
+      wx:for="{{tabs}}" wx:key="index" data-index="{{index}}" data-tab="{{index}}" bindtap="onTabChange">
+      <text>{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-state">
+    <view class="card shimmer" style="height:120rpx;margin-bottom:16rpx;"></view>
+    <view class="card shimmer" style="height:120rpx;margin-bottom:16rpx;"></view>
+  </view>
+
+  <!-- 食材列表 -->
+  <block wx:elif="{{currentTab < 3}}">
+    <block wx:if="{{filteredItems.length > 0}}">
+      <view class="food-item card card-sm" wx:for="{{filteredItems}}" wx:key="id"
+        style="border-left:6rpx solid {{item._status === 'expired' ? '#EF5350' : item._status === 'expiring' ? '#FF9800' : '#4CAF50'}};">
+        <view class="flex-row items-center">
+          <view class="food-icon-wrap" style="background:{{item._status === 'expired' ? '#FFEBEE' : item._status === 'expiring' ? '#FFF3E0' : '#E8F5E9'}};">
+            <text class="food-icon">{{item._status === 'expired' ? '🔴' : item._status === 'expiring' ? '🟠' : '🟢'}}</text>
+          </view>
+          <view class="flex-1 ml-md">
+            <text class="text-base text-bold">{{item.name}}</text>
+            <view class="flex-row items-center mt-xs">
+              <text class="tag tag-info" style="font-size:20rpx;">{{item.category}}</text>
+              <text class="text-xs text-secondary ml-sm">{{item.quantity}}{{item.unit}}</text>
+              <text class="text-xs ml-sm" style="color:{{item._status === 'expired' ? '#EF5350' : item._status === 'expiring' ? '#FF9800' : '#4CAF50'}};">
+                {{item._status === 'expired' ? '已过期' + (0 - item._daysLeft) + '天' : item._status === 'expiring' ? '还剩' + item._daysLeft + '天' : '新鲜'}}
+              </text>
+            </view>
+            <text class="text-xs text-hint mt-xs" wx:if="{{item.storageLocation}}">📍 {{item.storageLocation}}</text>
+          </view>
+          <view class="flex-col items-end" style="gap:8rpx;">
+            <view class="action-btn" catchtap="markAsUsed" data-id="{{item.id}}">
+              <text class="text-xs text-primary">✓ 已用</text>
+            </view>
+            <view class="action-btn" catchtap="onAddToShopping" data-id="{{item.id}}" wx:if="{{item._status === 'expired' || item._status === 'expiring'}}">
+              <text class="text-xs text-secondary">🛒 补货</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    <empty-state wx:else icon="🧊" title="冰箱空空如也" subtitle="{{searchKeyword ? '没有找到匹配的食材' : '点击右下角添加食材'}}" />
+  </block>
+
+  <!-- 菜谱推荐Tab -->
+  <block wx:elif="{{currentTab === 3}}">
+    <!-- 推荐菜谱 -->
+    <view class="section-title" style="padding:16rpx 0;" wx:if="{{recipeRecommendations.length > 0}}">
+      <text class="text-md text-bold">🍳 推荐菜谱</text>
+      <text class="text-xs text-secondary" style="margin-left:12rpx;">根据冰箱食材推荐</text>
+    </view>
+    <view class="recipe-list" wx:if="{{recipeRecommendations.length > 0}}">
+      <view class="card recipe-card" wx:for="{{recipeRecommendations}}" wx:key="name"
+        data-recipe="{{item}}" bindtap="onRecipeTap">
+        <view class="flex-row items-center">
+          <text class="recipe-icon">{{item.icon || '🍳'}}</text>
+          <view class="flex-1 ml-md">
+            <text class="text-base text-bold">{{item.name}}</text>
+            <text class="text-xs text-secondary mt-xs block">食材: {{item.ingredients}}</text>
+          </view>
+          <text class="text-hint">›</text>
+        </view>
+      </view>
+    </view>
+    <empty-state wx:else icon="🍳" title="暂无菜谱推荐" subtitle="添加更多食材后获取推荐" />
+
+    <!-- 一周菜单 -->
+    <view class="section-title" style="padding:32rpx 0 16rpx;" wx:if="{{weeklyMenu.length > 0}}">
+      <text class="text-md text-bold">📅 一周菜单</text>
+    </view>
+    <view class="menu-list" wx:if="{{weeklyMenu.length > 0}}">
+      <view class="card menu-card" wx:for="{{weeklyMenu}}" wx:key="day"
+        data-menu="{{item}}" bindtap="onMenuDayTap">
+        <view class="flex-row items-center">
+          <view class="menu-day-badge">
+            <text class="text-sm text-bold" style="color:#fff;">{{item.day}}</text>
+          </view>
+          <view class="flex-1 ml-md">
+            <text class="text-sm">早: {{item.breakfast || '-'}}</text>
+            <text class="text-sm block mt-xs">午: {{item.lunch || '-'}}</text>
+            <text class="text-sm block mt-xs">晚: {{item.dinner || '-'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- FAB 添加按钮 -->
+  <view class="fab" bindtap="toggleAddForm" wx:if="{{currentTab < 3}}">
+    <text class="fab-icon">+</text>
+  </view>
+
+  <!-- 添加食材弹窗 -->
+  <view class="overlay" wx:if="{{showAddForm}}" bindtap="toggleAddForm">
+    <view class="modal" catchtap="">
+      <text class="modal-title">添加食材</text>
+
+      <view class="form-group">
+        <text class="form-label">食材名称</text>
+        <input class="form-input" placeholder="如：牛奶、鸡蛋" value="{{newItem.name}}" data-field="name" bindinput="onNewItemInput" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">分类</text>
+        <picker range="{{categories}}" value="0" bindchange="onNewItemInput" data-field="category">
+          <view class="form-select"><text>{{newItem.category}}</text></view>
+        </picker>
+      </view>
+
+      <view class="flex-row" style="gap:16rpx;">
+        <view class="form-group flex-1">
+          <text class="form-label">数量</text>
+          <input class="form-input" type="digit" placeholder="1" value="{{newItem.quantity}}" data-field="quantity" bindinput="onNewItemInput" />
+        </view>
+        <view class="form-group flex-1">
+          <text class="form-label">单位</text>
+          <input class="form-input" placeholder="份/盒/斤" value="{{newItem.unit}}" data-field="unit" bindinput="onNewItemInput" />
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">保质期（可选）</text>
+        <input class="form-input" type="date" value="{{newItem.expiryDate}}" data-field="expiryDate" bindinput="onNewItemInput" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">存储位置</text>
+        <view class="flex-row" style="gap:12rpx;">
+          <view class="category-chip {{newItem.storageLocation === '冷藏室' ? 'category-active' : ''}}"
+            data-field="storageLocation" data-value="冷藏室" catchtap="onNewItemInput">冷藏室</view>
+          <view class="category-chip {{newItem.storageLocation === '冷冻室' ? 'category-active' : ''}}"
+            data-field="storageLocation" data-value="冷冻室" catchtap="onNewItemInput">冷冻室</view>
+          <view class="category-chip {{newItem.storageLocation === '保鲜层' ? 'category-active' : ''}}"
+            data-field="storageLocation" data-value="保鲜层" catchtap="onNewItemInput">保鲜层</view>
+        </view>
+      </view>
+
+      <view class="modal-actions">
+        <button class="btn btn-ghost" bindtap="toggleAddForm">取消</button>
+        <button class="btn btn-primary" bindtap="confirmAddItem">添加</button>
+      </view>
+    </view>
+  </view>
+
+  <view style="height:200rpx;"></view>
+</view>

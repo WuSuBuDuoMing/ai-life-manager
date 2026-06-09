@@ -1,0 +1,17 @@
+<!-- 自定义底部导航栏 -->
+<view class="tab-bar {{isDark ? 'dark' : ''}}">
+  <view class="tab-bar-border"></view>
+  <view class="tab-bar-item {{selected === index ? 'active' : ''}}" wx:for="{{list}}" wx:key="pagePath"
+    data-path="{{item.pagePath}}" data-index="{{index}}" bindtap="switchTab">
+    <view class="tab-icon-wrap {{selected === index ? 'tab-icon-active' : ''}}">
+      <text class="tab-icon">{{selected === index ? item.selectedIcon : item.icon}}</text>
+    </view>
+    <text class="tab-text" style="color: {{selected === index ? selectedColor : color}}">{{item.text}}</text>
+    <!-- 徽标 - 数字 -->
+    <view class="tab-badge" wx:if="{{item.badge > 0}}">{{item.badge > 99 ? '99+' : item.badge}}</view>
+    <!-- 徽标 - 红点 -->
+    <view class="tab-dot" wx:if="{{item.badge === -1}}"></view>
+    <!-- 选中指示条 -->
+    <view class="tab-indicator" wx:if="{{selected === index}}"></view>
+  </view>
+</view>

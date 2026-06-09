@@ -1,0 +1,36 @@
+<!--
+  shopping-item 组件
+  功能：购物清单条目，展示复选框、商品名、品牌、分类、价格x数量
+  purchased=true 时灰色+删除线+淡化效果
+  支持切换、删除、编辑事件
+-->
+<view class="shopping-item {{item.purchased ? 'checked' : ''}}">
+  <!-- 左侧复选框 -->
+  <view class="item-checkbox {{item.purchased ? 'on' : ''}}" catchtap="onToggle">
+    <text class="check-icon" wx:if="{{item.purchased}}">✓</text>
+  </view>
+
+  <!-- 中间内容区 -->
+  <view class="item-content" bindtap="onEdit">
+    <!-- 商品名+品牌 -->
+    <view class="item-name-row">
+      <text class="item-name">{{item.name}}</text>
+      <text class="item-brand" wx:if="{{item.brand}}">{{item.brand}}</text>
+    </view>
+
+    <!-- 信息行：分类标签 + 价格x数量 -->
+    <view class="item-info-row">
+      <view class="item-category" wx:if="{{item.category}}">
+        <text class="category-text">{{item.category}}</text>
+      </view>
+      <text class="item-price">¥{{item.price}}</text>
+      <text class="item-quantity" wx:if="{{item.quantity > 1}}">x{{item.quantity}}</text>
+      <text class="item-total" wx:if="{{item.quantity > 1}}">= ¥{{totalPrice}}</text>
+    </view>
+  </view>
+
+  <!-- 右侧删除按钮 -->
+  <view class="item-delete-btn" catchtap="onDelete">
+    <text class="delete-icon">✕</text>
+  </view>
+</view>

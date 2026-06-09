@@ -1,0 +1,33 @@
+<!--
+  checklist-card 组件
+  功能：清单卡片，展示清单名称、分类标签、进度条、完成数/总数
+  适用于购物清单、待办清单等多项目管理场景
+-->
+<view class="checklist-card" bindtap="onTap">
+  <!-- 第一行：清单名 + 分类标签 -->
+  <view class="checklist-header">
+    <text class="checklist-title">{{checklist.title}}</text>
+    <view class="checklist-category" wx:if="{{checklist.category}}">
+      <text class="category-text">{{checklist.category}}</text>
+    </view>
+  </view>
+
+  <!-- 进度条区域 -->
+  <view class="progress-section">
+    <view class="progress-bar-bg">
+      <view class="progress-bar-fill" style="width: {{progressPercent}}%;"></view>
+    </view>
+    <text class="progress-text">{{checklist.completedCount}}/{{checklist.totalCount}}</text>
+  </view>
+
+  <!-- 底部：子项预览列表 -->
+  <view class="checklist-items" wx:if="{{checklist.items && checklist.items.length > 0}}">
+    <view class="checklist-item" wx:for="{{checklist.items}}" wx:key="id" wx:if="{{index < 3}}">
+      <text class="item-check">{{item.checked ? '✅' : '⬜'}}</text>
+      <text class="item-name {{item.checked ? 'done' : ''}}">{{item.name || item}}</text>
+    </view>
+    <view class="checklist-more" wx:if="{{checklist.items.length > 3}}">
+      <text class="more-text">还有 {{checklist.items.length - 3}} 项...</text>
+    </view>
+  </view>
+</view>

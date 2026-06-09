@@ -1,0 +1,17 @@
+.stat-card { background: var(--color-bg-card, #fff); border-radius: 24rpx; padding: 28rpx; }
+.stat-header { display: flex; align-items: center; margin-bottom: 16rpx; }
+.stat-icon { width: 56rpx; height: 56rpx; border-radius: 16rpx; display: flex; align-items: center; justify-content: center; font-size: 28rpx; margin-right: 16rpx; }
+.stat-title { font-size: 24rpx; color: var(--color-text-secondary, #888); }
+.stat-body { display: flex; align-items: baseline; }
+.stat-value { font-size: 44rpx; font-weight: 700; }
+.stat-unit { font-size: 24rpx; color: var(--color-text-secondary, #888); margin-left: 8rpx; }
+.stat-trend { display: flex; align-items: center; margin-top: 12rpx; font-size: 22rpx; }
+.trend-arrow { margin-right: 4rpx; }
+.trend-up { color: #EF5350; }
+.trend-down { color: #4CAF50; }
+.trend-text { margin-right: 8rpx; }
+.trend-label { color: var(--color-text-hint, #bbb); }
+.stat-small .stat-value { font-size: 36rpx; }
+.stat-small .stat-icon { width: 44rpx; height: 44rpx; font-size: 22rpx; }
+.stat-large .stat-value { font-size: 56rpx; }
+.stat-large .stat-icon { width: 72rpx; height: 72rpx; font-size: 36rpx; }

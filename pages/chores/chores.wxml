@@ -1,0 +1,84 @@
+<!-- pages/chores/chores.wxml -->
+<view class="page-container {{isDark ? 'dark' : ''}}">
+
+  <!-- 页面标题区 -->
+  <view class="page-header">
+    <text class="page-title">🧹 家务分工</text>
+    <text class="page-subtitle">公平分工，协作更轻松</text>
+  </view>
+
+  <!-- 统计概览 -->
+  <view class="stats-overview flex-row" style="gap:12rpx;margin-bottom:20rpx;" wx:if="{{showStats}}">
+    <view class="flex-1"><stat-card title="待完成" value="{{pendingCount}}" icon="📋" color="#FF9800" size="small" /></view>
+    <view class="flex-1"><stat-card title="已完成" value="{{completedCount}}" icon="✅" color="#4CAF50" size="small" /></view>
+    <view class="flex-1"><stat-card title="已逾期" value="{{overdueCount}}" icon="⏰" color="#EF5350" size="small" /></view>
+  </view>
+
+  <!-- 排行榜 -->
+  <view class="card mb-md" wx:if="{{leaderboard.length > 0}}">
+    <view class="flex-row items-center justify-between mb-sm">
+      <text class="text-md text-bold">🏆 贡献排行榜</text>
+      <text class="text-xs text-secondary">总积分: {{totalPoints}}</text>
+    </view>
+    <scroll-view scroll-x class="leaderboard-scroll" enhanced show-scrollbar="{{false}}">
+      <view class="leaderboard-list">
+        <view wx:for="{{leaderboard}}" wx:key="name" class="leaderboard-item"
+          data-member="{{item.name}}" bindtap="onMemberTap">
+          <view class="rank-badge rank-{{index < 3 ? index : 'other'}}">{{index + 1}}</view>
+          <view class="member-avatar">{{item.name === '我' ? '👩' : item.name === '室友A' ? '🧑' : '👨'}}</view>
+          <text class="member-name text-sm text-bold">{{item.name}}</text>
+          <text class="member-points text-xs text-primary">{{item.points}}分</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 搜索栏 -->
+  <search-bar placeholder="搜索家务任务..." value="{{searchKeyword}}"
+    bindinput="onSearchInput" bindclear="onSearchClear" />
+
+  <!-- Tab切换 -->
+  <view class="tabs flex-row mb-md">
+    <view wx:for="{{tabs}}" wx:key="index"
+      class="tab-item flex-1 text-center {{currentTab === index ? 'tab-active' : ''}}"
+      data-index="{{index}}" bindtap="onTabChange">
+      <text class="text-sm">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 家务列表 -->
+  <view wx:if="{{loading}}" class="loading-state">
+    <view class="card shimmer" style="height:140rpx;margin-bottom:16rpx;"></view>
+    <view class="card shimmer" style="height:140rpx;margin-bottom:16rpx;"></view>
+    <view class="card shimmer" style="height:140rpx;"></view>
+  </view>
+
+  <block wx:elif="{{filteredChores.length > 0}}">
+    <chore-card wx:for="{{filteredChores}}" wx:key="id" chore="{{item}}"
+      data-id="{{item.id}}" bindtap="onChoreTap" />
+  </block>
+
+  <empty-state wx:else icon="🎉" title="没有家务任务" subtitle="{{currentTab === 0 ? '点击下方按钮生成本周安排' : '该状态下没有任务'}}" />
+
+  <!-- 轮值表区域 -->
+  <view class="card mt-lg" wx:if="{{showSchedule && weeklySchedule.length > 0}}">
+    <text class="text-md text-bold mb-md" style="display:block;">📅 本周轮值表</text>
+    <view wx:for="{{weeklySchedule}}" wx:key="day" class="schedule-item">
+      <text class="text-sm text-bold" style="width:100rpx;">{{item.day}}</text>
+      <text class="text-sm text-secondary flex-1">{{item.assignee}} · {{item.task}}</text>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-actions flex-row" style="gap:16rpx;">
+    <view class="btn btn-ghost flex-1" bindtap="toggleSchedule">
+      <text>{{showSchedule ? '隐藏' : '查看'}}轮值表</text>
+    </view>
+    <view class="btn btn-primary flex-1" bindtap="onGenerateWeekly">
+      <text>一键生成本周安排</text>
+    </view>
+  </view>
+
+  <!-- 底部安全区 -->
+  <view style="height:200rpx;"></view>
+</view>

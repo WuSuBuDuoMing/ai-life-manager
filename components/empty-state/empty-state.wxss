@@ -1,0 +1,66 @@
+/**
+ * empty-state 样式
+ * 设计：垂直居中布局，大emoji图标+标题+副标题+可选按钮
+ * 柔和配色，适合空状态展示
+ */
+
+/* 容器 - 垂直居中 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 40rpx;
+}
+
+/* 大emoji图标 */
+.empty-icon {
+  font-size: 120rpx;
+  line-height: 1.2;
+  margin-bottom: 32rpx;
+}
+
+/* 主标题 */
+.empty-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 16rpx;
+  text-align: center;
+}
+
+page.dark .empty-title {
+  color: #F5F5F5;
+}
+
+/* 副标题 */
+.empty-subtitle {
+  font-size: 26rpx;
+  color: #999999;
+  text-align: center;
+  line-height: 1.6;
+  max-width: 480rpx;
+}
+
+page.dark .empty-subtitle {
+  color: #8E8E93;
+}
+
+/* 操作按钮 */
+.empty-btn {
+  margin-top: 40rpx;
+  padding: 20rpx 56rpx;
+  background: linear-gradient(135deg, #4CAF50, #66BB6A);
+  border-radius: 40rpx;
+  transition: opacity 0.2s ease;
+}
+
+.empty-btn:active {
+  opacity: 0.8;
+}
+
+.empty-btn-text {
+  font-size: 28rpx;
+  color: #FFFFFF;
+  font-weight: 600;
+}

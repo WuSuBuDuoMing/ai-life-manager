@@ -1,0 +1,197 @@
+<!-- pages/index/index.wxml -->
+<view class="page-container {{isDark ? 'dark' : ''}}">
+
+  <!-- 自定义导航栏 -->
+  <view class="custom-nav" style="padding-top: {{statusBarHeight}}px;">
+    <view class="nav-content" style="height: 44px;">
+      <text class="nav-title">AI 生活管家</text>
+      <view class="nav-right" bindtap="onSearch">
+        <text class="nav-search-icon">🔍</text>
+      </view>
+    </view>
+  </view>
+  <view class="nav-placeholder" style="height: {{navHeight}}px;"></view>
+
+  <!-- 主内容区 -->
+  <scroll-view scroll-y class="scroll-content" style="top: {{navHeight}}px;" enhanced show-scrollbar="{{false}}">
+
+    <!-- 问候区域 -->
+    <view class="greeting-section">
+      <view class="greeting-text">
+        <text class="text-2xl text-bold">{{greeting}}</text>
+        <text class="text-sm text-secondary mt-xs">{{dateStr}}</text>
+      </view>
+      <view class="greeting-emoji">👋</view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view wx:if="{{loading}}" class="loading-state">
+      <view class="card shimmer" style="height:200rpx;"></view>
+      <view class="card shimmer mt-md" style="height:160rpx;"></view>
+      <view class="card shimmer mt-md" style="height:120rpx;"></view>
+    </view>
+
+    <block wx:else>
+      <!-- 提醒横幅 -->
+      <view class="reminder-banner" wx:if="{{reminderCount > 0}}" bindtap="onViewAllReminders">
+        <text class="reminder-icon">🔔</text>
+        <text class="reminder-text flex-1">你有 {{reminderCount}} 条提醒需要注意</text>
+        <text class="reminder-arrow">›</text>
+      </view>
+
+      <!-- 仪表盘数据区 -->
+      <view class="section-title" style="padding:24rpx 0 16rpx;">
+        <text class="text-md text-bold">今日概览</text>
+      </view>
+      <view class="dashboard-grid">
+        <dashboard-card icon="📝" title="待办任务" value="{{dashboardData.todoCount}}" subtitle="项" color="#4CAF50" />
+        <dashboard-card icon="🧹" title="待做家务" value="{{dashboardData.choreCount}}" subtitle="项" color="#FF9800" />
+        <dashboard-card icon="🥬" title="临期食材" value="{{dashboardData.expiringFood}}" subtitle="件" color="#EF5350" />
+        <dashboard-card icon="💰" title="本月支出" value="¥{{dashboardData.monthlyExpense}}" subtitle="" color="#FF9800" />
+        <dashboard-card icon="💳" title="未付账单" value="{{unpaidBills.length}}" subtitle="笔" color="#E91E63" />
+        <dashboard-card icon="🛒" title="待购商品" value="{{dashboardData.pendingShopping}}" subtitle="项" color="#FF7043" />
+      </view>
+
+      <!-- 今日习惯 -->
+      <view class="section-title" style="padding:32rpx 0 16rpx;" wx:if="{{todayHabits.length > 0}}">
+        <text class="text-md text-bold">✅ 今日已打卡</text>
+        <text class="text-xs text-primary" style="margin-left:12rpx;" bindtap="onGoHabits">查看全部 ›</text>
+      </view>
+      <scroll-view scroll-x wx:if="{{todayHabits.length > 0}}" enhanced show-scrollbar="{{false}}">
+        <view class="habit-scroll">
+          <view class="habit-chip" wx:for="{{todayHabits}}" wx:key="id">
+            <text class="habit-chip-icon">{{item.icon}}</text>
+            <text class="text-xs">{{item.name}}</text>
+          </view>
+        </view>
+      </scroll-view>
+
+      <!-- 宠物提醒 -->
+      <view class="section-title" style="padding:24rpx 0 16rpx;" wx:if="{{todayPetReminders.length > 0}}">
+        <text class="text-md text-bold">🐕 宠物待办</text>
+      </view>
+      <view wx:if="{{todayPetReminders.length > 0}}">
+        <view class="card card-sm pet-reminder" wx:for="{{todayPetReminders}}" wx:key="id">
+          <view class="flex-row items-center">
+            <text class="text-lg">{{item.icon || '🐾'}}</text>
+            <text class="text-sm flex-1 ml-sm">{{item.title}}</text>
+            <text class="text-xs text-hint">{{item.time}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 旅行倒计时 -->
+      <view class="section-title" style="padding:24rpx 0 16rpx;" wx:if="{{upcomingTrips.length > 0}}">
+        <text class="text-md text-bold">✈️ 旅行倒计时</text>
+      </view>
+      <view wx:if="{{upcomingTrips.length > 0}}">
+        <view class="card trip-card" wx:for="{{upcomingTrips}}" wx:key="id"
+          data-page="/pages/travel/travel" bindtap="onQuickAction">
+          <view class="flex-row items-center">
+            <view class="trip-icon-wrap">
+              <text class="text-2xl">✈️</text>
+            </view>
+            <view class="flex-1 ml-md">
+              <text class="text-base text-bold">{{item.title}}</text>
+              <text class="text-xs text-secondary block mt-xs">{{item.destination}} · {{item.startDate}}</text>
+            </view>
+            <view class="trip-countdown">
+              <text class="text-xs text-hint">还有</text>
+              <text class="text-xl text-bold text-primary">{{item.daysUntil || '?'}}</text>
+              <text class="text-xs text-hint">天</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 本周整理进度 -->
+      <view class="card mt-md animate-fade-in">
+        <view class="flex-row items-center justify-between">
+          <view>
+            <text class="text-md text-bold">本周整理进度</text>
+            <text class="text-sm text-secondary block mt-xs">已完成 {{dashboardData.weeklyTidyProgress}}%</text>
+          </view>
+          <progress-ring percent="{{dashboardData.weeklyTidyProgress}}" size="{{100}}" strokeWidth="{{8}}" />
+        </view>
+      </view>
+
+      <!-- 本周生活摘要 -->
+      <view class="card mt-md animate-fade-in" wx:if="{{weeklySummary.habitRate > 0 || weeklySummary.choreRate > 0}}">
+        <text class="text-md text-bold" style="display:block;margin-bottom:16rpx;">📊 本周生活摘要</text>
+        <view class="flex-row" style="gap:24rpx;">
+          <view class="flex-1" style="text-align:center;">
+            <text class="text-2xl text-bold" style="color:var(--color-primary);">{{weeklySummary.habitRate}}%</text>
+            <text class="text-xs text-secondary block mt-xs">习惯完成率</text>
+          </view>
+          <view style="width:1rpx;background:var(--color-divider);"></view>
+          <view class="flex-1" style="text-align:center;">
+            <text class="text-2xl text-bold" style="color:var(--color-secondary);">{{weeklySummary.choreRate}}%</text>
+            <text class="text-xs text-secondary block mt-xs">家务完成率</text>
+          </view>
+          <view style="width:1rpx;background:var(--color-divider);"></view>
+          <view class="flex-1" style="text-align:center;">
+            <text class="text-2xl text-bold" style="color:var(--color-info);">{{weeklySummary.completedTasks}}/{{weeklySummary.totalTasks}}</text>
+            <text class="text-xs text-secondary block mt-xs">任务完成</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 今日 AI 建议 -->
+      <view class="card tip-card mt-md animate-fade-in" wx:if="{{dashboardData.dailyTip}}">
+        <view class="flex-row items-start" data-page="/pages/assistant/assistant" bindtap="onQuickAction">
+          <text class="tip-icon">💡</text>
+          <view class="flex-1 ml-sm">
+            <text class="text-sm text-bold">今日 AI 建议</text>
+            <text class="text-sm text-secondary block mt-xs">{{dashboardData.dailyTip}}</text>
+          </view>
+          <text class="text-hint">›</text>
+        </view>
+      </view>
+
+      <!-- 快捷入口 -->
+      <view class="section-title" style="padding:32rpx 0 16rpx;">
+        <text class="text-md text-bold">快捷入口</text>
+      </view>
+      <view class="quick-grid">
+        <view class="quick-item touch-scale" wx:for="{{quickActions}}" wx:key="title"
+          data-page="{{item.page}}" bindtap="onQuickAction">
+          <view class="quick-icon-wrap">
+            <text class="quick-icon">{{item.icon}}</text>
+          </view>
+          <text class="text-xs text-secondary mt-xs">{{item.title}}</text>
+        </view>
+      </view>
+
+      <!-- 提醒列表 -->
+      <view class="section-title" wx:if="{{reminders.length > 0}}" style="padding:32rpx 0 16rpx;">
+        <text class="text-md text-bold">提醒事项</text>
+        <text class="text-xs text-secondary" style="margin-left:12rpx;" bindtap="onViewAllReminders">查看全部 ›</text>
+      </view>
+      <view class="reminder-list" wx:if="{{reminders.length > 0}}">
+        <view class="reminder-item card card-sm" wx:for="{{reminders}}" wx:key="type"
+          data-module="{{item.module}}" bindtap="onReminderTap">
+          <text class="reminder-item-icon">{{item.icon}}</text>
+          <view class="flex-1">
+            <text class="text-sm text-bold block">{{item.title}}</text>
+            <text class="text-xs text-secondary block mt-xs">{{item.subtitle}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 今日家务 -->
+      <view class="section-title" wx:if="{{todayChores.length > 0}}" style="padding:32rpx 0 16rpx;">
+        <text class="text-md text-bold">今日家务</text>
+      </view>
+      <block wx:if="{{todayChores.length > 0}}">
+        <task-card wx:for="{{todayChores}}" wx:key="id" task="{{item}}"
+          data-id="{{item.id}}" bindtap="onChoreTap" />
+      </block>
+
+      <empty-state wx:if="{{!loading && todayChores.length === 0 && reminders.length === 0 && todayHabits.length === 0}}"
+        icon="🎉" title="一切正常" subtitle="今天没有需要处理的事项，享受轻松的一天吧！" />
+    </block>
+
+    <!-- 底部安全区 -->
+    <view class="safe-bottom" style="height: 200rpx;"></view>
+  </scroll-view>
+</view>

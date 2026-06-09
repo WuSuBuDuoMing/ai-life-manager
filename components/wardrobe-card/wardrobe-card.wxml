@@ -1,0 +1,26 @@
+﻿<!--
+  wardrobe-card 组件
+  功能：衣物卡片，展示衣物信息和洗涤状态
+  launderStatus=dirty 时显示洗涤图标和橙色背景
+-->
+<view class="wardrobe-card {{item.launderStatus === 'dirty' ? 'is-dirty' : ''}}" bindtap="onEdit">
+  <view class="color-dot" style="background-color: {{item.color || '#CCCCCC'}};"></view>
+  <view class="wardrobe-content">
+    <view class="wardrobe-header">
+      <text class="wardrobe-name">{{item.name}}</text>
+      <text class="wear-count" wx:if="{{item.wearCount > 0}}">穿{{item.wearCount}}次</text>
+    </view>
+    <view class="wardrobe-info-row">
+      <view class="wardrobe-category" wx:if="{{item.category}}">
+        <text class="category-text">{{item.category}}</text>
+      </view>
+      <view class="wardrobe-season" wx:if="{{item.season}}">
+        <text class="season-text">{{item.season}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="laundry-btn {{item.launderStatus === 'dirty' ? 'dirty' : ''}}" catchtap="onToggleLaundry">
+    <text class="laundry-icon">{{item.launderStatus === 'dirty' ? '🧺' : '👔'}}</text>
+    <text class="laundry-text">{{item.launderStatus === 'dirty' ? '待洗' : '干净'}}</text>
+  </view>
+</view>

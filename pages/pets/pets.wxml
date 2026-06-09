@@ -1,0 +1,300 @@
+<!-- pages/pets/pets.wxml -->
+<view class="page-container {{isDark ? 'dark' : ''}}">
+
+  <!-- 页面标题区 -->
+  <view class="page-header">
+    <text class="page-title">🐾 宠物生活</text>
+    <text class="page-subtitle">照顾好你的小伙伴</text>
+  </view>
+
+  <!-- 宠物档案卡片 -->
+  <view class="pet-profile-card card" wx:if="{{pet}}">
+    <view class="flex-row items-center">
+      <view class="pet-avatar-wrap">
+        <text class="pet-avatar-icon">{{pet.icon}}</text>
+      </view>
+      <view class="flex-1 ml-lg">
+        <view class="flex-row items-center">
+          <text class="text-lg text-bold">{{pet.name}}</text>
+          <view class="edit-pet-btn" bindtap="showEditPet">
+            <text class="text-xs text-primary">✏️ 编辑</text>
+          </view>
+        </view>
+        <view class="flex-row items-center mt-xs" style="gap:12rpx;">
+          <text class="tag tag-info">{{pet.breed}}</text>
+          <text class="text-xs text-secondary">{{pet.type}}</text>
+          <text class="text-xs text-hint" wx:if="{{pet.gender}}">{{pet.gender}}</text>
+        </view>
+        <view class="flex-row items-center mt-xs" style="gap:16rpx;">
+          <text class="text-xs text-hint">🎂 {{pet.birthday}}</text>
+          <text class="text-xs text-hint">⚖️ {{pet.weight}}kg</text>
+        </view>
+        <view class="flex-row items-center mt-xs" style="gap:16rpx;" wx:if="{{pet.vetName}}">
+          <text class="text-xs text-hint">🏥 {{pet.vetName}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="flex-row" style="gap:12rpx;margin-bottom:20rpx;">
+    <view class="flex-1"><stat-card title="今日任务" value="{{todayTotal}}" icon="📋" color="#42A5F5" size="small" /></view>
+    <view class="flex-1"><stat-card title="已完成" value="{{todayDone}}" icon="✅" color="#4CAF50" size="small" /></view>
+    <view class="flex-1"><stat-card title="日记数" value="{{diaryCount}}" icon="📖" color="#FF9800" size="small" /></view>
+  </view>
+
+  <!-- Tab切换 -->
+  <view class="tabs flex-row mb-md">
+    <view class="tab-item flex-1 text-center {{currentTab === index ? 'tab-active' : ''}}"
+      wx:for="{{tabs}}" wx:key="index" data-index="{{index}}" bindtap="onTabChange">
+      <text class="text-sm">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-state">
+    <view class="card shimmer" style="height:120rpx;margin-bottom:16rpx;"></view>
+    <view class="card shimmer" style="height:120rpx;margin-bottom:16rpx;"></view>
+    <view class="card shimmer" style="height:120rpx;"></view>
+  </view>
+
+  <!-- 今日任务Tab -->
+  <block wx:elif="{{currentTab === 0}}">
+    <block wx:if="{{todayReminders.length > 0}}">
+      <view class="reminder-item card" wx:for="{{todayReminders}}" wx:key="id">
+        <view class="flex-row items-center">
+          <view class="reminder-icon-wrap" style="background:{{item.type === 'feed' ? '#E8F5E9' : item.type === 'walk' ? '#E3F2FD' : item.type === 'clean' ? '#FFF3E0' : '#F3E5F5'}};">
+            <text class="reminder-icon">{{item.type === 'feed' ? '🍖' : item.type === 'walk' ? '🦮' : item.type === 'water' ? '💧' : item.type === 'clean' ? '🧹' : '💉'}}</text>
+          </view>
+          <view class="flex-1 ml-md">
+            <text class="text-base text-bold">{{item.title}}</text>
+            <text class="text-xs text-secondary mt-xs">⏰ {{item.time}} · {{item.frequency}}</text>
+          </view>
+          <view class="done-btn" data-id="{{item.id}}" catchtap="onDoneReminder">
+            <text class="done-icon">✓</text>
+          </view>
+        </view>
+      </view>
+    </block>
+    <empty-state wx:else icon="🎉" title="今日任务已完成" subtitle="所有提醒都已处理" />
+  </block>
+
+  <!-- 提醒管理Tab -->
+  <block wx:elif="{{currentTab === 1}}">
+    <block wx:if="{{reminders.length > 0}}">
+      <view class="reminder-item card" wx:for="{{reminders}}" wx:key="id">
+        <view class="flex-row items-center">
+          <view class="reminder-icon-wrap" style="background:{{item.type === 'feed' ? '#E8F5E9' : item.type === 'walk' ? '#E3F2FD' : item.type === 'clean' ? '#FFF3E0' : '#F3E5F5'}};">
+            <text class="reminder-icon">{{item.type === 'feed' ? '🍖' : item.type === 'walk' ? '🦮' : item.type === 'water' ? '💧' : item.type === 'clean' ? '🧹' : '💉'}}</text>
+          </view>
+          <view class="flex-1 ml-md">
+            <text class="text-base text-bold">{{item.title}}</text>
+            <text class="text-xs text-secondary mt-xs">⏰ {{item.time}} · {{item.frequency}}</text>
+          </view>
+          <switch class="reminder-switch" checked="{{item.enabled}}" data-id="{{item.id}}" bindchange="onToggleReminder" color="var(--color-primary, #4CAF50)" />
+        </view>
+      </view>
+    </block>
+    <empty-state wx:else icon="🔔" title="暂无提醒" subtitle="还没有设置任何提醒" />
+  </block>
+
+  <!-- 宠物日记Tab -->
+  <block wx:elif="{{currentTab === 2}}">
+    <block wx:if="{{diary.length > 0}}">
+      <view class="diary-item card" wx:for="{{diary}}" wx:key="id">
+        <view class="flex-row items-start">
+          <view class="diary-mood">
+            <text class="mood-icon">{{item.mood === 'happy' ? '😊' : item.mood === 'normal' ? '😐' : item.mood === 'sad' ? '😢' : item.mood === 'sick' ? '🤒' : '🤩'}}</text>
+          </view>
+          <view class="flex-1 ml-md">
+            <view class="flex-row items-center justify-between">
+              <text class="text-xs text-hint">{{item.date}}</text>
+              <text class="text-xs text-danger" data-id="{{item.id}}" catchtap="onDeleteDiary">删除</text>
+            </view>
+            <text class="text-sm mt-xs" style="display:block;line-height:1.6;">{{item.content}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+    <empty-state wx:else icon="📖" title="还没有日记" subtitle="记录宠物的日常生活" />
+
+    <!-- 添加日记按钮 -->
+    <view class="add-diary-btn" bindtap="toggleDiaryForm">
+      <text class="text-primary text-bold">+ 写日记</text>
+    </view>
+  </block>
+
+  <!-- 疫苗记录Tab -->
+  <block wx:elif="{{currentTab === 3}}">
+    <!-- 未接种 -->
+    <view wx:if="{{vaccines.length > 0}}">
+      <view class="text-sm text-bold text-secondary mb-sm" style="display:block;">待接种</view>
+      <block wx:for="{{vaccines}}" wx:key="id">
+        <view class="vaccine-item card" wx:if="{{!item.completed}}">
+          <view class="flex-row items-center">
+            <view class="vaccine-icon-wrap pending">
+              <text>💉</text>
+            </view>
+            <view class="flex-1 ml-md">
+              <text class="text-base text-bold">{{item.name}}</text>
+              <view class="mt-xs">
+                <text class="text-xs text-warning" wx:if="{{item.nextDate}}">⏰ {{item.nextDate}}</text>
+              </view>
+              <text class="text-xs text-hint mt-xs block" wx:if="{{item.hospital}}">🏥 {{item.hospital}}</text>
+              <text class="text-xs text-secondary mt-xs block" wx:if="{{item.notes}}">{{item.notes}}</text>
+            </view>
+            <view class="vaccine-actions">
+              <view class="vaccine-done-btn" data-id="{{item.id}}" catchtap="onMarkVaccineDone">
+                <text class="text-xs text-primary">✓ 已接种</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+
+      <!-- 已接种 -->
+      <view class="text-sm text-bold text-secondary mb-sm mt-lg" style="display:block;">已完成</view>
+      <block wx:for="{{vaccines}}" wx:key="id">
+        <view class="vaccine-item card completed" wx:if="{{item.completed}}">
+          <view class="flex-row items-center">
+            <view class="vaccine-icon-wrap done">
+              <text>✅</text>
+            </view>
+            <view class="flex-1 ml-md">
+              <text class="text-base text-secondary" style="text-decoration:line-through;">{{item.name}}</text>
+              <view class="mt-xs">
+                <text class="text-xs text-success">接种日期：{{item.date}}</text>
+              </view>
+              <text class="text-xs text-hint mt-xs block" wx:if="{{item.nextDate}}">下次：{{item.nextDate}}</text>
+            </view>
+            <view class="vaccine-delete" data-id="{{item.id}}" catchtap="onDeleteVaccine">
+              <text class="text-xs text-danger">删除</text>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+    <empty-state wx:else icon="💉" title="暂无疫苗记录" subtitle="添加疫苗记录，追踪接种计划" />
+
+    <!-- 添加疫苗按钮 -->
+    <view class="add-diary-btn" bindtap="toggleVaccineForm">
+      <text class="text-primary text-bold">+ 添加疫苗记录</text>
+    </view>
+  </block>
+
+  <!-- 添加日记弹窗 -->
+  <view class="overlay" wx:if="{{showDiaryForm}}" bindtap="toggleDiaryForm">
+    <view class="modal" catchtap="">
+      <text class="modal-title">写宠物日记</text>
+
+      <view class="form-group">
+        <text class="form-label">今天的心情</text>
+        <view class="mood-selector">
+          <view class="mood-item {{newDiary.mood === item.key ? 'mood-active' : ''}}"
+            wx:for="{{moods}}" wx:key="key" data-mood="{{item.key}}" catchtap="onMoodSelect">
+            <text class="mood-item-icon">{{item.icon}}</text>
+            <text class="mood-item-label">{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">记录内容</text>
+        <textarea class="form-textarea" placeholder="今天发生了什么有趣的事？" value="{{newDiary.content}}" data-field="content" bindinput="onDiaryInput" maxlength="500" />
+      </view>
+
+      <view class="modal-actions">
+        <button class="btn btn-ghost" bindtap="toggleDiaryForm">取消</button>
+        <button class="btn btn-primary" bindtap="confirmAddDiary">保存</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 编辑宠物档案弹窗 -->
+  <view class="overlay" wx:if="{{showPetEditForm}}" bindtap="cancelEditPet">
+    <view class="modal" catchtap="">
+      <text class="modal-title">编辑宠物档案</text>
+
+      <view class="form-group">
+        <text class="form-label">名字</text>
+        <input class="form-input" placeholder="宠物名字" value="{{editPet.name}}" data-field="name" bindinput="onEditPetInput" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">品种</text>
+        <input class="form-input" placeholder="品种" value="{{editPet.breed}}" data-field="breed" bindinput="onEditPetInput" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">生日</text>
+        <picker mode="date" value="{{editPet.birthday}}" data-field="birthday" bindchange="onEditPetDateChange">
+          <view class="form-select">{{editPet.birthday || '选择日期'}}</view>
+        </picker>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">体重 (kg)</text>
+        <input class="form-input" type="digit" placeholder="体重" value="{{editPet.weight}}" data-field="weight" bindinput="onEditPetInput" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">性别</text>
+        <view class="flex-row" style="gap:16rpx;">
+          <view class="tag {{editPet.gender === '公' ? 'tag-primary' : 'tag-secondary'}}" data-field="gender" data-value="公" catchtap="onEditPetSelect">公</view>
+          <view class="tag {{editPet.gender === '母' ? 'tag-primary' : 'tag-secondary'}}" data-field="gender" data-value="母" catchtap="onEditPetSelect">母</view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">主治医院</text>
+        <input class="form-input" placeholder="宠物医院名称" value="{{editPet.vetName}}" data-field="vetName" bindinput="onEditPetInput" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">医院电话</text>
+        <input class="form-input" placeholder="医院电话" value="{{editPet.vetPhone}}" data-field="vetPhone" bindinput="onEditPetInput" />
+      </view>
+
+      <view class="modal-actions">
+        <button class="btn btn-ghost" bindtap="cancelEditPet">取消</button>
+        <button class="btn btn-primary" bindtap="confirmEditPet">保存</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 添加疫苗弹窗 -->
+  <view class="overlay" wx:if="{{showVaccineForm}}" bindtap="toggleVaccineForm">
+    <view class="modal" catchtap="">
+      <text class="modal-title">添加疫苗记录</text>
+
+      <view class="form-group">
+        <text class="form-label">疫苗名称</text>
+        <input class="form-input" placeholder="如：狂犬疫苗" value="{{newVaccine.name}}" data-field="name" bindinput="onVaccineInput" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">下次接种日期</text>
+        <picker mode="date" value="{{newVaccine.nextDate}}" bindchange="onVaccineDateChange">
+          <view class="form-select">{{newVaccine.nextDate || '选择日期'}}</view>
+        </picker>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">接种医院</text>
+        <input class="form-input" placeholder="医院名称" value="{{newVaccine.hospital}}" data-field="hospital" bindinput="onVaccineInput" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">备注</text>
+        <textarea class="form-textarea" placeholder="备注信息" value="{{newVaccine.notes}}" data-field="notes" bindinput="onVaccineInput" maxlength="200" />
+      </view>
+
+      <view class="modal-actions">
+        <button class="btn btn-ghost" bindtap="toggleVaccineForm">取消</button>
+        <button class="btn btn-primary" bindtap="confirmAddVaccine">添加</button>
+      </view>
+    </view>
+  </view>
+
+  <view style="height:200rpx;"></view>
+</view>

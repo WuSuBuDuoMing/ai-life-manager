@@ -1,0 +1,208 @@
+/**
+ * chore-card 样式
+ * 设计：左侧彩色状态条 + 内容区 + 右侧完成按钮
+ * 不同 status 显示不同颜色左侧条：pending=橙色, in_progress=蓝色, completed=绿色
+ * 卡片圆角，完成后整体淡化
+ */
+
+/* 卡片容器 */
+.chore-card {
+  display: flex;
+  align-items: stretch;
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  transition: opacity 0.3s ease;
+}
+
+page.dark .chore-card {
+  background-color: #2C2C2E;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
+}
+
+.chore-card:active {
+  opacity: 0.85;
+}
+
+/* 已完成状态淡化 */
+.chore-card.completed {
+  opacity: 0.6;
+}
+
+/* ==================== 左侧状态条 ==================== */
+.chore-status-bar {
+  width: 8rpx;
+  flex-shrink: 0;
+}
+
+.status-bar-pending {
+  background-color: #FF9800;
+}
+
+.status-bar-in_progress {
+  background-color: #2196F3;
+}
+
+.status-bar-completed {
+  background-color: #4CAF50;
+}
+
+.status-bar-overdue {
+  background-color: #F44336;
+}
+
+/* ==================== 内容区域 ==================== */
+.chore-content {
+  flex: 1;
+  padding: 20rpx 20rpx 20rpx 24rpx;
+  overflow: hidden;
+}
+
+/* 第一行 */
+.chore-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8rpx;
+}
+
+.chore-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333333;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+page.dark .chore-title {
+  color: #F5F5F5;
+}
+
+.chore-card.completed .chore-title {
+  color: #AAAAAA;
+  text-decoration: line-through;
+}
+
+/* 积分徽标 */
+.chore-points {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  padding: 4rpx 14rpx;
+  background-color: rgba(255, 193, 7, 0.12);
+  border-radius: 20rpx;
+  flex-shrink: 0;
+  margin-left: 12rpx;
+}
+
+.points-icon {
+  font-size: 20rpx;
+  line-height: 1;
+}
+
+.points-text {
+  font-size: 22rpx;
+  font-weight: 600;
+  color: #FF9800;
+}
+
+/* 第二行：信息标签 */
+.chore-info-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-bottom: 6rpx;
+}
+
+/* 负责人 */
+.chore-assignee {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.assignee-avatar {
+  font-size: 28rpx;
+  line-height: 1;
+}
+
+.assignee-name {
+  font-size: 24rpx;
+  color: #666666;
+}
+
+page.dark .assignee-name {
+  color: #AEAEB2;
+}
+
+/* 频率标签 */
+.chore-frequency {
+  padding: 4rpx 14rpx;
+  background-color: rgba(76, 175, 80, 0.1);
+  border-radius: 20rpx;
+}
+
+.frequency-text {
+  font-size: 22rpx;
+  color: #4CAF50;
+  font-weight: 500;
+}
+
+/* 房间标签 */
+.chore-room {
+  padding: 4rpx 14rpx;
+  background-color: rgba(158, 158, 158, 0.1);
+  border-radius: 20rpx;
+}
+
+.room-text {
+  font-size: 22rpx;
+  color: #666666;
+}
+
+page.dark .room-text {
+  color: #AEAEB2;
+}
+
+/* 第三行：到期日 */
+.chore-due {
+  margin-top: 4rpx;
+}
+
+.due-text {
+  font-size: 22rpx;
+  color: #999999;
+}
+
+/* ==================== 完成按钮 ==================== */
+.chore-complete-btn {
+  width: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.chore-complete-btn:active {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.complete-icon {
+  font-size: 44rpx;
+  color: #CCCCCC;
+  line-height: 1;
+}
+
+.chore-complete-btn.done .complete-icon {
+  color: #4CAF50;
+}
+
+.chore-complete-btn.done {
+  background-color: rgba(76, 175, 80, 0.05);
+}

@@ -1,0 +1,63 @@
+/* pages/room/room.wxss */
+
+/* 进度卡片 */
+.progress-card { background: linear-gradient(135deg, #E8F5E9, #fff); }
+
+/* 挑战卡片 */
+.challenge-card { background: linear-gradient(135deg, #FFF3E0, #fff); }
+.challenge-card:active { opacity: 0.8; }
+.challenge-icon { font-size: 56rpx; }
+
+/* 区域网格 */
+.zone-grid {
+  display: flex; flex-wrap: wrap; gap: 12rpx; margin-bottom: 16rpx;
+}
+.zone-item {
+  width: calc(50% - 6rpx); display: flex; flex-direction: column;
+  align-items: center; padding: 24rpx 16rpx !important; box-sizing: border-box;
+}
+.zone-item:active { opacity: 0.7; }
+.zone-selected { border: 2rpx solid var(--color-primary, #4CAF50); }
+.zone-icon { font-size: 40rpx; }
+.zone-progress-bar {
+  width: 100%; height: 8rpx; background: var(--color-bg-input, #F7F3F0);
+  border-radius: 4rpx; margin-top: 12rpx; overflow: hidden;
+}
+.zone-progress-fill {
+  height: 100%; background: var(--color-primary, #4CAF50);
+  border-radius: 4rpx; transition: width 0.3s ease;
+}
+
+/* 任务项 */
+.task-item { margin-bottom: 12rpx; }
+.task-check {
+  width: 48rpx; height: 48rpx; border-radius: 50%;
+  border: 3rpx solid var(--color-border, #e0e0e0);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 24rpx; color: #fff;
+}
+.task-done { background: var(--color-primary, #4CAF50); border-color: var(--color-primary, #4CAF50); }
+.task-strikethrough { text-decoration: line-through; }
+.delete-action { padding: 8rpx 12rpx; }
+.delete-action:active { opacity: 0.5; }
+
+/* 分类标签（复用） */
+.category-chip {
+  display: inline-flex; padding: 12rpx 24rpx; border-radius: 24rpx;
+  font-size: 24rpx; background: var(--color-bg-card, #fff);
+  color: var(--color-text-secondary, #888); border: 1rpx solid var(--color-border, #e0e0e0);
+}
+.category-active {
+  background: var(--color-primary, #4CAF50); color: #fff;
+  border-color: var(--color-primary, #4CAF50);
+}
+
+/* 优先级标签 */
+.priority-chip {
+  display: inline-flex; padding: 12rpx 24rpx; border-radius: 24rpx;
+  font-size: 24rpx; background: var(--color-bg-card, #fff);
+  color: var(--color-text-secondary, #888); border: 2rpx solid #ccc;
+}
+
+/* 加载状态 */
+.loading-state { padding: 16rpx 0; }

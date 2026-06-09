@@ -1,0 +1,114 @@
+<!-- pages/habits/habits.wxml -->
+<view class="page-container {{isDark ? 'dark' : ''}}">
+
+  <!-- 页面标题区 -->
+  <view class="page-header">
+    <text class="page-title">✅ 习惯打卡</text>
+    <text class="page-subtitle">每天进步一点点</text>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="flex-row" style="gap:12rpx;margin-bottom:20rpx;">
+    <view class="flex-1"><stat-card title="今日完成" value="{{todayCompleted}}" icon="🎯" color="#4CAF50" size="small" /></view>
+    <view class="flex-1"><stat-card title="总习惯" value="{{totalHabits}}" icon="📋" color="#42A5F5" size="small" /></view>
+    <view class="flex-1"><stat-card title="最长连续" value="{{totalStreak}}" icon="🔥" color="#FF9800" size="small" /></view>
+  </view>
+
+  <!-- 本周趋势 -->
+  <view class="card mb-md" wx:if="{{weeklyTrend.length > 0}}">
+    <text class="text-sm text-bold" style="display:block;margin-bottom:12rpx;">📊 本周打卡趋势</text>
+    <chart-bar data="{{weeklyTrend}}" maxValue="{{weeklyTrendMax}}" height="{{160}}" />
+  </view>
+
+  <!-- 分类标签 -->
+  <scroll-view scroll-x class="category-scroll" enhanced show-scrollbar="{{false}}">
+    <view class="category-list">
+      <view class="category-chip {{selectedCategory === item ? 'category-active' : ''}}"
+        wx:for="{{categories}}" wx:key="*this" data-category="{{item}}" bindtap="onCategoryFilter">
+        <text>{{item}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-state">
+    <view class="card shimmer" style="height:120rpx;margin-bottom:16rpx;"></view>
+    <view class="card shimmer" style="height:120rpx;margin-bottom:16rpx;"></view>
+    <view class="card shimmer" style="height:120rpx;"></view>
+  </view>
+
+  <!-- 习惯列表 -->
+  <block wx:elif="{{filteredHabits.length > 0}}">
+    <view class="habit-item card" wx:for="{{filteredHabits}}" wx:key="id">
+      <view class="flex-row items-center">
+        <view class="habit-icon-wrap">
+          <text class="habit-icon">{{item.icon}}</text>
+        </view>
+        <view class="flex-1 ml-md">
+          <text class="text-base text-bold">{{item.name}}</text>
+          <view class="flex-row items-center mt-xs">
+            <text class="tag tag-info" style="font-size:20rpx;">{{item.category}}</text>
+            <text class="text-xs text-secondary ml-sm">🔥 连续 {{item.currentStreak}} 天</text>
+            <text class="text-xs text-hint ml-sm">最佳 {{item.bestStreak}} 天</text>
+          </view>
+        </view>
+        <view class="habit-actions">
+          <view class="check-btn {{item._todayDone ? 'check-done' : ''}}"
+            data-id="{{item.id}}" catchtap="onToggleHabit">
+            <text class="check-icon">{{item._todayDone ? '✓' : ''}}</text>
+          </view>
+          <view class="delete-btn" data-id="{{item.id}}" catchtap="onDeleteHabit">
+            <text class="text-xs text-hint">删除</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <empty-state wx:else icon="✨" title="还没有习惯" subtitle="点击右下角添加你的第一个习惯" />
+
+  <!-- FAB 添加按钮 -->
+  <view class="fab" bindtap="toggleAddForm">
+    <text class="fab-icon">+</text>
+  </view>
+
+  <!-- 添加习惯弹窗 -->
+  <view class="overlay" wx:if="{{showAddForm}}" bindtap="toggleAddForm">
+    <view class="modal" catchtap="">
+      <text class="modal-title">添加习惯</text>
+
+      <view class="form-group">
+        <text class="form-label">习惯名称</text>
+        <input class="form-input" placeholder="如：早起、喝水8杯" value="{{newHabit.name}}" data-field="name" bindinput="onNewHabitInput" />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">分类</text>
+        <view class="flex-row" style="gap:12rpx;flex-wrap:wrap;">
+          <view class="category-chip {{newHabit.category === item ? 'category-active' : ''}}"
+            wx:for="{{categories}}" wx:key="*this" wx:if="{{item !== '全部'}}"
+            data-category="{{item}}" catchtap="onCategorySelect">
+            <text>{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">选择图标</text>
+        <view class="icon-grid">
+          <view class="icon-item {{newHabit.icon === item ? 'icon-active' : ''}}"
+            wx:for="{{iconOptions}}" wx:key="*this" data-icon="{{item}}" catchtap="onIconSelect">
+            <text class="icon-text">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="modal-actions">
+        <button class="btn btn-ghost" bindtap="toggleAddForm">取消</button>
+        <button class="btn btn-primary" bindtap="confirmAddHabit">添加</button>
+      </view>
+    </view>
+  </view>
+
+  <view style="height:200rpx;"></view>
+</view>
