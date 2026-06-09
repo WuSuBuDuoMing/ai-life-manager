@@ -1,0 +1,111 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-validate:
+    name: Lint & Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate app.json
+        run: node -e "const c=require('./app.json'); console.log('Pages:', c.pages.length); console.log('Tabs:', c.tabBar.list.length); console.log('OK')"
+
+      - name: Check all pages have 4 files
+        run: |
+          pages=("index" "chores" "checklists" "shopping" "subscriptions" "budget" "fridge" "wardrobe" "room" "habits" "recipes" "pets" "travel" "bills" "assistant" "search" "profile")
+          for page in "${pages[@]}"; do
+            for ext in js json wxml wxss; do
+              file="pages/$page/$page.$ext"
+              if [ ! -f "$file" ]; then
+                echo "MISSING: $file"
+                exit 1
+              fi
+            done
+          done
+          echo "All 17 pages have 4 files each"
+
+      - name: Check all components have 4 files
+        run: |
+          components=("chart-bar" "checklist-card" "chore-card" "dashboard-card" "empty-state" "expense-card" "food-card" "loading-state" "nav-bar" "progress-ring" "room-zone-card" "search-bar" "shopping-item" "stat-card" "subscription-card" "task-card" "wardrobe-card")
+          for comp in "${components[@]}"; do
+            for ext in js json wxml wxss; do
+              file="components/$comp/$comp.$ext"
+              if [ ! -f "$file" ]; then
+                echo "MISSING: $file"
+                exit 1
+              fi
+            done
+          done
+          echo "All 17 components have 4 files each"
+
+      - name: Check all services exist
+        run: |
+          services=("assistant-service" "bill-service" "budget-service" "checklist-service" "chore-service" "dashboard-service" "export-service" "fridge-service" "habit-service" "life-score-service" "notification-service" "pet-service" "recipe-service" "room-service" "shopping-service" "subscription-service" "travel-service" "wardrobe-service")
+          for svc in "${services[@]}"; do
+            if [ ! -f "services/$svc.js" ]; then
+              echo "MISSING: services/$svc.js"
+              exit 1
+            fi
+          done
+          echo "All 18 services exist"
+
+      - name: Validate LICENSE
+        run: |
+          if [ -f "LICENSE" ]; then
+            echo "LICENSE exists"
+          else
+            echo "MISSING: LICENSE file"
+            exit 1
+          fi
+
+      - name: Validate README
+        run: |
+          if [ -f "README.md" ] && grep -q "MIT License" "README.md"; then
+            echo "README.md has license info"
+          else
+            echo "WARNING: README.md missing license info"
+          fi
+
+      - name: Check LICENSE year and author
+        run: |
+          if grep -q "WuSuBuDuoMing" LICENSE; then
+            echo "LICENSE author correct"
+          else
+            echo "WARNING: LICENSE author mismatch"
+          fi
+
+  structure-report:
+    name: Structure Report
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate project stats
+        run: |
+          echo "=== AI Life Manager - Project Stats ==="
+          echo ""
+          echo "File counts:"
+          echo "  JS files:    $(find . -name '*.js' | wc -l)"
+          echo "  JSON files:  $(find . -name '*.json' | wc -l)"
+          echo "  WXML files:  $(find . -name '*.wxml' | wc -l)"
+          echo "  WXSS files:  $(find . -name '*.wxss' | wc -l)"
+          echo "  MD files:    $(find . -name '*.md' | wc -l)"
+          echo ""
+          echo "  Total files: $(find . -type f | wc -l)"
+          echo ""
+          echo "Directory counts:"
+          echo "  Pages:       $(ls -d pages/*/ | wc -l)"
+          echo "  Components:  $(ls -d components/*/ | wc -l)"
+          echo "  Services:    $(ls services/*.js | wc -l)"
+          echo "  Utils:       $(ls utils/*.js | wc -l)"
+          echo ""
+          echo "Line counts:"
+          echo "  Total JS:    $(find . -name '*.js' | xargs wc -l 2>/dev/null | tail -1)"
+          echo "  Total WXSS:  $(find . -name '*.wxss' | xargs wc -l 2>/dev/null | tail -1)"
+          echo "  Total WXML:  $(find . -name '*.wxml' | xargs wc -l 2>/dev/null | tail -1)"
