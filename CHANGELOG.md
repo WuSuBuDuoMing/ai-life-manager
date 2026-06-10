@@ -55,3 +55,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Issue templates (Bug Report, Feature Request)
 - Pull Request template
 - MIT License
+
+## [1.1.0] - 2026-06-10
+
+### Added
+- English README with architecture diagrams, badges, and comprehensive documentation
+- Chinese README (README.zh-CN.md) for bilingual support
+- GitHub Actions CI workflow (structure validation, file checks)
+- Issue templates (Bug Report, Feature Request)
+- Pull Request template
+- CONTRIBUTING.md (bilingual English/Chinese)
+- CHANGELOG.md (this file)
+- Multi-platform installation guide in Release notes
+- npm package configuration (publish.yml workflow)
+- Website and Topics added to GitHub repository
+
+### Changed
+- Repository made public for open-source community
+- All commit authors unified to WuSuBuDuoMing
