@@ -1,4 +1,7 @@
-// 房间整理服务
+/**
+ * 房间整理服务
+ * 提供区域管理、整理任务CRUD、进度统计、每周挑战等功能
+ */
 var mockUtils = require('../utils/mock-utils')
 
 var STORAGE_KEY = 'room_tasks'
@@ -50,6 +53,10 @@ function generateMockTasks() {
   ]
 }
 
+/**
+ * 获取所有区域（含任务统计）
+ * @returns {Promise<Array>} 区域列表
+ */
 function getZones() {
   var tasks = mockUtils.initData(STORAGE_KEY, generateMockTasks)
   var result = ZONES.map(function(z) {
@@ -64,11 +71,20 @@ function getZones() {
   return mockUtils.mockAsync(result)
 }
 
+/**
+ * 获取所有房间任务
+ * @returns {Promise<Array>} 任务列表
+ */
 function getTasks() {
   var data = mockUtils.initData(STORAGE_KEY, generateMockTasks)
   return mockUtils.mockAsync(data)
 }
 
+/**
+ * 添加房间任务
+ * @param {Object} task - 任务信息
+ * @returns {Promise<Object>} 新任务
+ */
 function addTask(task) {
   var tasks = mockUtils.initData(STORAGE_KEY, generateMockTasks)
   task.id = task.id || mockUtils.generateId()
@@ -78,6 +94,12 @@ function addTask(task) {
   return mockUtils.mockAsync(task)
 }
 
+/**
+ * 更新房间任务
+ * @param {string} id - 任务ID
+ * @param {Object} updates - 更新字段
+ * @returns {Promise<boolean>}
+ */
 function updateTask(id, updates) {
   var tasks = mockUtils.initData(STORAGE_KEY, generateMockTasks)
   for (var i = 0; i < tasks.length; i++) {
@@ -87,6 +109,11 @@ function updateTask(id, updates) {
   return mockUtils.mockAsync(true)
 }
 
+/**
+ * 删除房间任务
+ * @param {string} id - 任务ID
+ * @returns {Promise<boolean>}
+ */
 function deleteTask(id) {
   var tasks = mockUtils.initData(STORAGE_KEY, generateMockTasks)
   tasks = tasks.filter(function(t) { return t.id !== id })
@@ -94,14 +121,27 @@ function deleteTask(id) {
   return mockUtils.mockAsync(true)
 }
 
+/**
+ * 完成房间任务
+ * @param {string} id - 任务ID
+ * @returns {Promise<boolean>}
+ */
 function completeTask(id) {
   return updateTask(id, { status: 'completed' })
 }
 
+/**
+ * 获取区域进度（别名，等同于 getZones）
+ * @returns {Promise<Array>}
+ */
 function getProgress() {
   return getZones()
 }
 
+/**
+ * 获取每周整理挑战
+ * @returns {Promise<Object>} 挑战详情
+ */
 function getWeeklyChallenge() {
   return mockUtils.mockAsync({
     id: 'challenge_001',

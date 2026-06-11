@@ -76,15 +76,29 @@ function generateMockChecklists() {
   ]
 }
 
+/**
+ * 获取所有清单
+ * @returns {Promise<Array>} 清单列表
+ */
 function getChecklists() {
   var data = mockUtils.initData('checklists', generateMockChecklists)
   return mockUtils.mockAsync(data)
 }
 
+/**
+ * 获取清单模板列表
+ * @returns {Promise<Array>} 模板列表
+ */
 function getTemplates() {
   return mockUtils.mockAsync(CHECKLIST_TEMPLATES)
 }
 
+/**
+ * 创建新清单
+ * @param {string} name - 清单名称
+ * @param {string} icon - 图标
+ * @returns {Promise<Object>} 新清单
+ */
 function createChecklist(name, icon) {
   var checklists = mockUtils.initData('checklists', generateMockChecklists)
   var newChecklist = {
@@ -99,6 +113,11 @@ function createChecklist(name, icon) {
   return mockUtils.mockAsync(newChecklist)
 }
 
+/**
+ * 从模板创建清单
+ * @param {string} templateId - 模板ID
+ * @returns {Promise<Object|null>} 新清单
+ */
 function createFromTemplate(templateId) {
   var template = CHECKLIST_TEMPLATES.find(function(t) { return t.id === templateId })
   if (!template) return mockUtils.mockAsync(null)
@@ -119,6 +138,12 @@ function createFromTemplate(templateId) {
   return mockUtils.mockAsync(newChecklist)
 }
 
+/**
+ * 切换清单项勾选状态
+ * @param {string} checklistId - 清单ID
+ * @param {string} itemId - 项目ID
+ * @returns {Promise<Array>} 更新后的清单列表
+ */
 function toggleChecklistItem(checklistId, itemId) {
   var checklists = mockUtils.initData('checklists', generateMockChecklists)
   var checklist = checklists.find(function(c) { return c.id === checklistId })
@@ -132,6 +157,11 @@ function toggleChecklistItem(checklistId, itemId) {
   return mockUtils.mockAsync(checklists)
 }
 
+/**
+ * 删除清单
+ * @param {string} checklistId - 清单ID
+ * @returns {Promise<Array>} 更新后的列表
+ */
 function deleteChecklist(checklistId) {
   var checklists = mockUtils.initData('checklists', generateMockChecklists)
   checklists = checklists.filter(function(c) { return c.id !== checklistId })

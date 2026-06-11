@@ -333,6 +333,11 @@ var defaultRule = {
   suggestions: ['今天吃什么', '帮我安排时间', '今天怎么样', '出门要带什么', '怎么省钱']
 }
 
+/**
+ * 向AI助手提问
+ * @param {string} question - 用户问题
+ * @returns {Promise<{answer: string, suggestions: Array, relatedModule: string}>}
+ */
 function ask(question) {
   var q = question || ''
 

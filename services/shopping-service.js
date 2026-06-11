@@ -44,15 +44,28 @@ function generateMockItems() {
   return items
 }
 
+/**
+ * 获取所有购物项
+ * @returns {Promise<Array>} 购物列表
+ */
 function getItems() {
   var data = mockUtils.initData('shopping_items', generateMockItems)
   return mockUtils.mockAsync(data)
 }
 
+/**
+ * 获取购物分类列表
+ * @returns {Promise<Array>} 分类列表（含"全部"）
+ */
 function getCategories() {
   return mockUtils.mockAsync(['全部'].concat(SHOPPING_CATEGORIES))
 }
 
+/**
+ * 添加购物项
+ * @param {Object} item - 商品信息
+ * @returns {Promise<Array>} 更新后的列表
+ */
 function addItem(item) {
   var items = mockUtils.initData('shopping_items', generateMockItems)
   items.unshift({
@@ -64,6 +77,11 @@ function addItem(item) {
   return mockUtils.mockAsync(items)
 }
 
+/**
+ * 切换购买状态
+ * @param {string} itemId - 商品ID
+ * @returns {Promise<Array>} 更新后的列表
+ */
 function togglePurchased(itemId) {
   var items = mockUtils.initData('shopping_items', generateMockItems)
   var item = items.find(function(i) { return i.id === itemId })
@@ -72,6 +90,11 @@ function togglePurchased(itemId) {
   return mockUtils.mockAsync(items)
 }
 
+/**
+ * 删除购物项
+ * @param {string} itemId - 商品ID
+ * @returns {Promise<Array>} 更新后的列表
+ */
 function deleteItem(itemId) {
   var items = mockUtils.initData('shopping_items', generateMockItems)
   items = items.filter(function(i) { return i.id !== itemId })
@@ -79,6 +102,12 @@ function deleteItem(itemId) {
   return mockUtils.mockAsync(items)
 }
 
+/**
+ * 更新购物项
+ * @param {string} itemId - 商品ID
+ * @param {Object} updates - 更新字段
+ * @returns {Promise<Array>} 更新后的列表
+ */
 function updateItem(itemId, updates) {
   var items = mockUtils.initData('shopping_items', generateMockItems)
   var index = items.findIndex(function(i) { return i.id === itemId })
@@ -87,6 +116,10 @@ function updateItem(itemId, updates) {
   return mockUtils.mockAsync(items)
 }
 
+/**
+ * 从冰箱临期食材自动添加到购物清单
+ * @returns {Promise<Array>} 更新后的购物列表
+ */
 function addFromFridge() {
   var fridgeItems = mockUtils.getFromStorage('fridge_items', [])
   var shoppingItems = mockUtils.initData('shopping_items', generateMockItems)

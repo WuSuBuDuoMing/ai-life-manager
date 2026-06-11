@@ -160,6 +160,14 @@ ai-life-manager/
 │   ├── storage-utils.js              #   wx.Storage wrapper with batch ops
 │   └── mock-utils.js                 #   Mock data infrastructure
 │
+├── tests/                            # Unit tests
+│   ├── wx-mock.js                    #   wx API mock for testing
+│   ├── date-utils.test.js            #   Date utility tests
+│   ├── money-utils.test.js           #   Money utility tests
+│   ├── task-utils.test.js            #   Task utility tests
+│   ├── bill-service.test.js          #   Bill service tests
+│   └── habit-service.test.js         #   Habit service tests
+│
 └── docs/                             # Project documentation
     ├── product-requirements.md       #   PRD
     ├── technical-architecture.md     #   Architecture deep-dive
@@ -196,6 +204,17 @@ cd ai-life-manager
 ```
 
 > **Note:** This project has zero npm dependencies. It runs entirely within the WeChat Mini Program runtime.
+
+### Running Tests
+
+```bash
+# Run individual test suites
+node tests/date-utils.test.js
+node tests/money-utils.test.js
+node tests/task-utils.test.js
+node tests/bill-service.test.js
+node tests/habit-service.test.js
+```
 
 ---
 

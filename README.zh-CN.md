@@ -242,6 +242,17 @@ git clone https://github.com/your-username/AI-life-manager-miniapp.git
 
 完成以上三步后，即可在模拟器中预览和调试小程序。
 
+### 运行测试
+
+```bash
+# 运行单个测试套件
+node tests/date-utils.test.js
+node tests/money-utils.test.js
+node tests/task-utils.test.js
+node tests/bill-service.test.js
+node tests/habit-service.test.js
+```
+
 ---
 
 ## 🎨 设计风格

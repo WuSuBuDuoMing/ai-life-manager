@@ -58,11 +58,19 @@ function generateMockChores() {
   return chores
 }
 
+/**
+ * 获取所有家务
+ * @returns {Promise<Array>} 家务列表
+ */
 function getChores() {
   var data = mockUtils.initData('chores', generateMockChores)
   return mockUtils.mockAsync(data)
 }
 
+/**
+ * 获取积分排行榜
+ * @returns {Promise<Array>} 排行榜数据
+ */
 function getLeaderboard() {
   var chores = mockUtils.initData('chores', generateMockChores)
   var members = _getMembers()
@@ -80,6 +88,10 @@ function getLeaderboard() {
   return mockUtils.mockAsync(result)
 }
 
+/**
+ * 获取本周排班表
+ * @returns {Promise<Array>} 每日家务安排
+ */
 function getWeeklySchedule() {
   var chores = mockUtils.initData('chores', generateMockChores)
   var weekDates = mockUtils.getWeekDates()
@@ -96,6 +108,11 @@ function getWeeklySchedule() {
   return mockUtils.mockAsync(result)
 }
 
+/**
+ * 完成家务
+ * @param {string} choreId - 家务ID
+ * @returns {Promise<Object>} 完成的家务和更新后的列表
+ */
 function completeChore(choreId) {
   var chores = mockUtils.initData('chores', generateMockChores)
   var index = chores.findIndex(function(c) { return c.id === choreId })
@@ -109,6 +126,10 @@ function completeChore(choreId) {
   return mockUtils.mockAsync({ chore: completedChore, all: chores })
 }
 
+/**
+ * 生成本周家务计划
+ * @returns {Promise<Array>} 新生成的家务列表
+ */
 function generateWeeklyPlan() {
   var members = _getMembers()
   var weekDates = mockUtils.getWeekDates()

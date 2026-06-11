@@ -73,3 +73,40 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 - Repository made public for open-source community
 - All commit authors unified to WuSuBuDuoMing
+
+## [1.2.0] - 2026-06-11
+
+### Fixed
+- **Bug**: `profile.js` called nonexistent `loadData()` after cache clear — now correctly calls `loadStats()` + `loadReminders()` + `loadLifeScore()`
+- **Dead code**: Removed redundant `toggleTheme()` from profile page (already provided by `theme-behavior.js`)
+- **Redundancy**: Removed duplicate `isDark: false` from profile page data (provided by behavior)
+- **Version mismatch**: Updated help/about dialogs to show correct version (was showing v2.0)
+
+### Added
+- **Unit tests**: 5 test suites with 87 assertions covering core utilities and services
+  - `tests/wx-mock.js` — wx API mock for Node.js testing
+  - `tests/date-utils.test.js` — 26 tests for date formatting, comparison, and calculation
+  - `tests/money-utils.test.js` — 20 tests for currency formatting and budget math
+  - `tests/task-utils.test.js` — 20 tests for sorting, filtering, grouping, and ID generation
+  - `tests/bill-service.test.js` — 19 tests for bill CRUD, payment, and statistics
+  - `tests/habit-service.test.js` — 22 tests for habit CRUD, toggle, streaks, and weekly data
+- **JSDoc comments**: Added comprehensive JSDoc documentation to all public functions in:
+  - `services/bill-service.js` (8 functions)
+  - `services/habit-service.js` (6 functions)
+  - `services/recipe-service.js` (7 functions)
+  - `services/travel-service.js` (8 functions)
+  - `services/room-service.js` (8 functions)
+  - `services/shopping-service.js` (7 functions)
+  - `services/subscription-service.js` (7 functions)
+  - `services/checklist-service.js` (6 functions)
+  - `services/chore-service.js` (5 functions)
+  - `services/assistant-service.js` (1 function)
+  - `utils/date-utils.js` (15 functions — full rewrite with expanded formatting)
+  - `utils/money-utils.js` (9 functions — full rewrite with expanded formatting)
+  - `utils/task-utils.js` (10 functions — full rewrite with expanded formatting)
+
+### Changed
+- **Code style**: Removed inconsistent semicolons from `bill-service.js`, `habit-service.js`, `recipe-service.js`, `travel-service.js` (now consistent with majority of codebase)
+- **Room service**: Changed file header from `// 注释` to `/** JSDoc */` format
+- **README.md**: Added test section and tests/ directory to project structure
+- **README.zh-CN.md**: Added test running instructions

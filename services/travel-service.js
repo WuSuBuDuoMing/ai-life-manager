@@ -3,9 +3,9 @@
  * 提供旅行计划管理、待办、行李清单、倒计时等功能
  */
 
-var mockUtils = require('../utils/mock-utils');
+var mockUtils = require('../utils/mock-utils')
 
-var STORAGE_KEY = 'travel_plans';
+var STORAGE_KEY = 'travel_plans'
 
 function generateMockPlans() {
   return [
@@ -112,19 +112,33 @@ function generateMockPlans() {
   ];
 }
 
+/**
+ * 获取所有旅行计划
+ * @returns {Promise<Array>} 计划列表
+ */
 function getPlans() {
-  var plans = mockUtils.initData(STORAGE_KEY, generateMockPlans);
-  return mockUtils.mockAsync(plans);
+  var plans = mockUtils.initData(STORAGE_KEY, generateMockPlans)
+  return mockUtils.mockAsync(plans)
 }
 
+/**
+ * 根据ID获取旅行计划
+ * @param {string} id - 计划ID
+ * @returns {Promise<Object|null>} 计划详情
+ */
 function getPlanById(id) {
-  var plans = mockUtils.getFromStorage(STORAGE_KEY, []);
-  var plan = mockUtils.findById(plans, id);
-  return mockUtils.mockAsync(plan || null);
+  var plans = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var plan = mockUtils.findById(plans, id)
+  return mockUtils.mockAsync(plan || null)
 }
 
+/**
+ * 添加旅行计划
+ * @param {Object} plan - 计划信息
+ * @returns {Promise<Object>} 新计划
+ */
 function addPlan(plan) {
-  var plans = mockUtils.getFromStorage(STORAGE_KEY, []);
+  var plans = mockUtils.getFromStorage(STORAGE_KEY, [])
   var newPlan = Object.assign({
     id: mockUtils.generateId(),
     budget: 0,
@@ -134,81 +148,109 @@ function addPlan(plan) {
     packingList: [],
     dailyPlans: [],
     notes: ''
-  }, plan);
-  plans.push(newPlan);
-  mockUtils.setToStorage(STORAGE_KEY, plans);
-  return mockUtils.mockAsync(newPlan);
+  }, plan)
+  plans.push(newPlan)
+  mockUtils.setToStorage(STORAGE_KEY, plans)
+  return mockUtils.mockAsync(newPlan)
 }
 
+/**
+ * 更新旅行计划
+ * @param {string} id - 计划ID
+ * @param {Object} updates - 更新字段
+ * @returns {Promise<Object>} 更新后的计划
+ */
 function updatePlan(id, updates) {
-  var plans = mockUtils.getFromStorage(STORAGE_KEY, []);
-  var plan = mockUtils.findById(plans, id);
+  var plans = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var plan = mockUtils.findById(plans, id)
   if (!plan) {
-    return mockUtils.mockAsync({ success: false, message: '计划不存在' });
+    return mockUtils.mockAsync({ success: false, message: '计划不存在' })
   }
-  Object.assign(plan, updates);
-  mockUtils.setToStorage(STORAGE_KEY, plans);
-  return mockUtils.mockAsync(plan);
+  Object.assign(plan, updates)
+  mockUtils.setToStorage(STORAGE_KEY, plans)
+  return mockUtils.mockAsync(plan)
 }
 
+/**
+ * 删除旅行计划
+ * @param {string} id - 计划ID
+ * @returns {Promise<Object>} 操作结果
+ */
 function deletePlan(id) {
-  var plans = mockUtils.getFromStorage(STORAGE_KEY, []);
-  var index = mockUtils.findIndexById(plans, id);
+  var plans = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var index = mockUtils.findIndexById(plans, id)
   if (index === -1) {
-    return mockUtils.mockAsync({ success: false, message: '计划不存在' });
+    return mockUtils.mockAsync({ success: false, message: '计划不存在' })
   }
-  plans.splice(index, 1);
-  mockUtils.setToStorage(STORAGE_KEY, plans);
-  return mockUtils.mockAsync({ success: true });
+  plans.splice(index, 1)
+  mockUtils.setToStorage(STORAGE_KEY, plans)
+  return mockUtils.mockAsync({ success: true })
 }
 
+/**
+ * 切换待办项完成状态
+ * @param {string} planId - 计划ID
+ * @param {string} todoId - 待办项ID
+ * @returns {Promise<Object>} 更新后的待办项
+ */
 function toggleTodo(planId, todoId) {
-  var plans = mockUtils.getFromStorage(STORAGE_KEY, []);
-  var plan = mockUtils.findById(plans, planId);
+  var plans = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var plan = mockUtils.findById(plans, planId)
   if (!plan) {
-    return mockUtils.mockAsync({ success: false, message: '计划不存在' });
+    return mockUtils.mockAsync({ success: false, message: '计划不存在' })
   }
-  var todo = mockUtils.findById(plan.todos, todoId);
+  var todo = mockUtils.findById(plan.todos, todoId)
   if (!todo) {
-    return mockUtils.mockAsync({ success: false, message: '待办不存在' });
+    return mockUtils.mockAsync({ success: false, message: '待办不存在' })
   }
-  todo.done = !todo.done;
-  mockUtils.setToStorage(STORAGE_KEY, plans);
-  return mockUtils.mockAsync(todo);
+  todo.done = !todo.done
+  mockUtils.setToStorage(STORAGE_KEY, plans)
+  return mockUtils.mockAsync(todo)
 }
 
+/**
+ * 切换行李项完成状态
+ * @param {string} planId - 计划ID
+ * @param {string} itemId - 行李项ID
+ * @returns {Promise<Object>} 更新后的行李项
+ */
 function togglePacking(planId, itemId) {
-  var plans = mockUtils.getFromStorage(STORAGE_KEY, []);
-  var plan = mockUtils.findById(plans, planId);
+  var plans = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var plan = mockUtils.findById(plans, planId)
   if (!plan) {
-    return mockUtils.mockAsync({ success: false, message: '计划不存在' });
+    return mockUtils.mockAsync({ success: false, message: '计划不存在' })
   }
-  var item = mockUtils.findById(plan.packingList, itemId);
+  var item = mockUtils.findById(plan.packingList, itemId)
   if (!item) {
-    return mockUtils.mockAsync({ success: false, message: '物品不存在' });
+    return mockUtils.mockAsync({ success: false, message: '物品不存在' })
   }
-  item.done = !item.done;
-  mockUtils.setToStorage(STORAGE_KEY, plans);
-  return mockUtils.mockAsync(item);
+  item.done = !item.done
+  mockUtils.setToStorage(STORAGE_KEY, plans)
+  return mockUtils.mockAsync(item)
 }
 
+/**
+ * 计算距离出发的天数
+ * @param {string} planId - 计划ID
+ * @returns {Promise<Object>} 倒计时信息
+ */
 function getDaysUntil(planId) {
-  var plans = mockUtils.getFromStorage(STORAGE_KEY, []);
-  var plan = mockUtils.findById(plans, planId);
+  var plans = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var plan = mockUtils.findById(plans, planId)
   if (!plan) {
-    return mockUtils.mockAsync({ success: false, message: '计划不存在' });
+    return mockUtils.mockAsync({ success: false, message: '计划不存在' })
   }
-  var today = new Date();
-  today.setHours(0, 0, 0, 0);
-  var start = new Date(plan.startDate);
-  start.setHours(0, 0, 0, 0);
-  var diff = Math.ceil((start - today) / (1000 * 60 * 60 * 24));
+  var today = new Date()
+  today.setHours(0, 0, 0, 0)
+  var start = new Date(plan.startDate)
+  start.setHours(0, 0, 0, 0)
+  var diff = Math.ceil((start - today) / (1000 * 60 * 60 * 24))
   return mockUtils.mockAsync({
     planId: planId,
     title: plan.title,
     daysUntil: diff > 0 ? diff : 0,
     status: diff > 0 ? 'upcoming' : (diff === 0 ? 'today' : 'past')
-  });
+  })
 }
 
 module.exports = {
@@ -220,4 +262,4 @@ module.exports = {
   toggleTodo: toggleTodo,
   togglePacking: togglePacking,
   getDaysUntil: getDaysUntil
-};
+}

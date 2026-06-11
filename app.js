@@ -15,7 +15,7 @@ App({
       monthly: 3000,
       currency: '¥'
     },
-    version: '1.0.0'
+    version: '1.2.0'
   },
 
   onLaunch: function() {

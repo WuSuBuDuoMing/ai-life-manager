@@ -11,7 +11,6 @@ Page({
 
   data: {
     userInfo: { nickname: '生活家', avatar: '' },
-    isDark: false,
     reminderCount: 0,
     reminderSummary: '',
     lifeScore: { totalScore: 0, level: 1, levelName: '生活新手', levelIcon: '🌱', comment: '', breakdown: {} },
@@ -141,25 +140,7 @@ Page({
     }
   },
 
-  /**
-   * 切换暗黑模式
-   */
-  toggleTheme: function() {
-    try {
-      var current = wx.getStorageSync('theme') || 'light'
-      var next = current === 'dark' ? 'light' : 'dark'
-      wx.setStorageSync('theme', next)
-      this.setData({ isDark: next === 'dark', themeClass: next === 'dark' ? 'dark' : '' })
-      var app = getApp()
-      if (app) app.globalData.theme = next
-      wx.showToast({
-        title: next === 'dark' ? '已切换深色模式' : '已切换浅色模式',
-        icon: 'none', duration: 1500
-      })
-    } catch (e) {
-      console.error('[profile] 切换主题失败:', e)
-    }
-  },
+
 
   /**
    * 显示提醒通知
@@ -256,8 +237,9 @@ Page({
             app._initDefaultData()
           }
           wx.showToast({ title: '缓存已清除', icon: 'success' })
-          // 刷新页面数据
-          that.loadData()
+          that.loadStats()
+          that.loadReminders()
+          that.loadLifeScore()
         }
       }
     })
@@ -269,7 +251,7 @@ Page({
   showHelp: function() {
     wx.showModal({
       title: '使用帮助',
-      content: '🏠 AI 生活管家 v2.0\n\n📝 任务管理 - 今日待办和提醒\n✅ 习惯打卡 - 每日打卡和连续统计\n🛒 购物清单 - 智能分类和补货\n🧊 冰箱食材 - 过期提醒和菜谱推荐\n🍳 菜谱速查 - 20+菜谱和收藏\n🐕 宠物生活 - 喂食/遛宠/日记\n✈️ 旅行计划 - 行程和行李管理\n💳 账单提醒 - 付款提醒和统计\n🤖 AI助手 - 智能生活建议\n🔍 全局搜索 - 跨模块搜索\n\n💡 支持深色模式\n📤 支持数据导出',
+      content: '🏠 AI 生活管家 v1.2.0\n\n📝 任务管理 - 今日待办和提醒\n✅ 习惯打卡 - 每日打卡和连续统计\n🛒 购物清单 - 智能分类和补货\n🧊 冰箱食材 - 过期提醒和菜谱推荐\n🍳 菜谱速查 - 20+菜谱和收藏\n🐕 宠物生活 - 喂食/遛宠/日记\n✈️ 旅行计划 - 行程和行李管理\n💳 账单提醒 - 付款提醒和统计\n🤖 AI助手 - 智能生活建议\n🔍 全局搜索 - 跨模块搜索\n\n💡 支持深色模式\n📤 支持数据导出',
       showCancel: false
     })
   },
@@ -280,7 +262,7 @@ Page({
   showAbout: function() {
     wx.showModal({
       title: '关于 AI 生活管家',
-      content: 'AI 生活管家 v2.0\n\n一款本地优先的一站式生活管理小程序，整合任务、习惯、饮食、冰箱、宠物、旅行、账单等15+功能模块。\n\n让生活更有条理，让家更温馨 🏠',
+      content: 'AI 生活管家 v1.2.0\n\n一款本地优先的一站式生活管理小程序，整合任务、习惯、饮食、冰箱、宠物、旅行、账单等15+功能模块。\n\n让生活更有条理，让家更温馨 🏠',
       showCancel: false
     })
   },

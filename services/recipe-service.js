@@ -3,9 +3,9 @@
  * 提供菜谱浏览、搜索、收藏、食材推荐等功能
  */
 
-var mockUtils = require('../utils/mock-utils');
+var mockUtils = require('../utils/mock-utils')
 
-var STORAGE_KEY = 'recipes';
+var STORAGE_KEY = 'recipes'
 
 function generateMockRecipes() {
   return [
@@ -41,74 +41,107 @@ function generateMockRecipes() {
   ];
 }
 
+/**
+ * 获取所有菜谱
+ * @returns {Promise<Array>} 菜谱列表
+ */
 function getRecipes() {
-  var recipes = mockUtils.initData(STORAGE_KEY, generateMockRecipes);
-  return mockUtils.mockAsync(recipes);
+  var recipes = mockUtils.initData(STORAGE_KEY, generateMockRecipes)
+  return mockUtils.mockAsync(recipes)
 }
 
+/**
+ * 根据ID获取菜谱
+ * @param {string} id - 菜谱ID
+ * @returns {Promise<Object|null>} 菜谱详情
+ */
 function getRecipeById(id) {
-  var recipes = mockUtils.getFromStorage(STORAGE_KEY, []);
-  var recipe = mockUtils.findById(recipes, id);
-  return mockUtils.mockAsync(recipe || null);
+  var recipes = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var recipe = mockUtils.findById(recipes, id)
+  return mockUtils.mockAsync(recipe || null)
 }
 
+/**
+ * 按分类筛选菜谱
+ * @param {string} category - 分类名称
+ * @returns {Promise<Array>} 筛选结果
+ */
 function getByCategory(category) {
-  var recipes = mockUtils.getFromStorage(STORAGE_KEY, []);
+  var recipes = mockUtils.getFromStorage(STORAGE_KEY, [])
   var filtered = recipes.filter(function (r) {
-    return r.category === category;
-  });
-  return mockUtils.mockAsync(filtered);
+    return r.category === category
+  })
+  return mockUtils.mockAsync(filtered)
 }
 
+/**
+ * 搜索菜谱
+ * @param {string} keyword - 搜索关键词
+ * @returns {Promise<Array>} 搜索结果
+ */
 function searchRecipes(keyword) {
-  var recipes = mockUtils.getFromStorage(STORAGE_KEY, []);
-  var kw = keyword.toLowerCase();
+  var recipes = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var kw = keyword.toLowerCase()
   var results = recipes.filter(function (r) {
     return r.name.indexOf(kw) > -1 ||
-      r.tags.some(function (t) { return t.indexOf(kw) > -1; }) ||
-      r.ingredients.some(function (i) { return i.indexOf(kw) > -1; });
-  });
-  return mockUtils.mockAsync(results);
+      r.tags.some(function (t) { return t.indexOf(kw) > -1 }) ||
+      r.ingredients.some(function (i) { return i.indexOf(kw) > -1 })
+  })
+  return mockUtils.mockAsync(results)
 }
 
+/**
+ * 切换菜谱收藏状态
+ * @param {string} id - 菜谱ID
+ * @returns {Promise<Object>} 更新后的菜谱
+ */
 function toggleFavorite(id) {
-  var recipes = mockUtils.getFromStorage(STORAGE_KEY, []);
-  var recipe = mockUtils.findById(recipes, id);
+  var recipes = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var recipe = mockUtils.findById(recipes, id)
   if (!recipe) {
-    return mockUtils.mockAsync({ success: false, message: '菜谱不存在' });
+    return mockUtils.mockAsync({ success: false, message: '菜谱不存在' })
   }
-  recipe.favorited = !recipe.favorited;
-  mockUtils.setToStorage(STORAGE_KEY, recipes);
-  return mockUtils.mockAsync(recipe);
+  recipe.favorited = !recipe.favorited
+  mockUtils.setToStorage(STORAGE_KEY, recipes)
+  return mockUtils.mockAsync(recipe)
 }
 
+/**
+ * 获取收藏的菜谱
+ * @returns {Promise<Array>} 收藏列表
+ */
 function getFavorites() {
-  var recipes = mockUtils.getFromStorage(STORAGE_KEY, []);
+  var recipes = mockUtils.getFromStorage(STORAGE_KEY, [])
   var favorites = recipes.filter(function (r) {
-    return r.favorited;
-  });
-  return mockUtils.mockAsync(favorites);
+    return r.favorited
+  })
+  return mockUtils.mockAsync(favorites)
 }
 
+/**
+ * 根据食材推荐菜谱
+ * @param {Array<string>} ingredients - 食材列表
+ * @returns {Promise<Array>} 推荐菜谱（按匹配度排序）
+ */
 function getSuggestions(ingredients) {
-  var recipes = mockUtils.getFromStorage(STORAGE_KEY, []);
+  var recipes = mockUtils.getFromStorage(STORAGE_KEY, [])
   var results = recipes.filter(function (r) {
     return ingredients.some(function (ing) {
       return r.ingredients.some(function (ri) {
-        return ri.indexOf(ing) > -1;
-      });
-    });
-  });
+        return ri.indexOf(ing) > -1
+      })
+    })
+  })
   results.sort(function (a, b) {
     var aMatch = ingredients.filter(function (ing) {
-      return a.ingredients.some(function (ri) { return ri.indexOf(ing) > -1; });
-    }).length;
+      return a.ingredients.some(function (ri) { return ri.indexOf(ing) > -1 })
+    }).length
     var bMatch = ingredients.filter(function (ing) {
-      return b.ingredients.some(function (ri) { return ri.indexOf(ing) > -1; });
-    }).length;
-    return bMatch - aMatch;
-  });
-  return mockUtils.mockAsync(results);
+      return b.ingredients.some(function (ri) { return ri.indexOf(ing) > -1 })
+    }).length
+    return bMatch - aMatch
+  })
+  return mockUtils.mockAsync(results)
 }
 
 module.exports = {
@@ -119,4 +152,4 @@ module.exports = {
   toggleFavorite: toggleFavorite,
   getFavorites: getFavorites,
   getSuggestions: getSuggestions
-};
+}

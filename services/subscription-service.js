@@ -48,11 +48,20 @@ function generateMockSubscriptions() {
   })
 }
 
+/**
+ * 获取所有订阅
+ * @returns {Promise<Array>} 订阅列表
+ */
 function getSubscriptions() {
   var data = mockUtils.initData('subscriptions', generateMockSubscriptions)
   return mockUtils.mockAsync(data)
 }
 
+/**
+ * 计算月度订阅总费用
+ * @param {Array} subscriptions - 订阅列表
+ * @returns {number}
+ */
 function calculateMonthlyTotal(subscriptions) {
   return subscriptions.reduce(function(sum, s) {
     if (s.billingCycle === 'monthly') return sum + s.price
@@ -62,6 +71,11 @@ function calculateMonthlyTotal(subscriptions) {
   }, 0)
 }
 
+/**
+ * 计算年度订阅总费用
+ * @param {Array} subscriptions - 订阅列表
+ * @returns {number}
+ */
 function calculateYearlyTotal(subscriptions) {
   return subscriptions.reduce(function(sum, s) {
     if (s.billingCycle === 'monthly') return sum + (s.price * 12)
@@ -71,6 +85,11 @@ function calculateYearlyTotal(subscriptions) {
   }, 0)
 }
 
+/**
+ * 获取即将续费的订阅
+ * @param {Array} subscriptions - 订阅列表
+ * @returns {Promise<Array>} 7天内续费的订阅
+ */
 function getUpcomingRenewals(subscriptions) {
   var now = new Date()
   var sevenDaysLater = new Date(now.getTime() + 7 * 86400000)
@@ -82,6 +101,11 @@ function getUpcomingRenewals(subscriptions) {
   return mockUtils.mockAsync(result)
 }
 
+/**
+ * 添加订阅
+ * @param {Object} sub - 订阅信息
+ * @returns {Promise<Array>} 更新后的列表
+ */
 function addSubscription(sub) {
   var subs = mockUtils.initData('subscriptions', generateMockSubscriptions)
   subs.push(Object.assign({ id: mockUtils.generateId(), startDate: mockUtils.today(), autoRenew: true }, sub))
@@ -89,6 +113,11 @@ function addSubscription(sub) {
   return mockUtils.mockAsync(subs)
 }
 
+/**
+ * 删除订阅
+ * @param {string} subId - 订阅ID
+ * @returns {Promise<Array>} 更新后的列表
+ */
 function deleteSubscription(subId) {
   var subs = mockUtils.initData('subscriptions', generateMockSubscriptions)
   subs = subs.filter(function(s) { return s.id !== subId })
@@ -96,6 +125,11 @@ function deleteSubscription(subId) {
   return mockUtils.mockAsync(subs)
 }
 
+/**
+ * 获取AI省钱建议
+ * @param {Array} subscriptions - 订阅列表
+ * @returns {Promise<Array>} 建议列表
+ */
 function getAISavingTips(subscriptions) {
   var total = calculateMonthlyTotal(subscriptions)
   var tips = []
