@@ -74,6 +74,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Repository made public for open-source community
 - All commit authors unified to WuSuBuDuoMing
 
+## [1.3.0] - 2026-06-14
+
+### Changed
+- Local optimization and performance improvements
+- Project documentation update
+- CHANGELOG sync across repositories
+- Open-source infrastructure enhancement
+
 ## [1.2.0] - 2026-06-11
 
 ### Fixed
