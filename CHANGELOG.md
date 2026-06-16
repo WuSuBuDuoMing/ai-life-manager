@@ -4,6 +4,14 @@ All notable changes to AI Life Manager will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.7.0] - 2026-06-16
+
+### Added
+- Code of Conduct (CODE_OF_CONDUCT.md) based on Contributor Covenant v2.1
+- GitHub Sponsors funding configuration (FUNDING.yml)
+- CODEOWNERS file for code review assignments
+- Enhanced Issue and PR templates
+
 ## [1.5.0] - 2026-06-14
 
 ### Added
