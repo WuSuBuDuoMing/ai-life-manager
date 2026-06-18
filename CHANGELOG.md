@@ -4,6 +4,48 @@ All notable changes to AI Life Manager will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.10.0] - 2026-06-18
+
+### Added
+- Comprehensive per-function JSDoc documentation for all 18 service modules
+  - `wardrobe-service.js` (11 functions)
+  - `fridge-service.js` (10 functions)
+  - `budget-service.js` (11 functions)
+  - `pet-service.js` (17 functions)
+- Issue template chooser config (`.github/ISSUE_TEMPLATE/config.yml`)
+- Version field in `project.config.json`
+
+### Changed
+- **README.md**: Major enhancement for OpenAI OSS application
+  - Added CI badge, version badge, issues badge, last commit badge
+  - Added "Why AI Life Manager?" section with key differentiators
+  - Enhanced Features table with "Key Capabilities" column
+  - Added "Behavior Mixins" to design philosophy
+  - Added "Testing" to tech stack table
+  - Added service JSDoc annotation note in project structure
+  - Added dedicated Testing section with assertion counts per suite
+  - Added Security section with link to SECURITY.md
+  - Added copyright line in License section
+  - Added direct links to issue templates in Contributing section
+  - Improved overall formatting and structure
+
+## [1.9.0] - 2026-06-18
+
+### Changed
+- Code quality improvements across all service modules
+- Consistent JSDoc annotation patterns across wardrobe, fridge, budget, and pet services
+- Enhanced code documentation for better IDE autocompletion
+
+## [1.8.0] - 2026-06-17
+
+### Added
+- Per-function JSDoc documentation for wardrobe-service, fridge-service, budget-service, and pet-service
+- All 18 services now have complete JSDoc annotations on every exported function
+
+### Changed
+- Improved code readability and maintainability through comprehensive documentation
+- Enhanced developer experience with better IntelliSense support
+
 ## [1.7.0] - 2026-06-16
 
 ### Added

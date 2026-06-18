@@ -94,11 +94,20 @@ function generateMockClothes() {
   return clothes
 }
 
+/**
+ * 获取所有衣物
+ * @returns {Promise<Array>} 衣物列表
+ */
 function getClothes() {
   var data = mockUtils.initData(STORAGE_KEY, generateMockClothes)
   return mockUtils.mockAsync(data)
 }
 
+/**
+ * 添加衣物
+ * @param {Object} item - 衣物信息（category, name, color, season 等）
+ * @returns {Promise<Object>} 新衣物
+ */
 function addClothes(item) {
   var items = mockUtils.initData(STORAGE_KEY, generateMockClothes)
   var catInfo = CATEGORIES.find(function(c) { return c.name === item.category })
@@ -114,6 +123,12 @@ function addClothes(item) {
   return mockUtils.mockAsync(newItem)
 }
 
+/**
+ * 更新衣物信息
+ * @param {string} id - 衣物ID
+ * @param {Object} updates - 更新字段
+ * @returns {Promise<Object|null>} 更新后的衣物
+ */
 function updateClothes(id, updates) {
   var items = mockUtils.initData(STORAGE_KEY, generateMockClothes)
   var index = items.findIndex(function(it) { return it.id === id })
@@ -124,6 +139,11 @@ function updateClothes(id, updates) {
   return mockUtils.mockAsync(items[index] || null)
 }
 
+/**
+ * 删除衣物
+ * @param {string} id - 衣物ID
+ * @returns {Promise<Array>} 更新后的列表
+ */
 function removeClothes(id) {
   var items = mockUtils.initData(STORAGE_KEY, generateMockClothes)
   var filtered = items.filter(function(it) { return it.id !== id })
@@ -131,20 +151,39 @@ function removeClothes(id) {
   return mockUtils.mockAsync(filtered)
 }
 
+/**
+ * 获取脏衣篮内容
+ * @returns {Promise<Array>} 待洗衣物列表
+ */
 function getLaundryBasket() {
   var items = mockUtils.initData(STORAGE_KEY, generateMockClothes)
   var result = items.filter(function(it) { return it.launderStatus === 'dirty' })
   return mockUtils.mockAsync(result)
 }
 
+/**
+ * 将衣物标记为待洗
+ * @param {string} id - 衣物ID
+ * @returns {Promise<Object>} 更新后的衣物
+ */
 function addToLaundry(id) {
   return updateClothes(id, { launderStatus: 'dirty' })
 }
 
+/**
+ * 将衣物标记为已洗
+ * @param {string} id - 衣物ID
+ * @returns {Promise<Object>} 更新后的衣物
+ */
 function removeFromLaundry(id) {
   return updateClothes(id, { launderStatus: 'clean' })
 }
 
+/**
+ * 获取指定季节的衣物
+ * @param {string} season - 季节（春/夏/秋/冬/四季）
+ * @returns {Promise<Array>} 该季节衣物列表
+ */
 function getSeasonalCollection(season) {
   var items = mockUtils.initData(STORAGE_KEY, generateMockClothes)
   var result = items.filter(function(it) {
@@ -153,6 +192,10 @@ function getSeasonalCollection(season) {
   return mockUtils.mockAsync(result)
 }
 
+/**
+ * 获取穿着频率统计（Top 10）
+ * @returns {Promise<Array>} 穿着次数最多的衣物
+ */
 function getWearStats() {
   var items = mockUtils.initData(STORAGE_KEY, generateMockClothes)
   var sorted = [].concat(items).sort(function(a, b) { return b.wearCount - a.wearCount })
@@ -168,6 +211,10 @@ function getWearStats() {
   return mockUtils.mockAsync(result)
 }
 
+/**
+ * 获取本周穿搭建议
+ * @returns {Promise<Array>} 7天穿搭方案（含上衣、下装、外套、配饰）
+ */
 function getWeeklyOutfit() {
   var items = mockUtils.initData(STORAGE_KEY, generateMockClothes)
   var cleanItems = items.filter(function(it) { return it.launderStatus === 'clean' })
@@ -210,6 +257,10 @@ function getWeeklyOutfit() {
   return mockUtils.mockAsync(result)
 }
 
+/**
+ * 获取洗衣提醒（脏衣篮状态）
+ * @returns {Promise<Object>} 洗衣需求信息（needed, count, categoryList, message）
+ */
 function getWashingReminder() {
   var items = mockUtils.initData(STORAGE_KEY, generateMockClothes)
   var dirtyItems = items.filter(function(it) { return it.launderStatus === 'dirty' })

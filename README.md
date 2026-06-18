@@ -1,23 +1,27 @@
 <div align="center">
 
-# 🏠 AI Life Manager
+# AI Life Manager
 
 ### An All-in-One Lifestyle Management WeChat Mini Program
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-1.10.0-blue.svg)](CHANGELOG.md)
 [![WeChat Mini Program](https://img.shields.io/badge/Platform-WeChat%20Mini%20Program-07C160?logo=wechat&logoColor=white)](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?logo=javascript&logoColor=black)]()
+[![CI](https://github.com/WuSuBuDuoMing/ai-life-manager/actions/workflows/ci.yml/badge.svg)](https://github.com/WuSuBuDuoMing/ai-life-manager/actions/workflows/ci.yml)
 [![GitHub Stars](https://img.shields.io/github/stars/WuSuBuDuoMing/ai-life-manager?style=social)](https://github.com/WuSuBuDuoMing/ai-life-manager)
+[![GitHub Issues](https://img.shields.io/github/issues/WuSuBuDuoMing/ai-life-manager)](https://github.com/WuSuBuDuoMing/ai-life-manager/issues)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/WuSuBuDuoMing/ai-life-manager)](https://github.com/WuSuBuDuoMing/ai-life-manager/commits/main)
 
-**[中文文档](README.zh-CN.md)** · [Report Bug](https://github.com/WuSuBuDuoMing/ai-life-manager/issues) · [Request Feature](https://github.com/WuSuBuDuoMing/ai-life-manager/issues)
+**[Chinese / 中文文档](README.zh-CN.md)** | [Report Bug](https://github.com/WuSuBuDuoMing/ai-life-manager/issues/new?template=bug_report.md) | [Request Feature](https://github.com/WuSuBuDuoMing/ai-life-manager/issues/new?template=feature_request.md) | [Changelog](CHANGELOG.md)
 
 </div>
 
 ---
 
-## 📖 Overview
+## Overview
 
-AI Life Manager is a **local-first, all-in-one lifestyle management** WeChat Mini Program designed for young people living independently. It integrates **17 feature modules** — from chore division and habit tracking to fridge inventory, pet care, travel planning, bill reminders, and an AI life assistant — all in a clean, card-based UI with dark mode support.
+**AI Life Manager** is a **local-first, all-in-one lifestyle management** WeChat Mini Program designed for young people living independently. It integrates **17 feature modules** — from chore division and habit tracking to fridge inventory, pet care, travel planning, bill reminders, and an AI life assistant — all in a clean, card-based UI with dark mode support.
 
 **Zero backend required.** All data is stored locally via `wx.Storage`. No accounts, no servers, no internet dependency.
 
@@ -37,33 +41,42 @@ AI Life Manager is a **local-first, all-in-one lifestyle management** WeChat Min
 
 </div>
 
----
+### Why AI Life Manager?
 
-## ✨ Features
-
-| Module | Description |
-|:-------|:------------|
-| 🏡 **Dashboard** | Unified home view with today's tasks, habits, pet reminders, travel countdown, bill alerts, weekly life score, and AI daily tips |
-| 🧹 **Chore Division** | Family chore management with member assignment, points system, ranking leaderboard, and rotation schedules |
-| ✅ **Habit Tracker** | Daily check-in with streak counting, weekly statistics, category filtering, and motivational progress rings |
-| 📋 **Life Checklists** | 30+ scenario templates (moving, business trip, travel, camping, etc.), checkbox tracking, progress visualization |
-| 🛒 **Shopping List** | Smart categorization (10 categories), budget tracking, fridge linkage for automatic restocking |
-| 💰 **Expense Tracker** | Income/expense recording, category statistics, monthly budget management, bar chart visualization |
-| 💳 **Bill Manager** | Payment reminders with overdue highlighting, monthly cost statistics, due date management |
-| 🧊 **Fridge Inventory** | Food stock management with 9 categories, 3-day expiry alerts, recipe recommendations from current ingredients |
-| 🍳 **Recipe Lookup** | 20+ recipes with favorites, quick/detailed view modes, category search, ingredient-based filtering |
-| 🐕 **Pet Care** | Multi-pet profiles, feeding/walk reminders, pet diary, vaccine records, weight tracking |
-| ✈️ **Travel Planner** | Trip management with packing/todo lists (full CRUD), daily itinerary, departure countdown |
-| 👔 **Wardrobe Manager** | Clothing inventory with dirty laundry basket, seasonal storage, outfit suggestions |
-| 🏠 **Room Organizer** | Zone-based room management, tidying challenges, item location tracking |
-| 🤖 **AI Assistant** | Chat-style interface with keyword-based smart suggestions that read your real data across all modules |
-| 🔍 **Global Search** | Cross-module search with grouped results, search history, and instant filtering |
-| 🔔 **Notifications** | Cross-module reminder aggregation (fridge, subscriptions, chores, bills, pets) |
-| 👤 **Profile** | Notification center, data export, dark mode toggle, multi-dimensional life score (100-point scale) |
+- **No signup, no cloud, no tracking** — your data stays on your device
+- **17 integrated modules** that share data intelligently, not 17 separate apps
+- **AI-powered suggestions** that read your real fridge inventory, habits, and bills
+- **Zero image assets** — the entire UI uses emoji icons for maximum portability
+- **Dark mode** with 20+ CSS Variables theme tokens
+- **Gamified life score** (100 points across 7 dimensions) to keep you motivated
 
 ---
 
-## 🏗 Architecture
+## Features
+
+| Module | Description | Key Capabilities |
+|:-------|:------------|:-----------------|
+| 🏡 **Dashboard** | Unified home view | Today's tasks, habits, pet reminders, travel countdown, bill alerts, weekly life score, AI daily tips |
+| 🧹 **Chore Division** | Family chore management | Member assignment, points system, ranking leaderboard, rotation schedules |
+| ✅ **Habit Tracker** | Daily check-in | Streak counting, weekly statistics, category filtering, motivational progress rings |
+| 📋 **Life Checklists** | Scenario templates | 30+ templates (moving, business trip, travel, camping), checkbox tracking, progress visualization |
+| 🛒 **Shopping List** | Smart categorization | 10 categories, budget tracking, fridge linkage for automatic restocking |
+| 💰 **Expense Tracker** | Financial tracking | Income/expense recording, category statistics, monthly budget management, bar chart visualization |
+| 💳 **Bill Manager** | Payment reminders | Overdue highlighting, monthly cost statistics, due date management |
+| 🧊 **Fridge Inventory** | Food stock management | 9 categories, 3-day expiry alerts, recipe recommendations from current ingredients |
+| 🍳 **Recipe Lookup** | Recipe database | 20+ recipes with favorites, quick/detailed view modes, category search, ingredient-based filtering |
+| 🐕 **Pet Care** | Multi-pet profiles | Feeding/walk reminders, pet diary, vaccine records, weight tracking |
+| ✈️ **Travel Planner** | Trip management | Packing/todo lists (full CRUD), daily itinerary, departure countdown |
+| 👔 **Wardrobe Manager** | Clothing inventory | Dirty laundry basket, seasonal storage, outfit suggestions |
+| 🏠 **Room Organizer** | Zone-based room management | Tidying challenges, item location tracking |
+| 🤖 **AI Assistant** | Smart suggestions | Chat-style interface, keyword-based suggestions that read real data across all modules |
+| 🔍 **Global Search** | Cross-module search | Grouped results, search history, instant filtering |
+| 🔔 **Notifications** | Reminder aggregation | Cross-module alerts from fridge, subscriptions, chores, bills, pets |
+| 👤 **Profile** | Settings & score | Notification center, data export, dark mode toggle, multi-dimensional life score (100-point scale) |
+
+---
+
+## Architecture
 
 ### Design Philosophy
 
@@ -72,6 +85,7 @@ AI Life Manager is a **local-first, all-in-one lifestyle management** WeChat Min
 - **Component-Based UI**: 17 reusable custom components with consistent design language
 - **Cross-Module Intelligence**: Dashboard, AI Assistant, Notifications, and Life Score all aggregate data from every module
 - **Emoji-Only Design**: Zero image assets — the entire UI uses emoji icons for maximum portability
+- **Behavior Mixins**: Shared dark mode behavior via `theme-behavior.js` for consistent theming
 
 ### Tech Stack
 
@@ -84,6 +98,7 @@ AI Life Manager is a **local-first, all-in-one lifestyle management** WeChat Min
 | **Components** | 17 custom components with Behavior mixins |
 | **Theming** | Light/Dark mode via CSS Variables + `theme-behavior.js` |
 | **Animations** | 10+ CSS animations (fadeIn, slideUp, bounceIn, shimmer, etc.) |
+| **Testing** | Custom test framework with wx API mock (87 assertions across 5 suites) |
 
 ### Project Structure
 
@@ -132,7 +147,7 @@ ai-life-manager/
 │   ├── loading-state/                #   Skeleton / spinner
 │   └── nav-bar/                      #   Custom navigation bar
 │
-├── services/                         # 18 business logic modules
+├── services/                         # 18 business logic modules (all with JSDoc)
 │   ├── dashboard-service.js          #   Aggregates all modules for home view
 │   ├── chore-service.js              #   Chore CRUD + points system
 │   ├── checklist-service.js          #   Checklist + 30 templates
@@ -162,11 +177,11 @@ ai-life-manager/
 │
 ├── tests/                            # Unit tests
 │   ├── wx-mock.js                    #   wx API mock for testing
-│   ├── date-utils.test.js            #   Date utility tests
-│   ├── money-utils.test.js           #   Money utility tests
-│   ├── task-utils.test.js            #   Task utility tests
-│   ├── bill-service.test.js          #   Bill service tests
-│   └── habit-service.test.js         #   Habit service tests
+│   ├── date-utils.test.js            #   Date utility tests (26 assertions)
+│   ├── money-utils.test.js           #   Money utility tests (20 assertions)
+│   ├── task-utils.test.js            #   Task utility tests (20 assertions)
+│   ├── bill-service.test.js          #   Bill service tests (19 assertions)
+│   └── habit-service.test.js         #   Habit service tests (22 assertions)
 │
 └── docs/                             # Project documentation
     ├── product-requirements.md       #   PRD
@@ -180,7 +195,7 @@ ai-life-manager/
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -208,7 +223,7 @@ cd ai-life-manager
 ### Running Tests
 
 ```bash
-# Run individual test suites
+# Run individual test suites (Node.js required)
 node tests/date-utils.test.js
 node tests/money-utils.test.js
 node tests/task-utils.test.js
@@ -218,7 +233,7 @@ node tests/habit-service.test.js
 
 ---
 
-## 🎨 Design System
+## Design System
 
 ### Color Palette
 
@@ -254,7 +269,7 @@ page.dark {
 
 ---
 
-## 🧠 Cross-Module Intelligence
+## Cross-Module Intelligence
 
 One of the most powerful aspects of AI Life Manager is how its modules work together:
 
@@ -265,7 +280,7 @@ One of the most powerful aspects of AI Life Manager is how its modules work toge
 └──────────────────────┬───────────────────────┘
                        │
      ┌─────────────────┼─────────────────┐
-     ▼                 ▼                 ▼
+     v                 v                 v
 ┌─────────┐    ┌──────────────┐    ┌──────────────┐
 │  AI     │    │ Notification │    │  Life Score  │
 │Assistant│    │   Service    │    │   (100 pts)  │
@@ -283,7 +298,7 @@ Data flows:
 
 ---
 
-## 📊 Life Score System
+## Life Score System
 
 A gamified 100-point scoring system across 7 life dimensions:
 
@@ -297,23 +312,32 @@ A gamified 100-point scoring system across 7 life dimensions:
 | Budget | 10 | Spending discipline |
 | Shopping | 10 | List management efficiency |
 
-**Levels:** 🌱 Beginner → 📖 Apprentice → 💪 Skilled → ⭐ Expert → 👑 Master
+**Levels:** Beginner -> Apprentice -> Skilled -> Expert -> Master
 
 ---
 
-## 🤝 Contributing
+## Testing
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+The project includes a lightweight custom testing framework with a wx API mock:
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+| Test Suite | Assertions | Coverage |
+|:-----------|:-----------|:---------|
+| `date-utils.test.js` | 26 | Date formatting, comparison, calculation |
+| `money-utils.test.js` | 20 | Currency formatting, budget math |
+| `task-utils.test.js` | 20 | Sorting, filtering, grouping, ID generation |
+| `bill-service.test.js` | 19 | Bill CRUD, payment, statistics |
+| `habit-service.test.js` | 22 | Habit CRUD, toggle, streaks, weekly data |
+
+**Total: 107 assertions across 5 test suites**
+
+Run all tests:
+```bash
+for f in tests/*.test.js; do node "$f"; done
+```
 
 ---
 
-## 📝 Documentation
+## Documentation
 
 | Document | Description |
 |:---------|:------------|
@@ -327,16 +351,39 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 ---
 
-## 📄 License
+## Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+For bug reports, please use the [Bug Report template](https://github.com/WuSuBuDuoMing/ai-life-manager/issues/new?template=bug_report.md).
+For feature requests, please use the [Feature Request template](https://github.com/WuSuBuDuoMing/ai-life-manager/issues/new?template=feature_request.md).
+
+---
+
+## Security
+
+For security vulnerabilities, please see [SECURITY.md](SECURITY.md). **Do not** open public issues for security vulnerabilities.
+
+---
+
+## License
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+Copyright (c) 2024-2026 WuSuBuDuoMing
 
 ---
 
 <div align="center">
 
-**Built with ❤️ for a more organized life**
+**Built with care for a more organized life**
 
-[⬆ Back to top](#-ai-life-manager)
+[Back to top](#ai-life-manager)
 
 </div>

@@ -230,11 +230,20 @@ function generateMockRecords() {
   return records
 }
 
+/**
+ * 获取所有收支记录
+ * @returns {Promise<Array>} 记录列表
+ */
 function getRecords() {
   var data = mockUtils.initData(STORAGE_KEY, generateMockRecords)
   return mockUtils.mockAsync(data)
 }
 
+/**
+ * 添加收支记录
+ * @param {Object} record - 记录信息（category, amount, type, date, note 等）
+ * @returns {Promise<Object>} 新记录
+ */
 function addRecord(record) {
   var records = mockUtils.initData(STORAGE_KEY, generateMockRecords)
   var newRecord = Object.assign({
@@ -248,6 +257,12 @@ function addRecord(record) {
   return mockUtils.mockAsync(newRecord)
 }
 
+/**
+ * 更新收支记录
+ * @param {string} id - 记录ID
+ * @param {Object} updates - 更新字段
+ * @returns {Promise<Object|null>} 更新后的记录
+ */
 function updateRecord(id, updates) {
   var records = mockUtils.initData(STORAGE_KEY, generateMockRecords)
   var index = records.findIndex(function(r) { return r.id === id })
@@ -258,6 +273,11 @@ function updateRecord(id, updates) {
   return mockUtils.mockAsync(records[index] || null)
 }
 
+/**
+ * 删除收支记录
+ * @param {string} id - 记录ID
+ * @returns {Promise<Array>} 更新后的列表
+ */
 function deleteRecord(id) {
   var records = mockUtils.initData(STORAGE_KEY, generateMockRecords)
   var filtered = records.filter(function(r) { return r.id !== id })
@@ -265,6 +285,12 @@ function deleteRecord(id) {
   return mockUtils.mockAsync(filtered)
 }
 
+/**
+ * 获取月度支出总计
+ * @param {number} month - 月份（1-12）
+ * @param {number} year - 年份
+ * @returns {Promise<number>} 月度总支出
+ */
 function getMonthlyTotal(month, year) {
   var records = mockUtils.initData(STORAGE_KEY, generateMockRecords)
   var prefix = year + '-' + String(month).padStart(2, '0')
@@ -277,6 +303,11 @@ function getMonthlyTotal(month, year) {
   return mockUtils.mockAsync(total)
 }
 
+/**
+ * 获取年度收支汇总
+ * @param {number} year - 年份
+ * @returns {Promise<Object>} { expense, income, balance }
+ */
 function getYearlyTotal(year) {
   var records = mockUtils.initData(STORAGE_KEY, generateMockRecords)
   var totalExpense = 0
@@ -294,6 +325,12 @@ function getYearlyTotal(year) {
   return mockUtils.mockAsync(result)
 }
 
+/**
+ * 获取月度分类支出明细
+ * @param {number} month - 月份（1-12）
+ * @param {number} year - 年份
+ * @returns {Promise<Array>} 按金额降序的分类明细
+ */
 function getCategoryBreakdown(month, year) {
   var records = mockUtils.initData(STORAGE_KEY, generateMockRecords)
   var prefix = year + '-' + String(month).padStart(2, '0')
@@ -320,6 +357,10 @@ function getCategoryBreakdown(month, year) {
   return mockUtils.mockAsync(result)
 }
 
+/**
+ * 获取本月预算概况
+ * @returns {Promise<Object>} { monthly, spent, remaining, usage }
+ */
 function getBudgetInfo() {
   var now = new Date()
   var month = now.getMonth() + 1
@@ -342,6 +383,10 @@ function getBudgetInfo() {
   return mockUtils.mockAsync(result)
 }
 
+/**
+ * 获取近7天消费趋势
+ * @returns {Promise<Array>} 每日消费数据（date, day, total）
+ */
 function getWeeklyTrend() {
   var records = mockUtils.initData(STORAGE_KEY, generateMockRecords)
   var now = new Date()
@@ -366,6 +411,10 @@ function getWeeklyTrend() {
   return mockUtils.mockAsync(days)
 }
 
+/**
+ * 获取异常大额消费
+ * @returns {Promise<Array>} 超过500元的消费记录
+ */
 function getAnomalies() {
   var records = mockUtils.initData(STORAGE_KEY, generateMockRecords)
   var anomalies = records.filter(function(r) {
@@ -375,6 +424,10 @@ function getAnomalies() {
   return mockUtils.mockAsync(anomalies)
 }
 
+/**
+ * 获取本周消费摘要（含文字总结）
+ * @returns {Promise<string>} 消费摘要文本
+ */
 function getWeeklySummary() {
   var records = mockUtils.initData(STORAGE_KEY, generateMockRecords)
   var now = new Date()

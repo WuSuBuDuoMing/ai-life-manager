@@ -38,6 +38,7 @@
   "libVersion": "3.3.4",
   "appid": "touristappid",
   "projectname": "ai-life-manager",
+  "version": "1.10.0",
   "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",

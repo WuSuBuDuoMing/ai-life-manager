@@ -176,11 +176,20 @@ function generateMockItems() {
   return items
 }
 
+/**
+ * 获取所有冰箱食材
+ * @returns {Promise<Array>} 食材列表
+ */
 function getItems() {
   var data = mockUtils.initData(STORAGE_KEY, generateMockItems)
   return mockUtils.mockAsync(data)
 }
 
+/**
+ * 添加食材到冰箱
+ * @param {Object} item - 食材信息（name, category, quantity, unit, expiryDate 等）
+ * @returns {Promise<Object>} 新食材
+ */
 function addItem(item) {
   var items = mockUtils.initData(STORAGE_KEY, generateMockItems)
   var catConfig = ITEM_DB[item.category]
@@ -196,6 +205,12 @@ function addItem(item) {
   return mockUtils.mockAsync(newItem)
 }
 
+/**
+ * 更新食材信息
+ * @param {string} id - 食材ID
+ * @param {Object} updates - 更新字段
+ * @returns {Promise<Object|null>} 更新后的食材
+ */
 function updateItem(id, updates) {
   var items = mockUtils.initData(STORAGE_KEY, generateMockItems)
   var index = items.findIndex(function(it) { return it.id === id })
@@ -206,6 +221,11 @@ function updateItem(id, updates) {
   return mockUtils.mockAsync(items[index] || null)
 }
 
+/**
+ * 删除食材
+ * @param {string} id - 食材ID
+ * @returns {Promise<Array>} 更新后的列表
+ */
 function removeItem(id) {
   var items = mockUtils.initData(STORAGE_KEY, generateMockItems)
   var filtered = items.filter(function(it) { return it.id !== id })
@@ -213,6 +233,11 @@ function removeItem(id) {
   return mockUtils.mockAsync(filtered)
 }
 
+/**
+ * 获取即将过期的食材
+ * @param {number} [days=3] - 天数阈值
+ * @returns {Promise<Array>} 即将过期的食材（含 daysLeft 字段）
+ */
 function getExpiringItems(days) {
   var limit = days || 3
   var items = mockUtils.initData(STORAGE_KEY, generateMockItems)
@@ -231,6 +256,10 @@ function getExpiringItems(days) {
   return mockUtils.mockAsync(result)
 }
 
+/**
+ * 获取已过期的食材
+ * @returns {Promise<Array>} 已过期食材（含 daysExpired 字段）
+ */
 function getExpiredItems() {
   var items = mockUtils.initData(STORAGE_KEY, generateMockItems)
   var now = new Date()
@@ -248,6 +277,10 @@ function getExpiredItems() {
   return mockUtils.mockAsync(result)
 }
 
+/**
+ * 获取冰箱食材分类统计
+ * @returns {Promise<Array>} 分类列表（含各分类的食材数量和名称）
+ */
 function getCategories() {
   var items = mockUtils.initData(STORAGE_KEY, generateMockItems)
   var cats = {}
@@ -270,6 +303,10 @@ function getCategories() {
   return mockUtils.mockAsync(result)
 }
 
+/**
+ * 根据现有食材推荐菜谱
+ * @returns {Promise<Array>} 推荐菜谱列表
+ */
 function getRecipeRecommendations() {
   var recipes = [
     {
@@ -321,6 +358,10 @@ function getRecipeRecommendations() {
   return mockUtils.mockAsync(recipes)
 }
 
+/**
+ * 获取本周菜单推荐
+ * @returns {Promise<Array>} 7天菜单（早/午/晚餐）
+ */
 function getWeeklyMenu() {
   var weekDates = mockUtils.getWeekDates()
   var weekDayNames = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
@@ -343,6 +384,11 @@ function getWeeklyMenu() {
   return mockUtils.mockAsync(result)
 }
 
+/**
+ * 标记食材已使用（从冰箱移除）
+ * @param {string} id - 食材ID
+ * @returns {Promise<boolean>} 操作是否成功
+ */
 function markAsUsed(id) {
   var items = mockUtils.initData(STORAGE_KEY, generateMockItems)
   var index = items.findIndex(function(it) { return it.id === id })
@@ -354,6 +400,11 @@ function markAsUsed(id) {
   return mockUtils.mockAsync(false)
 }
 
+/**
+ * 将食材添加到购物清单（用于补货）
+ * @param {string} id - 食材ID
+ * @returns {Promise<Array|null>} 更新后的购物清单
+ */
 function addToShoppingList(id) {
   var items = mockUtils.initData(STORAGE_KEY, generateMockItems)
   var item = items.find(function(it) { return it.id === id })

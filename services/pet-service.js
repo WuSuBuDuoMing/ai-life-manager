@@ -72,11 +72,20 @@ function loadData() {
   return mockUtils.initData(STORAGE_KEY, generateMockData)
 }
 
+/**
+ * 获取宠物档案
+ * @returns {Promise<Object>} 宠物信息
+ */
 function getPet() {
   var data = loadData()
   return mockUtils.mockAsync(data.pet)
 }
 
+/**
+ * 更新宠物档案
+ * @param {Object} info - 更新字段
+ * @returns {Promise<Object>} 更新后的宠物信息
+ */
 function updatePet(info) {
   var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
   data.pet = Object.assign({}, data.pet, info)
@@ -84,11 +93,20 @@ function updatePet(info) {
   return mockUtils.mockAsync(data.pet)
 }
 
+/**
+ * 获取所有提醒
+ * @returns {Promise<Array>} 提醒列表
+ */
 function getReminders() {
   var data = loadData()
   return mockUtils.mockAsync(data.reminders)
 }
 
+/**
+ * 添加提醒
+ * @param {Object} reminder - 提醒信息（type, title, time, frequency 等）
+ * @returns {Promise<Object>} 新提醒
+ */
 function addReminder(reminder) {
   var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
   var newReminder = Object.assign({
@@ -106,6 +124,11 @@ function addReminder(reminder) {
   return mockUtils.mockAsync(newReminder)
 }
 
+/**
+ * 删除提醒
+ * @param {string} id - 提醒ID
+ * @returns {Promise<Object>} 操作结果
+ */
 function deleteReminder(id) {
   var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
   data.reminders = data.reminders.filter(function(r) { return r.id !== id })
@@ -113,6 +136,11 @@ function deleteReminder(id) {
   return mockUtils.mockAsync({ success: true })
 }
 
+/**
+ * 切换提醒启用状态
+ * @param {string} id - 提醒ID
+ * @returns {Promise<Object>} 更新后的提醒
+ */
 function toggleReminder(id) {
   var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
   var reminder = mockUtils.findById(data.reminders, id)
@@ -124,6 +152,11 @@ function toggleReminder(id) {
   return mockUtils.mockAsync(reminder)
 }
 
+/**
+ * 标记提醒已完成（今日）
+ * @param {string} id - 提醒ID
+ * @returns {Promise<Object>} 更新后的提醒
+ */
 function doneReminder(id) {
   var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
   var reminder = mockUtils.findById(data.reminders, id)
@@ -135,11 +168,20 @@ function doneReminder(id) {
   return mockUtils.mockAsync(reminder)
 }
 
+/**
+ * 获取宠物日记
+ * @returns {Promise<Array>} 日记列表（按日期降序）
+ */
 function getDiary() {
   var data = loadData()
   return mockUtils.mockAsync(data.diary)
 }
 
+/**
+ * 添加日记条目
+ * @param {Object} entry - 日记内容（content, mood, photo 等）
+ * @returns {Promise<Object>} 新日记条目
+ */
 function addDiary(entry) {
   var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
   var newEntry = Object.assign({
@@ -155,6 +197,11 @@ function addDiary(entry) {
   return mockUtils.mockAsync(newEntry)
 }
 
+/**
+ * 删除日记条目
+ * @param {string} id - 日记ID
+ * @returns {Promise<Object>} 操作结果
+ */
 function deleteDiary(id) {
   var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
   data.diary = data.diary.filter(function(d) { return d.id !== id })
@@ -162,6 +209,10 @@ function deleteDiary(id) {
   return mockUtils.mockAsync({ success: true })
 }
 
+/**
+ * 获取今日待办提醒
+ * @returns {Promise<Array>} 今日未完成的提醒
+ */
 function getTodayReminders() {
   var data = loadData()
   var todayStr = getToday()
@@ -175,11 +226,20 @@ function getTodayReminders() {
 
 // ========== 疫苗记录 ==========
 
+/**
+ * 获取疫苗记录
+ * @returns {Promise<Array>} 疫苗列表
+ */
 function getVaccines() {
   var data = loadData()
   return mockUtils.mockAsync(data.vaccines || [])
 }
 
+/**
+ * 添加疫苗记录
+ * @param {Object} vaccine - 疫苗信息（name, date, nextDate, hospital 等）
+ * @returns {Promise<Object>} 新记录
+ */
 function addVaccine(vaccine) {
   var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
   if (!data.vaccines) data.vaccines = []
@@ -197,6 +257,11 @@ function addVaccine(vaccine) {
   return mockUtils.mockAsync(newVaccine)
 }
 
+/**
+ * 标记疫苗已完成接种
+ * @param {string} id - 疫苗记录ID
+ * @returns {Promise<Object>} 更新后的记录
+ */
 function markVaccineDone(id) {
   var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
   if (!data.vaccines) return mockUtils.mockAsync({ success: false, message: '记录不存在' })
@@ -208,6 +273,11 @@ function markVaccineDone(id) {
   return mockUtils.mockAsync(vaccine)
 }
 
+/**
+ * 删除疫苗记录
+ * @param {string} id - 疫苗记录ID
+ * @returns {Promise<Object>} 操作结果
+ */
 function deleteVaccine(id) {
   var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
   if (!data.vaccines) return mockUtils.mockAsync({ success: true })
@@ -218,11 +288,20 @@ function deleteVaccine(id) {
 
 // ========== 体重记录 ==========
 
+/**
+ * 获取体重历史记录
+ * @returns {Promise<Array>} 体重记录列表
+ */
 function getWeightHistory() {
   var data = loadData()
   return mockUtils.mockAsync(data.weightHistory || [])
 }
 
+/**
+ * 添加体重记录
+ * @param {Object} entry - 体重信息（weight, note 等）
+ * @returns {Promise<Object>} 新记录
+ */
 function addWeight(entry) {
   var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
   if (!data.weightHistory) data.weightHistory = []
