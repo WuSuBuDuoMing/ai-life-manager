@@ -233,117 +233,141 @@ node tests/habit-service.test.js
 
 ---
 
-## Development Environment Setup
+## Deployment to WeChat Developer Tools
 
-### macOS
+### Step 1: Download & Install WeChat DevTools
 
-1. Download [WeChat DevTools (macOS)](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)
-2. Open the installer and drag **WeChatDevTools** to the Applications folder
-3. Clone the repository and open the project:
-4. Launch WeChat DevTools, click **Import Project** (+ button), and select the cloned folder
-5. Enter your Mini Program **AppID** in `project.config.json` (or use the test AppID for preview)
-6. Click **Compile** -- the app runs immediately in the simulator
-7. Click **Preview** or **真机调试** to test on a real device
+| Platform | Download Link | Notes |
+|----------|--------------|-------|
+| macOS (Intel) | [Download](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html) | Drag to Applications |
+| macOS (Apple Silicon) | [Download](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html) | Native M1/M2/M3 support |
+| Windows 64-bit | [Download](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html) | Run installer |
+| Windows 32-bit | [Download](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html) | For older systems |
 
+> **Warning:** WeChat DevTools >= 1.06.2301010
+
+### Step 2: Clone the Repository
+
+**macOS / Linux:**
 ```bash
-git clone https://github.com/WuSuBuDuoMing/ai-life-manager.git
-```
-
-### Windows
-
-1. Download [WeChat DevTools (Windows)](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)
-2. Run the installer and follow the setup wizard
-3. Clone the repository and open the project:
-4. Launch WeChat DevTools, click **Import Project** (+ button), and select the cloned folder
-5. Enter your Mini Program **AppID** in `project.config.json` (or use the test AppID for preview)
-6. Click **Compile** -- the app runs immediately in the simulator
-7. Click **Preview** or **真机调试** to test on a real device
-
-```powershell
-git clone https://github.com/WuSuBuDuoMing/ai-life-manager.git
-```
-
-### Linux
-
-WeChat DevTools is not available on Linux. Use [miniprogram-ci](https://www.npmjs.com/package/miniprogram-ci) for CI/CD workflows:
-
-```bash
-# 1. Install miniprogram-ci
-npm install -g miniprogram-ci
-
-# 2. Clone the repository
 git clone https://github.com/WuSuBuDuoMing/ai-life-manager.git
 cd ai-life-manager
+```
 
-# 3. Generate a CI private key from the WeChat Official Account backend
-#    (MP Backend > Development > Development Settings > Upload Key)
-#    Save it as ci-private.key in the project root
+**Windows (PowerShell):**
+```powershell
+git clone https://github.com/WuSuBuDuoMing/ai-life-manager.git
+cd ai-life-manager
+```
 
-# 4. Preview the mini program on a real device
+> **Note:** This project has zero npm dependencies. No `npm install` is needed -- it runs entirely within the WeChat Mini Program runtime.
+
+### Step 3: Import Project into WeChat DevTools
+
+1. Open **WeChat Developer Tools**
+2. On the welcome screen, click the **+** (Import Project) button
+3. In the import dialog:
+   - **Project Directory:** Browse to the cloned repository folder
+   - **AppID:** Enter your Mini Program AppID (get it from [MP Backend](https://mp.weixin.qq.com/))
+     - Or use the **Test AppID** (测试号) for quick preview
+   - **Project Name:** Auto-filled from the folder name
+4. Click **Import** (确定)
+
+> **Tip:** If you don't have an AppID yet, click "Test Account" (测试号) to use a sandbox environment.
+
+### Step 4: Compile & Preview
+
+1. After import, the simulator panel opens automatically on the left
+2. The app compiles and renders in the simulator
+3. Use the simulator toolbar to:
+   - Switch phone models (iPhone 14, Pixel 7, etc.)
+   - Toggle dark mode
+   - Adjust network speed (WiFi, 4G, Offline)
+   - Rotate screen orientation
+
+### Step 5: Test on Real Device
+
+**Method A: Preview (预览)**
+1. Click the **Preview** (预览) button in the toolbar
+2. A QR code appears -- scan it with your phone's WeChat
+3. The mini program loads on your real device
+
+**Method B: Real-time Debug (真机调试)**
+1. Click **Real-time Debug** (真机调试) in the toolbar
+2. Scan the QR code with your phone
+3. A debug panel opens in DevTools showing console logs, network requests, and storage
+
+### Step 6: Upload for Review (提交审核)
+
+1. Click **Upload** (上传) in the toolbar
+2. Fill in:
+   - **Version:** e.g., `1.0.0`
+   - **Description:** What changed in this version
+3. Click **Upload**
+4. Go to [MP Backend](https://mp.weixin.qq.com/) -> **Management** -> **Version Management**
+5. Click **Submit for Review** (提交审核)
+6. Wait for WeChat's review (usually 1-7 days)
+
+### Step 7: Release (发布)
+
+1. After review approval, go to **Version Management** in MP Backend
+2. Click **Release** (全量发布)
+3. The mini program is now live for all users!
+
+---
+
+### Alternative: Linux CLI Deployment (miniprogram-ci)
+
+For Linux servers or CI/CD pipelines, use [miniprogram-ci](https://www.npmjs.com/package/miniprogram-ci):
+
+```bash
+# Install
+npm install -g miniprogram-ci
+
+# Generate CI private key from MP Backend > Development > Upload Key
+# Save as ci-private.key
+
+# Preview (QR code for scanning)
 miniprogram-ci preview \
   --appid YOUR_APPID \
   --pk-version 1 \
   --pk-branch main \
   --private-key-path ci-private.key \
-  --desc "Preview from CLI"
+  --desc "Preview"
 
-# 5. Upload a new version (for review / release)
+# Upload (submit for review)
 miniprogram-ci upload \
   --appid YOUR_APPID \
   --pk-version 1 \
   --pk-branch main \
   --private-key-path ci-private.key \
-  --desc "Version uploaded via miniprogram-ci"
+  --desc "Release v1.0.0"
 ```
 
-> **Note:** `miniprogram-ci` supports preview (generates QR code for scanning) and upload (submit for review), but does not provide a simulator. For full debugging, use the WeChat DevTools on macOS or Windows.
+### Docker CI/CD
 
-### Docker
-
-Use the [miniprogram-ci Docker image](https://github.com/nicepkg/miniprogram-ci) for containerized CI/CD pipelines:
-
-```dockerfile
-# Dockerfile
-FROM node:20-alpine
-RUN npm install -g miniprogram-ci
-WORKDIR /app
-COPY . .
-CMD ["miniprogram-ci", "preview", \
-     "--appid", "YOUR_APPID", \
-     "--pk-version", "1", \
-     "--private-key-path", "ci-private.key"]
+```yaml
+# docker-compose.yml
+version: '3'
+services:
+  miniprogram-ci:
+    image: nicepkg/miniprogram-ci:latest
+    volumes:
+      - .:/app
+      - ./ci-private.key:/app/ci-private.key
+    command: miniprogram-ci upload --appid YOUR_APPID --pk-version 1 --private-key-path ci-private.key
 ```
 
-```bash
-# Build and run
-docker build -t ai-life-manager-ci .
-docker run --rm -v $(pwd)/ci-private.key:/app/ci-private.key ai-life-manager-ci
+---
 
-# Or use docker compose
-docker compose up ci
-```
+### Troubleshooting
 
-### Step-by-Step Workflow
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/WuSuBuDuoMing/ai-life-manager.git
-cd ai-life-manager
-
-# 2. Open the project in WeChat DevTools (macOS/Windows)
-#    or configure miniprogram-ci (Linux/Docker)
-
-# 3. Configure your AppID
-#    Edit project.config.json → "appid": "your-app-id-here"
-
-# 4. Compile and preview in the simulator
-
-# 5. Use Preview / 真机调试 for on-device testing
-
-# 6. When ready, Upload to submit for WeChat review
-```
-
-> **Note:** This project has zero npm dependencies. It runs entirely within the WeChat Mini Program runtime.
+| Problem | Solution |
+|---------|----------|
+| "AppID does not exist" | Verify your AppID in MP Backend, or use test AppID |
+| Simulator shows blank page | Check `app.json` pages array, ensure all files exist |
+| Upload fails with "version exists" | Increment the version number in project.config.json |
+| Real device shows different layout | Enable "Remote Debug" to check CSS/rendering differences |
 
 ---
 
