@@ -1,5 +1,13 @@
 /**
- * 衣橱洗衣服务
+ * @module services/wardrobe-service
+ * @description 衣橱洗衣服务
+ * 提供衣物管理功能，包括：
+ * - 12大类40+件衣物的库存管理
+ * - 脏衣篮管理（待洗/已洗标记）
+ * - 季节性衣物筛选
+ * - 穿着频率统计（Top 10）
+ * - 本周穿搭智能建议
+ * - 洗衣提醒（基于脏衣篮状态）
  */
 var mockUtils = require('../utils/mock-utils')
 

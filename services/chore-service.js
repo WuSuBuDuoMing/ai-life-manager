@@ -1,5 +1,11 @@
 /**
- * 家务数据服务
+ * @module services/chore-service
+ * @description 家务数据服务
+ * 提供家务管理的完整 CRUD 操作，包括：
+ * - 家务任务的创建、查询、完成
+ * - 家庭成员积分排行榜
+ * - 本周排班表生成
+ * - 每周家务计划自动生成
  */
 var mockUtils = require('../utils/mock-utils')
 
@@ -29,6 +35,11 @@ function _getMembers() {
   return DEFAULT_MEMBERS
 }
 
+/**
+ * 生成模拟家务数据（50条）
+ * @returns {Array<Object>} 模拟家务列表
+ * @private
+ */
 function generateMockChores() {
   var members = _getMembers()
   var weekDates = mockUtils.getWeekDates()

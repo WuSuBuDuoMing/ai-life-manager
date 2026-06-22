@@ -1,5 +1,12 @@
 /**
- * 清单数据服务
+ * @module services/checklist-service
+ * @description 清单数据服务
+ * 提供生活清单的完整管理功能，包括：
+ * - 30+ 场景模板（旅行、搬家、大扫除、健身等）
+ * - 自定义清单创建
+ * - 从模板快速创建清单
+ * - 清单项的勾选/取消勾选
+ * - 清单删除
  */
 var mockUtils = require('../utils/mock-utils')
 

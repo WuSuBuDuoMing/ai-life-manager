@@ -1,5 +1,14 @@
 /**
- * 生活账本服务
+ * @module services/budget-service
+ * @description 生活账本服务
+ * 提供收支管理的完整功能，包括：
+ * - 收支记录的 CRUD 操作
+ * - 月度/年度收支统计
+ * - 分类支出明细（按金额降序）
+ * - 预算概况（已用/剩余/使用率）
+ * - 近7天消费趋势
+ * - 异常大额消费检测（>500元）
+ * - 本周消费摘要报告
  */
 var mockUtils = require('../utils/mock-utils')
 
@@ -384,12 +393,14 @@ function getBudgetInfo() {
 }
 
 /**
- * 获取近7天消费趋势
- * @returns {Promise<Array>} 每日消费数据（date, day, total）
+ * 获取近7天每日消费数据（内部通用方法）
+ * @param {Array} records - 收支记录列表
+ * @returns {Array<{date: string, day: string, total: number}>} 每日消费数据
+ * @private
  */
-function getWeeklyTrend() {
-  var records = mockUtils.initData(STORAGE_KEY, generateMockRecords)
+function _getWeeklyDailyData(records) {
   var now = new Date()
+  var weekdays = ['日', '一', '二', '三', '四', '五', '六']
   var days = []
   for (var i = 6; i >= 0; i--) {
     var d = new Date(now)
@@ -401,13 +412,22 @@ function getWeeklyTrend() {
         dayTotal += r.amount
       }
     })
-    var weekdays = ['日', '一', '二', '三', '四', '五', '六']
     days.push({
       date: dateStr,
       day: '周' + weekdays[d.getDay()],
       total: dayTotal
     })
   }
+  return days
+}
+
+/**
+ * 获取近7天消费趋势
+ * @returns {Promise<Array>} 每日消费数据（date, day, total）
+ */
+function getWeeklyTrend() {
+  var records = mockUtils.initData(STORAGE_KEY, generateMockRecords)
+  var days = _getWeeklyDailyData(records)
   return mockUtils.mockAsync(days)
 }
 
@@ -430,25 +450,7 @@ function getAnomalies() {
  */
 function getWeeklySummary() {
   var records = mockUtils.initData(STORAGE_KEY, generateMockRecords)
-  var now = new Date()
-  var days = []
-  for (var i = 6; i >= 0; i--) {
-    var d = new Date(now)
-    d.setDate(now.getDate() - i)
-    var dateStr = mockUtils.formatDate(d)
-    var dayTotal = 0
-    records.forEach(function(r) {
-      if (r.date === dateStr && r.type === 'expense') {
-        dayTotal += r.amount
-      }
-    })
-    var weekdays = ['日', '一', '二', '三', '四', '五', '六']
-    days.push({
-      date: dateStr,
-      day: '周' + weekdays[d.getDay()],
-      total: dayTotal
-    })
-  }
+  var days = _getWeeklyDailyData(records)
 
   var total = 0
   var maxDay = days[0]

@@ -1,5 +1,13 @@
 /**
- * 冰箱食材服务
+ * @module services/fridge-service
+ * @description 冰箱食材服务
+ * 提供冰箱食材管理功能，包括：
+ * - 9大类60+食材的库存管理
+ * - 临期/已过期食材检测与排序
+ * - 分类统计
+ * - 根据现有食材推荐菜谱
+ * - 本周菜单推荐
+ * - 标记食材已使用/添加到购物清单
  */
 var mockUtils = require('../utils/mock-utils')
 

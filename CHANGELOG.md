@@ -4,6 +4,56 @@ All notable changes to AI Life Manager will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.13.0] - 2026-06-22
+
+### Added
+- **API Reference** section in README.md with complete Service and Utility API summaries
+- Enhanced `storage-utils.js` with full JSDoc documentation for all 15 functions
+- Daily life tips rotation on dashboard
+
+### Changed
+- **All 18 service modules**: Upgraded file-level JSDoc to `@module` format with detailed feature descriptions
+  - `dashboard-service.js`: Documented aggregated data sources and return field details
+  - `chore-service.js`: Added `generateMockChores()` private function JSDoc
+  - `checklist-service.js`: Listed 30+ template categories in module description
+  - `shopping-service.js`: Documented 7 categories and fridge linkage
+  - `subscription-service.js`: Listed all 20 subscription services
+  - `budget-service.js`: Documented all 11 functions including anomaly detection
+  - `fridge-service.js`: Listed 9 food categories and all features
+  - `wardrobe-service.js`: Documented 12 clothing categories and weekly outfit suggestions
+  - `room-service.js`: Listed 5 zones and challenge system
+  - `habit-service.js`: Documented 5 habit categories and streak tracking
+  - `recipe-service.js`: Listed all 20 recipes across 5 categories
+  - `pet-service.js`: Documented pet profiles, diary, vaccines, weight tracking
+  - `travel-service.js`: Documented CRUD for todos and packing lists
+  - `bill-service.js`: Listed 15 preset bills and payment tracking
+  - `assistant-service.js`: Documented all 10 keyword rule modules
+  - `notification-service.js`: Listed 6 notification sources and severity levels
+  - `export-service.js`: Documented 10-module data overview
+  - `life-score-service.js`: Documented 7-dimension scoring system and 5 levels
+
+### Fixed
+- **Bug fix** `pet-service.js`: Fixed `getFromStorage(STORAGE_KEY, generateMockData())` inconsistency — all 10 mutation functions (`updatePet`, `addReminder`, `deleteReminder`, `toggleReminder`, `doneReminder`, `addDiary`, `deleteDiary`, `addVaccine`, `markVaccineDone`, `deleteVaccine`, `addWeight`) now consistently use `initData()` instead of mixing `getFromStorage` with `generateMockData()`, preventing potential data loss when storage is empty
+
+## [1.12.0] - 2026-06-22
+
+### Added
+- Comprehensive `@module` JSDoc headers for all 6 utility modules (`mock-utils`, `date-utils`, `money-utils`, `task-utils`, `storage-utils`, `constants`)
+
+### Changed
+- **Code quality**: Standardized JSDoc annotation style across all service modules — every exported function now has `@param`, `@returns`, and `@description` tags
+
+### Refactored
+- **`budget-service.js`**: Extracted `_getWeeklyDailyData()` private helper to eliminate duplicated weekly trend calculation code between `getWeeklyTrend()` and `getWeeklySummary()`
+- **`storage-utils.js`**: Rewrote from minimal inline JSDoc to full documentation with `@module` header, `@param`/`@returns` on every function, and grouped exports by category
+
+## [1.11.0] - 2026-06-22
+
+### Changed
+- **README.md**: Added dedicated API Reference section with Service API Summary (18 services) and Utility API Summary (6 modules) tables
+- **README.md**: Updated version badge from v1.10.0 to v1.13.0
+- **`project.config.json`**: Bumped version to 1.13.0
+
 ## [1.10.0] - 2026-06-18
 
 ### Added

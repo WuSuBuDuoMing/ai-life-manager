@@ -1,6 +1,11 @@
 /**
- * 房间整理服务
- * 提供区域管理、整理任务CRUD、进度统计、每周挑战等功能
+ * @module services/room-service
+ * @description 房间整理服务
+ * 提供区域管理、整理任务 CRUD、进度统计、每周挑战等功能，包括：
+ * - 5大房间区域（桌面、衣柜、厨房、卫生间、床边）
+ * - 30条整理任务的管理
+ * - 区域进度统计
+ * - 每周整理挑战系统
  */
 var mockUtils = require('../utils/mock-utils')
 

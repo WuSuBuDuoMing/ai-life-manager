@@ -1,6 +1,12 @@
 /**
- * 旅行计划服务
- * 提供旅行计划管理、待办、行李清单、倒计时等功能
+ * @module services/travel-service
+ * @description 旅行计划服务
+ * 提供旅行计划管理、待办、行李清单、倒计时等功能，包括：
+ * - 旅行计划的 CRUD 操作
+ * - 待办事项的增删改查与状态切换
+ * - 行李清单的增删改查与状态切换
+ * - 出发倒计时计算
+ * - 每日行程安排
  */
 
 var mockUtils = require('../utils/mock-utils')

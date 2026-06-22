@@ -1,5 +1,10 @@
 /**
- * 购物清单数据服务
+ * @module services/shopping-service
+ * @description 购物清单数据服务
+ * 提供购物清单管理功能，包括：
+ * - 7大分类、80+商品的购物清单
+ * - 商品添加、删除、更新、购买状态切换
+ * - 冰箱临期食材自动补货到购物清单
  */
 var mockUtils = require('../utils/mock-utils')
 

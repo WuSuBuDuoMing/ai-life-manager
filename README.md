@@ -5,7 +5,7 @@
 ### An All-in-One Lifestyle Management WeChat Mini Program
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.10.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.13.0-blue.svg)](CHANGELOG.md)
 [![WeChat Mini Program](https://img.shields.io/badge/Platform-WeChat%20Mini%20Program-07C160?logo=wechat&logoColor=white)](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?logo=javascript&logoColor=black)]()
 [![CI](https://github.com/WuSuBuDuoMing/ai-life-manager/actions/workflows/ci.yml/badge.svg)](https://github.com/WuSuBuDuoMing/ai-life-manager/actions/workflows/ci.yml)
@@ -313,6 +313,46 @@ A gamified 100-point scoring system across 7 life dimensions:
 | Shopping | 10 | List management efficiency |
 
 **Levels:** Beginner -> Apprentice -> Skilled -> Expert -> Master
+
+---
+
+## API Reference
+
+Each service module exposes a clean, Promise-based API. All functions return `Promise` objects via `mockAsync()`.
+
+### Service API Summary
+
+| Service | Key Functions | Description |
+|:--------|:-------------|:------------|
+| `dashboard-service` | `getDashboardData()`, `getTodayChores()`, `getGreeting()` | Aggregated home view data |
+| `chore-service` | `getChores()`, `completeChore(id)`, `getLeaderboard()`, `getWeeklySchedule()`, `generateWeeklyPlan()` | Chore CRUD + points |
+| `checklist-service` | `getChecklists()`, `getTemplates()`, `createFromTemplate(id)`, `toggleChecklistItem(cId, iId)` | 30+ scenario templates |
+| `shopping-service` | `getItems()`, `addItem(item)`, `togglePurchased(id)`, `addFromFridge()` | Shopping + fridge linkage |
+| `subscription-service` | `getSubscriptions()`, `calculateMonthlyTotal(subs)`, `getAISavingTips(subs)` | Subscription tracking |
+| `budget-service` | `getRecords()`, `addRecord(r)`, `getMonthlyTotal(m, y)`, `getWeeklyTrend()`, `getAnomalies()` | Expense management |
+| `fridge-service` | `getItems()`, `getExpiringItems(days)`, `getRecipeRecommendations()`, `getWeeklyMenu()` | Fridge inventory |
+| `wardrobe-service` | `getClothes()`, `getLaundryBasket()`, `getWeeklyOutfit()`, `getWashingReminder()` | Clothing management |
+| `room-service` | `getZones()`, `addTask(task)`, `completeTask(id)`, `getWeeklyChallenge()` | Room organization |
+| `habit-service` | `getHabits()`, `toggleToday(id)`, `getHabitStats()`, `getWeeklyData(id)` | Habit tracking |
+| `recipe-service` | `getRecipes()`, `searchRecipes(kw)`, `toggleFavorite(id)`, `getSuggestions(ingredients)` | Recipe database |
+| `pet-service` | `getPet()`, `addReminder(r)`, `getDiary()`, `getVaccines()`, `getWeightHistory()` | Pet profiles |
+| `travel-service` | `getPlans()`, `addPlan(p)`, `toggleTodo(pId, tId)`, `getDaysUntil(pId)` | Travel planning |
+| `bill-service` | `getBills()`, `markPaid(id)`, `getUpcoming(days)`, `getMonthlyTotal()` | Bill reminders |
+| `assistant-service` | `ask(question)` | AI suggestions (10 keyword rules) |
+| `notification-service` | `getAllReminders()`, `getReminderCounts()`, `getDailySummary()` | Cross-module alerts |
+| `export-service` | `getLifeOverview()`, `exportAsText()` | Data export |
+| `life-score-service` | `getLifeScore()` | 7-dimension life score |
+
+### Utility API Summary
+
+| Module | Key Functions | Description |
+|:-------|:-------------|:------------|
+| `mock-utils` | `mockAsync(data, delay)`, `getFromStorage(key, def)`, `setToStorage(key, data)`, `generateId()` | Core storage + mock infra |
+| `date-utils` | `formatDate(date)`, `isToday(date)`, `daysUntil(date)`, `getWeekRange()`, `getRelativeTime(date)` | Date formatting & calculation |
+| `money-utils` | `formatMoney(amount)`, `calculatePercentage(v, t)`, `sumByCategory(records)`, `getBudgetStatus(usage)` | Currency formatting |
+| `task-utils` | `sortByDate(items)`, `filterByStatus(items, s)`, `groupByDate(items)`, `getOverdueItems(items)` | Task sorting & filtering |
+| `storage-utils` | `get(key)`, `set(key, val)`, `getList(key)`, `addToList(key, item)`, `getStorageInfo()` | wx.Storage wrapper |
+| `constants` | `PAGES`, `STORAGE_KEYS`, `BUDGET_CATEGORIES`, `FOOD_CATEGORIES`, `POINTS_RULES` | Centralized constants |
 
 ---
 

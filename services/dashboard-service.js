@@ -1,6 +1,14 @@
 /**
- * 仪表盘数据服务
- * 提供首页所需的聚合数据，从所有模块收集信息
+ * @module services/dashboard-service
+ * @description 仪表盘数据服务
+ * 提供首页所需的聚合数据，从所有模块收集信息，包括：
+ * - 今日待办数量（家务 + 购物 + 账单）
+ * - 冰箱临期/过期食材统计
+ * - 本月支出汇总
+ * - 即将续费订阅提醒
+ * - 房间整理进度
+ * - 今日习惯完成情况
+ * - AI 每日生活建议
  */
 var mockUtils = require('../utils/mock-utils')
 
@@ -19,7 +27,21 @@ var DAILY_TIPS = [
 
 /**
  * 获取仪表盘聚合数据
- * @returns {Promise<Object>}
+ * 从家务、冰箱、账本、订阅、购物、房间、习惯、账单等模块汇总关键指标
+ * @returns {Promise<Object>} 仪表盘数据对象
+ * @returns {number} return.todoCount - 总待办数量（家务 + 购物 + 账单）
+ * @returns {number} return.choreCount - 待完成家务数量
+ * @returns {number} return.expiringFood - 临期 + 已过期食材数量
+ * @returns {string} return.monthlyExpense - 本月支出金额（保留两位小数）
+ * @returns {number} return.upcomingSubscriptions - 7天内即将续费的订阅数量
+ * @returns {number} return.pendingShopping - 未购买的购物项数量
+ * @returns {number} return.weeklyTidyProgress - 房间整理完成百分比
+ * @returns {string} return.dailyTip - 每日生活建议
+ * @returns {number} return.choreCompleted - 已完成家务数量
+ * @returns {number} return.fridgeTotal - 冰箱食材总数
+ * @returns {number} return.habitCompleted - 今日已完成习惯数量
+ * @returns {number} return.habitTotal - 习惯总数
+ * @returns {number} return.unpaidBills - 未付账单数量
  */
 function getDashboardData() {
   var chores = mockUtils.getFromStorage('chores', [])

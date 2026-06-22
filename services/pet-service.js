@@ -1,6 +1,13 @@
 /**
- * 宠物生活服务
- * 提供宠物档案管理、提醒、日记、疫苗记录等功能
+ * @module services/pet-service
+ * @description 宠物生活服务
+ * 提供宠物档案管理、提醒、日记、疫苗记录、体重追踪等功能，包括：
+ * - 宠物档案 CRUD（品种、生日、体重、兽医信息等）
+ * - 喂食/遛宠/饮水/清洁等日常提醒
+ * - 宠物日记（含心情标记）
+ * - 疫苗接种记录管理
+ * - 体重历史追踪
+ * - 今日待办提醒汇总
  */
 
 var mockUtils = require('../utils/mock-utils')
@@ -87,7 +94,7 @@ function getPet() {
  * @returns {Promise<Object>} 更新后的宠物信息
  */
 function updatePet(info) {
-  var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
+  var data = mockUtils.initData(STORAGE_KEY, generateMockData)
   data.pet = Object.assign({}, data.pet, info)
   mockUtils.setToStorage(STORAGE_KEY, data)
   return mockUtils.mockAsync(data.pet)
@@ -108,7 +115,7 @@ function getReminders() {
  * @returns {Promise<Object>} 新提醒
  */
 function addReminder(reminder) {
-  var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
+  var data = mockUtils.initData(STORAGE_KEY, generateMockData)
   var newReminder = Object.assign({
     id: mockUtils.generateId(),
     petId: data.pet ? data.pet.id : 'pet_01',
@@ -130,7 +137,7 @@ function addReminder(reminder) {
  * @returns {Promise<Object>} 操作结果
  */
 function deleteReminder(id) {
-  var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
+  var data = mockUtils.initData(STORAGE_KEY, generateMockData)
   data.reminders = data.reminders.filter(function(r) { return r.id !== id })
   mockUtils.setToStorage(STORAGE_KEY, data)
   return mockUtils.mockAsync({ success: true })
@@ -142,7 +149,7 @@ function deleteReminder(id) {
  * @returns {Promise<Object>} 更新后的提醒
  */
 function toggleReminder(id) {
-  var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
+  var data = mockUtils.initData(STORAGE_KEY, generateMockData)
   var reminder = mockUtils.findById(data.reminders, id)
   if (!reminder) {
     return mockUtils.mockAsync({ success: false, message: '提醒不存在' })
@@ -158,7 +165,7 @@ function toggleReminder(id) {
  * @returns {Promise<Object>} 更新后的提醒
  */
 function doneReminder(id) {
-  var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
+  var data = mockUtils.initData(STORAGE_KEY, generateMockData)
   var reminder = mockUtils.findById(data.reminders, id)
   if (!reminder) {
     return mockUtils.mockAsync({ success: false, message: '提醒不存在' })
@@ -183,7 +190,7 @@ function getDiary() {
  * @returns {Promise<Object>} 新日记条目
  */
 function addDiary(entry) {
-  var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
+  var data = mockUtils.initData(STORAGE_KEY, generateMockData)
   var newEntry = Object.assign({
     id: mockUtils.generateId(),
     petId: data.pet ? data.pet.id : 'pet_01',
@@ -203,7 +210,7 @@ function addDiary(entry) {
  * @returns {Promise<Object>} 操作结果
  */
 function deleteDiary(id) {
-  var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
+  var data = mockUtils.initData(STORAGE_KEY, generateMockData)
   data.diary = data.diary.filter(function(d) { return d.id !== id })
   mockUtils.setToStorage(STORAGE_KEY, data)
   return mockUtils.mockAsync({ success: true })
@@ -241,7 +248,7 @@ function getVaccines() {
  * @returns {Promise<Object>} 新记录
  */
 function addVaccine(vaccine) {
-  var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
+  var data = mockUtils.initData(STORAGE_KEY, generateMockData)
   if (!data.vaccines) data.vaccines = []
   var newVaccine = Object.assign({
     id: mockUtils.generateId(),
@@ -263,7 +270,7 @@ function addVaccine(vaccine) {
  * @returns {Promise<Object>} 更新后的记录
  */
 function markVaccineDone(id) {
-  var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
+  var data = mockUtils.initData(STORAGE_KEY, generateMockData)
   if (!data.vaccines) return mockUtils.mockAsync({ success: false, message: '记录不存在' })
   var vaccine = mockUtils.findById(data.vaccines, id)
   if (!vaccine) return mockUtils.mockAsync({ success: false, message: '记录不存在' })
@@ -279,7 +286,7 @@ function markVaccineDone(id) {
  * @returns {Promise<Object>} 操作结果
  */
 function deleteVaccine(id) {
-  var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
+  var data = mockUtils.initData(STORAGE_KEY, generateMockData)
   if (!data.vaccines) return mockUtils.mockAsync({ success: true })
   data.vaccines = data.vaccines.filter(function(v) { return v.id !== id })
   mockUtils.setToStorage(STORAGE_KEY, data)
@@ -303,7 +310,7 @@ function getWeightHistory() {
  * @returns {Promise<Object>} 新记录
  */
 function addWeight(entry) {
-  var data = mockUtils.getFromStorage(STORAGE_KEY, generateMockData())
+  var data = mockUtils.initData(STORAGE_KEY, generateMockData)
   if (!data.weightHistory) data.weightHistory = []
   var newEntry = Object.assign({
     date: getToday(),

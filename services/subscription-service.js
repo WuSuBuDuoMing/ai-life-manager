@@ -1,5 +1,11 @@
 /**
- * 订阅管理数据服务
+ * @module services/subscription-service
+ * @description 订阅管理数据服务
+ * 提供订阅服务的管理功能，包括：
+ * - 20+ 常见订阅服务的追踪管理
+ * - 月度/年度费用自动计算
+ * - 即将续费的订阅提醒（7天内）
+ * - AI 省钱建议（月支出分析、年付建议、娱乐类分析）
  */
 var mockUtils = require('../utils/mock-utils')
 

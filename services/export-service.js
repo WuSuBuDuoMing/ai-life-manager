@@ -1,6 +1,9 @@
 /**
- * 数据导出服务
- * 提供数据统计汇总和导出功能
+ * @module services/export-service
+ * @description 数据导出服务
+ * 提供数据统计汇总和导出功能，包括：
+ * - 10个模块的数据总览（家务、购物、账本、冰箱、订阅、衣橱、房间、习惯、账单、旅行）
+ * - 文本格式导出（可用于分享）
  */
 var mockUtils = require('../utils/mock-utils')
 
