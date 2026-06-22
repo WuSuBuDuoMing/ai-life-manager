@@ -32,6 +32,11 @@ var SUBSCRIPTION_DATA = [
   { name: '腾讯视频VIP', icon: '📺', price: 30, billingCycle: 'monthly', category: '娱乐', color: '#FF6A00' }
 ]
 
+/**
+ * 生成模拟订阅数据（20个常见订阅服务）
+ * @returns {Array<Object>} 订阅列表
+ * @private
+ */
 function generateMockSubscriptions() {
   var now = new Date()
   return SUBSCRIPTION_DATA.map(function(item, index) {

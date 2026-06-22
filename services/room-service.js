@@ -19,6 +19,11 @@ var ZONES = [
   { id: 'zone_bedside', name: '床边', icon: '🛏️', description: '床头和休息区域' }
 ]
 
+/**
+ * 生成模拟房间整理任务数据（30条，覆盖5大区域）
+ * @returns {Array<Object>} 房间任务列表
+ * @private
+ */
 function generateMockTasks() {
   return [
     { id: 'room_001', title: '整理书架', zone: 'zone_desk', status: 'completed', priority: 'normal', dueDate: '2026-06-08', icon: '📚' },

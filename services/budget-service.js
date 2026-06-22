@@ -47,6 +47,11 @@ var INCOME_NOTES = {
   '生活费': ['父母打款', '生活费转账', '月底生活费']
 }
 
+/**
+ * 生成模拟收支记录数据（约100条，覆盖2025年9月至2026年6月）
+ * @returns {Array<Object>} 收支记录列表
+ * @private
+ */
 function generateMockRecords() {
   var records = []
   var categories = Object.keys(CATEGORY_CONFIG)

@@ -43,6 +43,11 @@ var CHECKLIST_TEMPLATES = [
   { id: 'tpl_seasonal', name: '季节性衣物收纳', icon: '🧸', items: ['清洗待收纳衣物', '真空袋收纳', '防虫防潮处理', '分类标签', '整理存储空间'] }
 ]
 
+/**
+ * 生成模拟清单数据（3条示例清单）
+ * @returns {Array<Object>} 清单列表
+ * @private
+ */
 function generateMockChecklists() {
   return [
     {

@@ -14,12 +14,21 @@ var mockUtils = require('../utils/mock-utils')
 
 var STORAGE_KEY = 'pet_data'
 
+/**
+ * 获取今日日期字符串
+ * @returns {string} YYYY-MM-DD 格式
+ * @private
+ */
 function getToday() {
   return mockUtils.formatDate(new Date())
 }
 
+/**
+ * 生成模拟宠物数据（含10条提醒、5条日记、6条疫苗、8条体重记录）
+ * @returns {Object} 宠物完整数据
+ * @private
+ */
 function generateMockData() {
-  var today = getToday()
   return {
     pet: {
       id: 'pet_01',
@@ -75,6 +84,11 @@ function generateMockData() {
   }
 }
 
+/**
+ * 从缓存加载宠物数据（首次自动初始化）
+ * @returns {Object} 宠物完整数据
+ * @private
+ */
 function loadData() {
   return mockUtils.initData(STORAGE_KEY, generateMockData)
 }

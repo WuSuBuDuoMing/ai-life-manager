@@ -14,6 +14,11 @@ var mockUtils = require('../utils/mock-utils')
 
 var STORAGE_KEY = 'bills'
 
+/**
+ * 生成模拟账单数据（15条）
+ * @returns {Array<Object>} 预设账单列表
+ * @private
+ */
 function generateMockBills() {
   return [
     { id: 'bill_01', name: '房租', amount: 2500, dueDate: '2026-06-28', category: '住房', paid: false, recurring: true, frequency: '每月', icon: '🏠' },
@@ -49,7 +54,7 @@ function getBills() {
  * @returns {Promise<Object>} 新账单
  */
 function addBill(bill) {
-  var bills = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var bills = mockUtils.initData(STORAGE_KEY, generateMockBills)
   var newBill = Object.assign({
     id: mockUtils.generateId(),
     paid: false,
@@ -69,7 +74,7 @@ function addBill(bill) {
  * @returns {Promise<Object>} 更新后的账单
  */
 function updateBill(id, updates) {
-  var bills = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var bills = mockUtils.initData(STORAGE_KEY, generateMockBills)
   var bill = mockUtils.findById(bills, id)
   if (!bill) {
     return mockUtils.mockAsync({ success: false, message: '账单不存在' })
@@ -85,7 +90,7 @@ function updateBill(id, updates) {
  * @returns {Promise<Object>} 更新后的账单
  */
 function markPaid(id) {
-  var bills = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var bills = mockUtils.initData(STORAGE_KEY, generateMockBills)
   var bill = mockUtils.findById(bills, id)
   if (!bill) {
     return mockUtils.mockAsync({ success: false, message: '账单不存在' })
@@ -101,7 +106,7 @@ function markPaid(id) {
  * @returns {Promise<Object>} 操作结果
  */
 function deleteBill(id) {
-  var bills = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var bills = mockUtils.initData(STORAGE_KEY, generateMockBills)
   var index = mockUtils.findIndexById(bills, id)
   if (index === -1) {
     return mockUtils.mockAsync({ success: false, message: '账单不存在' })
@@ -118,7 +123,7 @@ function deleteBill(id) {
  */
 function getUpcoming(days) {
   var daysNum = days || 7
-  var bills = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var bills = mockUtils.initData(STORAGE_KEY, generateMockBills)
   var today = new Date()
   today.setHours(0, 0, 0, 0)
   var endDate = new Date(today)
@@ -139,7 +144,7 @@ function getUpcoming(days) {
  * @returns {Promise<Object>} 月度统计
  */
 function getMonthlyTotal() {
-  var bills = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var bills = mockUtils.initData(STORAGE_KEY, generateMockBills)
   var now = new Date()
   var monthStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0')
   var monthlyBills = bills.filter(function (b) {
@@ -165,7 +170,7 @@ function getMonthlyTotal() {
  * @returns {Promise<Array>} 未付款账单列表
  */
 function getUnpaidBills() {
-  var bills = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var bills = mockUtils.initData(STORAGE_KEY, generateMockBills)
   var unpaid = bills.filter(function (b) {
     return !b.paid
   })

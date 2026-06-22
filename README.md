@@ -5,7 +5,7 @@
 ### An All-in-One Lifestyle Management WeChat Mini Program
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.13.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.16.0-blue.svg)](CHANGELOG.md)
 [![WeChat Mini Program](https://img.shields.io/badge/Platform-WeChat%20Mini%20Program-07C160?logo=wechat&logoColor=white)](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?logo=javascript&logoColor=black)]()
 [![CI](https://github.com/WuSuBuDuoMing/ai-life-manager/actions/workflows/ci.yml/badge.svg)](https://github.com/WuSuBuDuoMing/ai-life-manager/actions/workflows/ci.yml)
@@ -25,6 +25,10 @@
 
 **Zero backend required.** All data is stored locally via `wx.Storage`. No accounts, no servers, no internet dependency.
 
+### Open Source Commitment
+
+This project is developed as an open-source initiative, built entirely in public with the [vibe-coding methodology](docs/vibe-coding-pitch.md). Every line of code was AI-assisted and human-reviewed, demonstrating how modern tools can empower solo developers to build production-quality applications.
+
 <div align="center">
 
 ```
@@ -41,7 +45,7 @@
 
 </div>
 
-### Why AI Life Manager?
+## Why AI Life Manager?
 
 - **No signup, no cloud, no tracking** — your data stays on your device
 - **17 integrated modules** that share data intelligently, not 17 separate apps
@@ -49,6 +53,9 @@
 - **Zero image assets** — the entire UI uses emoji icons for maximum portability
 - **Dark mode** with 20+ CSS Variables theme tokens
 - **Gamified life score** (100 points across 7 dimensions) to keep you motivated
+- **Built entirely with AI** — open development process, fully documented
+- **Zero npm dependencies** — runs purely in WeChat Mini Program runtime
+- **107+ unit tests** across 5 test suites with custom wx API mock framework
 
 ---
 
@@ -98,7 +105,7 @@
 | **Components** | 17 custom components with Behavior mixins |
 | **Theming** | Light/Dark mode via CSS Variables + `theme-behavior.js` |
 | **Animations** | 10+ CSS animations (fadeIn, slideUp, bounceIn, shimmer, etc.) |
-| **Testing** | Custom test framework with wx API mock (87 assertions across 5 suites) |
+| **Testing** | Custom test framework with wx API mock (128 assertions across 6 suites) |
 
 ### Project Structure
 
@@ -181,7 +188,8 @@ ai-life-manager/
 │   ├── money-utils.test.js           #   Money utility tests (20 assertions)
 │   ├── task-utils.test.js            #   Task utility tests (20 assertions)
 │   ├── bill-service.test.js          #   Bill service tests (19 assertions)
-│   └── habit-service.test.js         #   Habit service tests (22 assertions)
+│   ├── habit-service.test.js         #   Habit service tests (22 assertions)
+│   └── storage-utils.test.js         #   Storage utility tests (21 assertions)
 │
 └── docs/                             # Project documentation
     ├── product-requirements.md       #   PRD
@@ -505,8 +513,9 @@ The project includes a lightweight custom testing framework with a wx API mock:
 | `task-utils.test.js` | 20 | Sorting, filtering, grouping, ID generation |
 | `bill-service.test.js` | 19 | Bill CRUD, payment, statistics |
 | `habit-service.test.js` | 22 | Habit CRUD, toggle, streaks, weekly data |
+| `storage-utils.test.js` | 21 | Storage CRUD, list ops, batch ops, info |
 
-**Total: 107 assertions across 5 test suites**
+**Total: 128 assertions across 6 test suites**
 
 Run all tests:
 ```bash

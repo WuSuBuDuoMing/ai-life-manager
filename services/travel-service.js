@@ -13,6 +13,11 @@ var mockUtils = require('../utils/mock-utils')
 
 var STORAGE_KEY = 'travel_plans'
 
+/**
+ * 生成模拟旅行计划数据（3条示例计划）
+ * @returns {Array<Object>} 旅行计划列表
+ * @private
+ */
 function generateMockPlans() {
   return [
     {
@@ -133,7 +138,7 @@ function getPlans() {
  * @returns {Promise<Object|null>} 计划详情
  */
 function getPlanById(id) {
-  var plans = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var plans = mockUtils.initData(STORAGE_KEY, generateMockPlans)
   var plan = mockUtils.findById(plans, id)
   return mockUtils.mockAsync(plan || null)
 }
@@ -144,7 +149,7 @@ function getPlanById(id) {
  * @returns {Promise<Object>} 新计划
  */
 function addPlan(plan) {
-  var plans = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var plans = mockUtils.initData(STORAGE_KEY, generateMockPlans)
   var newPlan = Object.assign({
     id: mockUtils.generateId(),
     budget: 0,
@@ -167,7 +172,7 @@ function addPlan(plan) {
  * @returns {Promise<Object>} 更新后的计划
  */
 function updatePlan(id, updates) {
-  var plans = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var plans = mockUtils.initData(STORAGE_KEY, generateMockPlans)
   var plan = mockUtils.findById(plans, id)
   if (!plan) {
     return mockUtils.mockAsync({ success: false, message: '计划不存在' })
@@ -183,7 +188,7 @@ function updatePlan(id, updates) {
  * @returns {Promise<Object>} 操作结果
  */
 function deletePlan(id) {
-  var plans = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var plans = mockUtils.initData(STORAGE_KEY, generateMockPlans)
   var index = mockUtils.findIndexById(plans, id)
   if (index === -1) {
     return mockUtils.mockAsync({ success: false, message: '计划不存在' })
@@ -200,7 +205,7 @@ function deletePlan(id) {
  * @returns {Promise<Object>} 更新后的待办项
  */
 function toggleTodo(planId, todoId) {
-  var plans = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var plans = mockUtils.initData(STORAGE_KEY, generateMockPlans)
   var plan = mockUtils.findById(plans, planId)
   if (!plan) {
     return mockUtils.mockAsync({ success: false, message: '计划不存在' })
@@ -221,7 +226,7 @@ function toggleTodo(planId, todoId) {
  * @returns {Promise<Object>} 更新后的行李项
  */
 function togglePacking(planId, itemId) {
-  var plans = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var plans = mockUtils.initData(STORAGE_KEY, generateMockPlans)
   var plan = mockUtils.findById(plans, planId)
   if (!plan) {
     return mockUtils.mockAsync({ success: false, message: '计划不存在' })
@@ -241,7 +246,7 @@ function togglePacking(planId, itemId) {
  * @returns {Promise<Object>} 倒计时信息
  */
 function getDaysUntil(planId) {
-  var plans = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var plans = mockUtils.initData(STORAGE_KEY, generateMockPlans)
   var plan = mockUtils.findById(plans, planId)
   if (!plan) {
     return mockUtils.mockAsync({ success: false, message: '计划不存在' })

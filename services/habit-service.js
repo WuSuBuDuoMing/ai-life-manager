@@ -21,6 +21,11 @@ function getToday() {
   return mockUtils.formatDate(new Date())
 }
 
+/**
+ * 生成模拟习惯数据（15条，覆盖5大分类）
+ * @returns {Array<Object>} 习惯列表
+ * @private
+ */
 function generateMockHabits() {
   var today = getToday()
   return [
@@ -57,7 +62,7 @@ function getHabits() {
  * @returns {Promise<Object>} 新习惯
  */
 function addHabit(habit) {
-  var habits = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var habits = mockUtils.initData(STORAGE_KEY, generateMockHabits)
   var newHabit = Object.assign({
     id: mockUtils.generateId(),
     targetDays: 7,
@@ -77,7 +82,7 @@ function addHabit(habit) {
  * @returns {Promise<Object>} 更新后的习惯
  */
 function toggleToday(habitId) {
-  var habits = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var habits = mockUtils.initData(STORAGE_KEY, generateMockHabits)
   var index = mockUtils.findIndexById(habits, habitId)
   if (index === -1) {
     return mockUtils.mockAsync({ success: false, message: '习惯不存在' })
@@ -107,7 +112,7 @@ function toggleToday(habitId) {
  * @returns {Promise<Object>} 操作结果
  */
 function deleteHabit(id) {
-  var habits = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var habits = mockUtils.initData(STORAGE_KEY, generateMockHabits)
   var index = mockUtils.findIndexById(habits, id)
   if (index === -1) {
     return mockUtils.mockAsync({ success: false, message: '习惯不存在' })
@@ -122,7 +127,7 @@ function deleteHabit(id) {
  * @returns {Promise<Object>} 统计数据
  */
 function getHabitStats() {
-  var habits = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var habits = mockUtils.initData(STORAGE_KEY, generateMockHabits)
   var todayStr = getToday()
   var totalHabits = habits.length
   var todayDone = habits.filter(function (h) {
@@ -144,7 +149,7 @@ function getHabitStats() {
  * @returns {Promise<Array>} 本周打卡数据
  */
 function getWeeklyData(habitId) {
-  var habits = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var habits = mockUtils.initData(STORAGE_KEY, generateMockHabits)
   var habit = mockUtils.findById(habits, habitId)
   if (!habit) {
     return mockUtils.mockAsync({ success: false, message: '习惯不存在' })

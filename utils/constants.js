@@ -1,6 +1,14 @@
 /**
- * constants.js - 集中管理所有常量
- * 微信小程序全局常量定义
+ * @module utils/constants
+ * @description 全局常量定义模块
+ * 集中管理小程序的所有常量，包括：
+ * - 页面路径映射（PAGES）
+ * - 本地缓存键名（STORAGE_KEYS）
+ * - 家务/购物/订阅/账本/食材/衣物分类常量
+ * - 房间区域配置（ROOM_ZONES）
+ * - 积分规则（POINTS_RULES）
+ * - 动画时间常量（ANIMATION）
+ * - 默认预算配置（DEFAULT_BUDGET）
  */
 
 // 页面路径

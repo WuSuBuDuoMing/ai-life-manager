@@ -47,6 +47,11 @@ var CLOTHES_TEMPLATE = [
   { category: '睡衣', items: ['棉质睡衣套装', '睡裙', '家居服', '睡裤'] }
 ]
 
+/**
+ * 生成模拟衣物数据（40件，覆盖12大分类）
+ * @returns {Array<Object>} 衣物列表
+ * @private
+ */
 function generateMockClothes() {
   var clothes = []
   var now = new Date()

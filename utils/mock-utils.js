@@ -1,10 +1,18 @@
 /**
- * Mock 工具函数模块
- * 提供本地缓存、延迟模拟、ID生成等通用功能
+ * @module utils/mock-utils
+ * @description Mock 工具函数模块
+ * 提供本地缓存、延迟模拟、ID生成等通用功能，包括：
+ * - 异步延迟模拟（mockAsync / mockError）
+ * - 唯一ID生成（generateId）
+ * - 本地缓存读写（getFromStorage / setToStorage）
+ * - 数据初始化（initData，仅首次写入）
+ * - 数组查找辅助（findById / findIndexById）
+ * - 日期格式化（formatDate / formatDateTime / today / getWeekDates / randomDate）
+ * - 随机数生成（randomInt / randomFloat / randomPick / randomPickN）
  */
 
-const MOCK_DELAY_MIN = 200;
-const MOCK_DELAY_MAX = 800;
+var MOCK_DELAY_MIN = 200;
+var MOCK_DELAY_MAX = 800;
 
 /**
  * 模拟异步延迟，返回 Promise
@@ -13,9 +21,9 @@ const MOCK_DELAY_MAX = 800;
  * @returns {Promise}
  */
 function mockAsync(data, delay) {
-  const ms = delay || Math.floor(Math.random() * (MOCK_DELAY_MAX - MOCK_DELAY_MIN)) + MOCK_DELAY_MIN;
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(data), ms);
+  var ms = delay || Math.floor(Math.random() * (MOCK_DELAY_MAX - MOCK_DELAY_MIN)) + MOCK_DELAY_MIN;
+  return new Promise(function (resolve) {
+    setTimeout(function () { resolve(data); }, ms);
   });
 }
 
@@ -26,9 +34,9 @@ function mockAsync(data, delay) {
  * @returns {Promise}
  */
 function mockError(message, delay) {
-  const ms = delay || Math.floor(Math.random() * (MOCK_DELAY_MAX - MOCK_DELAY_MIN)) + MOCK_DELAY_MIN;
-  return new Promise((_, reject) => {
-    setTimeout(() => reject(new Error(message)), ms);
+  var ms = delay || Math.floor(Math.random() * (MOCK_DELAY_MAX - MOCK_DELAY_MIN)) + MOCK_DELAY_MIN;
+  return new Promise(function (_, reject) {
+    setTimeout(function () { reject(new Error(message)); }, ms);
   });
 }
 
@@ -48,7 +56,7 @@ function generateId() {
  */
 function getFromStorage(key, defaultValue) {
   try {
-    const data = wx.getStorageSync(key);
+    var data = wx.getStorageSync(key);
     return data !== '' ? data : defaultValue;
   } catch (e) {
     return defaultValue;
@@ -75,7 +83,7 @@ function setToStorage(key, data) {
  * @returns {any}
  */
 function initData(key, mockFn) {
-  let data = getFromStorage(key, null);
+  var data = getFromStorage(key, null);
   if (!data) {
     data = mockFn();
     setToStorage(key, data);
@@ -90,7 +98,7 @@ function initData(key, mockFn) {
  * @returns {object|undefined}
  */
 function findById(arr, id) {
-  return arr.find(item => item.id === id);
+  return arr.find(function (item) { return item.id === id; });
 }
 
 /**
@@ -100,7 +108,7 @@ function findById(arr, id) {
  * @returns {number}
  */
 function findIndexById(arr, id) {
-  return arr.findIndex(item => item.id === id);
+  return arr.findIndex(function (item) { return item.id === id; });
 }
 
 /**
@@ -110,7 +118,7 @@ function findIndexById(arr, id) {
  * @returns {string} YYYY-MM-DD
  */
 function randomDate(start, end) {
-  const d = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  var d = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
   return formatDate(d);
 }
 
@@ -120,9 +128,9 @@ function randomDate(start, end) {
  * @returns {string}
  */
 function formatDate(date) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
+  var y = date.getFullYear();
+  var m = String(date.getMonth() + 1).padStart(2, '0');
+  var d = String(date.getDate()).padStart(2, '0');
   return y + '-' + m + '-' + d;
 }
 
@@ -132,9 +140,9 @@ function formatDate(date) {
  * @returns {string}
  */
 function formatDateTime(date) {
-  const dateStr = formatDate(date);
-  const h = String(date.getHours()).padStart(2, '0');
-  const min = String(date.getMinutes()).padStart(2, '0');
+  var dateStr = formatDate(date);
+  var h = String(date.getHours()).padStart(2, '0');
+  var min = String(date.getMinutes()).padStart(2, '0');
   return dateStr + ' ' + h + ':' + min;
 }
 
@@ -154,7 +162,7 @@ function randomPick(arr) {
  * @returns {Array}
  */
 function randomPickN(arr, n) {
-  const shuffled = [].concat(arr).sort(function () { return 0.5 - Math.random(); });
+  var shuffled = [].concat(arr).sort(function () { return 0.5 - Math.random(); });
   return shuffled.slice(0, n);
 }
 

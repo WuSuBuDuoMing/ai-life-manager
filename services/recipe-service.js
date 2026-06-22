@@ -13,6 +13,11 @@ var mockUtils = require('../utils/mock-utils')
 
 var STORAGE_KEY = 'recipes'
 
+/**
+ * 生成模拟菜谱数据（20道，覆盖5大分类）
+ * @returns {Array<Object>} 菜谱列表
+ * @private
+ */
 function generateMockRecipes() {
   return [
     // 早餐 5道
@@ -62,7 +67,7 @@ function getRecipes() {
  * @returns {Promise<Object|null>} 菜谱详情
  */
 function getRecipeById(id) {
-  var recipes = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var recipes = mockUtils.initData(STORAGE_KEY, generateMockRecipes)
   var recipe = mockUtils.findById(recipes, id)
   return mockUtils.mockAsync(recipe || null)
 }
@@ -73,7 +78,7 @@ function getRecipeById(id) {
  * @returns {Promise<Array>} 筛选结果
  */
 function getByCategory(category) {
-  var recipes = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var recipes = mockUtils.initData(STORAGE_KEY, generateMockRecipes)
   var filtered = recipes.filter(function (r) {
     return r.category === category
   })
@@ -86,7 +91,7 @@ function getByCategory(category) {
  * @returns {Promise<Array>} 搜索结果
  */
 function searchRecipes(keyword) {
-  var recipes = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var recipes = mockUtils.initData(STORAGE_KEY, generateMockRecipes)
   var kw = keyword.toLowerCase()
   var results = recipes.filter(function (r) {
     return r.name.indexOf(kw) > -1 ||
@@ -102,7 +107,7 @@ function searchRecipes(keyword) {
  * @returns {Promise<Object>} 更新后的菜谱
  */
 function toggleFavorite(id) {
-  var recipes = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var recipes = mockUtils.initData(STORAGE_KEY, generateMockRecipes)
   var recipe = mockUtils.findById(recipes, id)
   if (!recipe) {
     return mockUtils.mockAsync({ success: false, message: '菜谱不存在' })
@@ -117,7 +122,7 @@ function toggleFavorite(id) {
  * @returns {Promise<Array>} 收藏列表
  */
 function getFavorites() {
-  var recipes = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var recipes = mockUtils.initData(STORAGE_KEY, generateMockRecipes)
   var favorites = recipes.filter(function (r) {
     return r.favorited
   })
@@ -130,7 +135,7 @@ function getFavorites() {
  * @returns {Promise<Array>} 推荐菜谱（按匹配度排序）
  */
 function getSuggestions(ingredients) {
-  var recipes = mockUtils.getFromStorage(STORAGE_KEY, [])
+  var recipes = mockUtils.initData(STORAGE_KEY, generateMockRecipes)
   var results = recipes.filter(function (r) {
     return ingredients.some(function (ing) {
       return r.ingredients.some(function (ri) {

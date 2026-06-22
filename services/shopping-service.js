@@ -20,6 +20,11 @@ var SHOPPING_DB = {
   '其他': ['快递袋', '标签纸', '笔记本', '圆珠笔', '书签']
 }
 
+/**
+ * 生成模拟购物清单数据（80条，覆盖7大分类）
+ * @returns {Array<Object>} 购物列表
+ * @private
+ */
 function generateMockItems() {
   var items = []
   var categories = Object.keys(SHOPPING_DB)

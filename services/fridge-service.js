@@ -118,6 +118,11 @@ var ITEM_DB = {
   }
 }
 
+/**
+ * 生成模拟冰箱食材数据（60条，覆盖9大分类）
+ * @returns {Array<Object>} 食材列表
+ * @private
+ */
 function generateMockItems() {
   var items = []
   var now = new Date()

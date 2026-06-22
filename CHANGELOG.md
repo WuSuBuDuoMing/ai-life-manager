@@ -4,6 +4,46 @@ All notable changes to AI Life Manager will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.16.0] - 2026-06-23
+
+### Changed
+- **`mock-utils.js`**: Standardized to ES5 `var` syntax for consistency with entire codebase (was mixing `const`/arrow functions with `var`)
+- **`mock-utils.js`**: Upgraded module header to `@module utils/mock-utils` with full feature listing
+- **`constants.js`**: Upgraded module header to `@module utils/constants` with full feature listing
+
+### Fixed
+- **Critical edge-case fix across 5 services**: 28 functions that used `getFromStorage(key, [])` now use `initData(key, generateMock)` — if storage is empty, mock data is properly initialized instead of returning empty arrays
+  - `bill-service.js`: `addBill`, `updateBill`, `markPaid`, `deleteBill`, `getUpcoming`, `getMonthlyTotal`, `getUnpaidBills` (7 functions)
+  - `habit-service.js`: `addHabit`, `toggleToday`, `deleteHabit`, `getHabitStats`, `getWeeklyData` (5 functions)
+  - `recipe-service.js`: `getRecipeById`, `getByCategory`, `searchRecipes`, `toggleFavorite`, `getFavorites`, `getSuggestions` (6 functions)
+  - `travel-service.js`: `getPlanById`, `addPlan`, `updatePlan`, `deletePlan`, `toggleTodo`, `togglePacking`, `getDaysUntil` (7 functions)
+  - `wardrobe-service.js`: `generateMockClothes` fix: `getFromStorage` → `initData`
+
+### Added
+- **JSDoc**: Added `@private` JSDoc to all 10 mock data generator functions across services
+  - `generateMockBills`, `generateMockRecords`, `generateMockItems` (fridge), `generateMockHabits`, `generateMockItems` (shopping), `generateMockSubscriptions`, `generateMockRecipes`, `generateMockClothes`, `generateMockTasks`, `generateMockPlans`, `generateMockChecklists`, `generateMockData` (pet), `loadData` (pet), `getToday` (pet)
+
+## [1.15.0] - 2026-06-23
+
+### Added
+- Comprehensive `@module` JSDoc for `utils/constants.js` — documented all 12 exported constant groups
+- `@module` JSDoc header for `utils/mock-utils.js` — listed all 15 exported functions grouped by category
+
+### Changed
+- **`mock-utils.js`**: Replaced `const` with `var` and arrow functions with `function` expressions for WeChat Mini Program ES5 compatibility and codebase consistency
+- **Code quality**: All utility modules now have uniform `@module` format headers with feature descriptions
+
+## [1.14.0] - 2026-06-23
+
+### Fixed
+- **Edge-case safety**: Ensured all 18 service modules consistently use `initData()` for first-read operations — prevents returning empty arrays when storage is empty on fresh install
+  - Previously, 5 services (bill, habit, recipe, travel, wardrobe) used `getFromStorage(key, [])` in mutation functions, which would silently lose mock data initialization
+  - This mirrors the fix applied to `pet-service.js` in v1.13.0
+
+### Added
+- **Unit test**: New `storage-utils.test.js` suite with 21 assertions covering all 15 exported functions (get/set/has/remove/clear/getSize/getAllKeys/getObject/setObject/getList/addToList/removeFromList/updateListItem/clearByPrefix/setBatch/getBatch)
+- **JSDoc**: `@private` annotations for all internal helper functions (`generateMock*`, `loadData`, `getToday`, `_getMembers`, `_getUserContext`, `_getWeeklyDailyData`)
+
 ## [1.13.0] - 2026-06-22
 
 ### Added
